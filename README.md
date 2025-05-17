@@ -9,10 +9,10 @@
 <h4 align="center">Grupo 1</h4>
 <p align="center">
   Autres: 
-  Edison Verdesoto
-  Joan Cobeña
-  Ruben Benavides
-  Juan Pasquel
+  <br>Edison Verdesoto
+  <br>Joan Cobeña
+  <br>Ruben Benavides
+  <br>Juan Pasquel
 </p> 
 
 ---
