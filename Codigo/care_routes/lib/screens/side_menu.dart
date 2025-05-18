@@ -19,11 +19,10 @@ class SideMenu extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // — Header —
+              // — Header fijo —
               SizedBox(
                 height: 72,
-                child: DrawerHeader(
-                  margin: EdgeInsets.zero,
+                child: DrawerHeader( margin: EdgeInsets.zero,
                   padding: EdgeInsets.zero,
                   decoration: const BoxDecoration(color: Color(0xFFF2F2F2)),
                   child: Center(
@@ -39,93 +38,104 @@ class SideMenu extends StatelessWidget {
                 ),
               ),
 
+              // — Menú scrollable —
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    // — Sección Vehículos —
+                    const _SectionHeader('Vehículos'),
+                    SideMenuItem(
+                      icon: Icons.upload_file,
+                      label: 'Importar Datos',
+                      isSelected: selectedIndex == 0,
+                      onTap: () => onIndexChanged(0),
+                    ),
+                    SideMenuItem(
+                      icon: Icons.person_add,
+                      label: 'Asignar Custodios',
+                      isSelected: selectedIndex == 1,
+                      onTap: () => onIndexChanged(1),
+                    ),
+                    SideMenuItem(
+                      icon: Icons.search,
+                      label: 'Consultar Vehículos',
+                      isSelected: selectedIndex == 2,
+                      onTap: () => onIndexChanged(2),
+                    ),
+
+                    const Divider(color: Color(0xFF76777C)),
+
+                    // — Sección Rutas —
+                    const _SectionHeader('Rutas'),
+                    SideMenuItem(
+                      icon: Icons.add_road,
+                      label: 'Crear Rutas',
+                      isSelected: selectedIndex == 3,
+                      onTap: () => onIndexChanged(3),
+                    ),
+                    SideMenuItem(
+                      icon: Icons.map,
+                      label: 'Asignar Rutas',
+                      isSelected: selectedIndex == 4,
+                      onTap: () => onIndexChanged(4),
+                    ),
+                    SideMenuItem(
+                      icon: Icons.visibility,
+                      label: 'Ver Rutas',
+                      isSelected: selectedIndex == 5,
+                      onTap: () => onIndexChanged(5),
+                    ),
+
+                    const Divider(color: Color(0xFF76777C)),
+
+                    // — Sección Mantenimientos —
+                    const _SectionHeader('Mantenimientos'),
+                    SideMenuItem(
+                      icon: Icons.build,
+                      label: 'Registrar Mantenimientos',
+                      isSelected: selectedIndex == 6,
+                      onTap: () => onIndexChanged(6),
+                    ),
+                    SideMenuItem(
+                      icon: Icons.history,
+                      label: 'Ver Mantenimientos',
+                      isSelected: selectedIndex == 7,
+                      onTap: () => onIndexChanged(7),
+                    ),
+
+                    const Divider(color: Color(0xFF76777C)),
+
+                    // — Sección Reportes —
+                    const _SectionHeader('Reportes'),
+                    SideMenuItem(
+                      icon: Icons.pie_chart,
+                      label: 'Generar Reportes',
+                      isSelected: selectedIndex == 8,
+                      onTap: () => onIndexChanged(8),
+                    ),
+                  ],
+                ),
+              ),
+
+              // — Footer fijo —
               const Divider(color: Color(0xFF76777C)),
-
-              // — Sección Vehículos —
-              const _SectionHeader('Vehículos'),
-              SideMenuItem(
-                icon: Icons.upload_file,
-                label: 'Importar Datos',
-                isSelected: selectedIndex == 0,
-                onTap: () => onIndexChanged(0),
-              ),
-              SideMenuItem(
-                icon: Icons.person_add,
-                label: 'Asignar Custodios',
-                isSelected: selectedIndex == 1,
-                onTap: () => onIndexChanged(1),
-              ),
-              SideMenuItem(
-                icon: Icons.search,
-                label: 'Consultar Vehículos',
-                isSelected: selectedIndex == 2,
-                onTap: () => onIndexChanged(2),
-              ),
-
-              const Divider(color: Color(0xFF76777C)),
-
-              // — Sección Rutas —
-              const _SectionHeader('Rutas'),
-              SideMenuItem(
-                icon: Icons.add_road,
-                label: 'Crear Rutas',
-                isSelected: selectedIndex == 3,
-                onTap: () => onIndexChanged(3),
-              ),
-              SideMenuItem(
-                icon: Icons.map,
-                label: 'Asignar Rutas',
-                isSelected: selectedIndex == 4,
-                onTap: () => onIndexChanged(4),
-              ),
-              SideMenuItem(
-                icon: Icons.visibility,
-                label: 'Ver Rutas',
-                isSelected: selectedIndex == 5,
-                onTap: () => onIndexChanged(5),
-              ),
-
-              const Divider(color: Color(0xFF76777C)),
-
-              // — Sección Mantenimientos —
-              const _SectionHeader('Mantenimientos'),
-              SideMenuItem(
-                icon: Icons.build,
-                label: 'Registrar Mantenimientos',
-                isSelected: selectedIndex == 6,
-                onTap: () => onIndexChanged(6),
-              ),
-              SideMenuItem(
-                icon: Icons.history,
-                label: 'Ver Mantenimientos',
-                isSelected: selectedIndex == 7,
-                onTap: () => onIndexChanged(7),
-              ),
-
-              const Spacer(),
-
-              // — Configuración antes del footer —
               SideMenuItem(
                 icon: Icons.settings,
                 label: 'Configuración',
-                isSelected: selectedIndex == 8,
-                onTap: () => onIndexChanged(8),
+                isSelected: selectedIndex == 9,
+                onTap: () => onIndexChanged(9),
               ),
-
-              // — Footer: imagen centrada —
               Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Image.asset(
-                  'assets/images/footer_logo.png',
-                  height: 64,
-                  fit: BoxFit.contain,
-                ),
+                padding: const EdgeInsets.all(16),
+                child: Image.asset('assets/images/footer_logo.png', height: 64),
               ),
             ],
           ),
         ),
       ),
     );
+    
   }
 }
 

@@ -9,7 +9,7 @@ class HomeState extends StatefulWidget {
 }
 
 class _HomeStateState extends State<HomeState> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 4;
 
   /// Map each index to the screen you want to show.
   /// Add your other screens (AssignCustodians, ConsultVehicles, etc.) here.
