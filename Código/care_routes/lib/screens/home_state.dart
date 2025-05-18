@@ -38,6 +38,19 @@ class _HomeStateState extends State<HomeState> {
         final isDesktop = constraints.maxWidth >= 800;
 
         return Scaffold(
+          appBar: isDesktop ? null: AppBar(
+            backgroundColor: const Color(0xFFF2F2F2),
+            actions: [
+              // on desktop, show the menu in the app bar
+              if (isDesktop)
+                IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                ),
+            ],
+          ),
           // only show the “hamburger drawer” on mobile
           drawer: isDesktop
               ? null
