@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../themes/buttom_style.dart';
 
-class Importvehicles extends StatelessWidget {
-  const Importvehicles({super.key});
+class ImportVehicles extends StatelessWidget {
+  const ImportVehicles({super.key});
 
   @override
   Widget build(BuildContext context) {
