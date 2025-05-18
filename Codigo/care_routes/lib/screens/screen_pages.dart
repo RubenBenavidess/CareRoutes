@@ -9,6 +9,5 @@ export 'consult_routes.dart';
 export 'register_maintenance.dart';
 export 'consult_maintenance.dart';
 
-export 'generate_reports.dart'; 
+export 'generate_reports.dart';
 export 'settings_screen.dart';
-
