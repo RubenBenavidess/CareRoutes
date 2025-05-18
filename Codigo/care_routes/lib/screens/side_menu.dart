@@ -113,16 +113,14 @@ class SideMenu extends StatelessWidget {
               ),
 
               // — Footer: imagen centrada —
-              /*
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Image.asset(
                   'assets/images/footer_logo.png',
-                  height: 48,
+                  height: 64,
                   fit: BoxFit.contain,
                 ),
               ),
-              */
             ],
           ),
         ),
