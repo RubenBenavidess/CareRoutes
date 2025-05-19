@@ -40,8 +40,10 @@ dependencies:
   drift_sqflite: 2.0.0
   path_provider: any
   sqlite3_flutter_libs: any
-  flutter_dropzone: ^4.2.1
   dotted_border: ^3.0.1
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+  freezed_annotation: ^3.0.0
 
 
 dev_dependencies:
@@ -55,7 +57,11 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
   drift_dev: ^2.0.0
-  build_runner: ^2.0.0
+  build_runner: ^2.4.15
+  riverpod_generator: ^2.6.5
+  custom_lint: ^0.7.5
+  riverpod_lint: ^2.6.5
+  freezed: ^3.0.6
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
