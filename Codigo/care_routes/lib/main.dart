@@ -1,13 +1,18 @@
+import 'package:care_routes/ui/home_state.dart';
 import 'package:flutter/material.dart';
-import 'package:care_routes/screens/home_state.dart';
 import 'package:care_routes/themes/main_theme.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+  
+  runApp(const ProviderScope(
+      child: CareRoutesApp(),
+    )
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class CareRoutesApp extends StatelessWidget {
+  const CareRoutesApp({super.key});
 
   @override
   Widget build(BuildContext context) {

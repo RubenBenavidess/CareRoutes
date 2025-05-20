@@ -761,639 +761,6 @@ class ObdDevicesCompanion extends UpdateCompanion<ObdDevice> {
   }
 }
 
-class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $VehiclesTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idVehicleMeta = const VerificationMeta(
-    'idVehicle',
-  );
-  @override
-  late final GeneratedColumn<int> idVehicle = GeneratedColumn<int>(
-    'id_vehicle',
-    aliasedName,
-    false,
-    hasAutoIncrement: true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
-  );
-  static const VerificationMeta _licensePlateMeta = const VerificationMeta(
-    'licensePlate',
-  );
-  @override
-  late final GeneratedColumn<String> licensePlate = GeneratedColumn<String>(
-    'license_plate',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 10,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
-  );
-  static const VerificationMeta _brandMeta = const VerificationMeta('brand');
-  @override
-  late final GeneratedColumn<String> brand = GeneratedColumn<String>(
-    'brand',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 50,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _modelMeta = const VerificationMeta('model');
-  @override
-  late final GeneratedColumn<String> model = GeneratedColumn<String>(
-    'model',
-    aliasedName,
-    true,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 50,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _yearMeta = const VerificationMeta('year');
-  @override
-  late final GeneratedColumn<int> year = GeneratedColumn<int>(
-    'year',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _statusMeta = const VerificationMeta('status');
-  @override
-  late final GeneratedColumn<String> status = GeneratedColumn<String>(
-    'status',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 20,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    defaultValue: const Constant('active'),
-  );
-  static const VerificationMeta _mileageMeta = const VerificationMeta(
-    'mileage',
-  );
-  @override
-  late final GeneratedColumn<int> mileage = GeneratedColumn<int>(
-    'mileage',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultValue: const Constant(0),
-  );
-  static const VerificationMeta _gpsDeviceIdMeta = const VerificationMeta(
-    'gpsDeviceId',
-  );
-  @override
-  late final GeneratedColumn<int> gpsDeviceId = GeneratedColumn<int>(
-    'gps_device_id',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    $customConstraints: 'NULL REFERENCES gps_devices(id_gps)',
-  );
-  static const VerificationMeta _obdDeviceIdMeta = const VerificationMeta(
-    'obdDeviceId',
-  );
-  @override
-  late final GeneratedColumn<int> obdDeviceId = GeneratedColumn<int>(
-    'obd_device_id',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    $customConstraints: 'NULL REFERENCES obd_devices(id_obd)',
-  );
-  static const VerificationMeta _isActiveMeta = const VerificationMeta(
-    'isActive',
-  );
-  @override
-  late final GeneratedColumn<bool> isActive = GeneratedColumn<bool>(
-    'is_active',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("is_active" IN (0, 1))',
-    ),
-    defaultValue: const Constant(true),
-  );
-  @override
-  List<GeneratedColumn> get $columns => [
-    idVehicle,
-    licensePlate,
-    brand,
-    model,
-    year,
-    status,
-    mileage,
-    gpsDeviceId,
-    obdDeviceId,
-    isActive,
-  ];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'vehicles';
-  @override
-  VerificationContext validateIntegrity(
-    Insertable<Vehicle> instance, {
-    bool isInserting = false,
-  }) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id_vehicle')) {
-      context.handle(
-        _idVehicleMeta,
-        idVehicle.isAcceptableOrUnknown(data['id_vehicle']!, _idVehicleMeta),
-      );
-    }
-    if (data.containsKey('license_plate')) {
-      context.handle(
-        _licensePlateMeta,
-        licensePlate.isAcceptableOrUnknown(
-          data['license_plate']!,
-          _licensePlateMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_licensePlateMeta);
-    }
-    if (data.containsKey('brand')) {
-      context.handle(
-        _brandMeta,
-        brand.isAcceptableOrUnknown(data['brand']!, _brandMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_brandMeta);
-    }
-    if (data.containsKey('model')) {
-      context.handle(
-        _modelMeta,
-        model.isAcceptableOrUnknown(data['model']!, _modelMeta),
-      );
-    }
-    if (data.containsKey('year')) {
-      context.handle(
-        _yearMeta,
-        year.isAcceptableOrUnknown(data['year']!, _yearMeta),
-      );
-    }
-    if (data.containsKey('status')) {
-      context.handle(
-        _statusMeta,
-        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
-      );
-    }
-    if (data.containsKey('mileage')) {
-      context.handle(
-        _mileageMeta,
-        mileage.isAcceptableOrUnknown(data['mileage']!, _mileageMeta),
-      );
-    }
-    if (data.containsKey('gps_device_id')) {
-      context.handle(
-        _gpsDeviceIdMeta,
-        gpsDeviceId.isAcceptableOrUnknown(
-          data['gps_device_id']!,
-          _gpsDeviceIdMeta,
-        ),
-      );
-    }
-    if (data.containsKey('obd_device_id')) {
-      context.handle(
-        _obdDeviceIdMeta,
-        obdDeviceId.isAcceptableOrUnknown(
-          data['obd_device_id']!,
-          _obdDeviceIdMeta,
-        ),
-      );
-    }
-    if (data.containsKey('is_active')) {
-      context.handle(
-        _isActiveMeta,
-        isActive.isAcceptableOrUnknown(data['is_active']!, _isActiveMeta),
-      );
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {idVehicle};
-  @override
-  Vehicle map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Vehicle(
-      idVehicle:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}id_vehicle'],
-          )!,
-      licensePlate:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
-            data['${effectivePrefix}license_plate'],
-          )!,
-      brand:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
-            data['${effectivePrefix}brand'],
-          )!,
-      model: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}model'],
-      ),
-      year: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}year'],
-      ),
-      status:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
-            data['${effectivePrefix}status'],
-          )!,
-      mileage:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}mileage'],
-          )!,
-      gpsDeviceId: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}gps_device_id'],
-      ),
-      obdDeviceId: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}obd_device_id'],
-      ),
-      isActive:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.bool,
-            data['${effectivePrefix}is_active'],
-          )!,
-    );
-  }
-
-  @override
-  $VehiclesTable createAlias(String alias) {
-    return $VehiclesTable(attachedDatabase, alias);
-  }
-}
-
-class Vehicle extends DataClass implements Insertable<Vehicle> {
-  final int idVehicle;
-  final String licensePlate;
-  final String brand;
-  final String? model;
-  final int? year;
-  final String status;
-  final int mileage;
-  final int? gpsDeviceId;
-  final int? obdDeviceId;
-  final bool isActive;
-  const Vehicle({
-    required this.idVehicle,
-    required this.licensePlate,
-    required this.brand,
-    this.model,
-    this.year,
-    required this.status,
-    required this.mileage,
-    this.gpsDeviceId,
-    this.obdDeviceId,
-    required this.isActive,
-  });
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id_vehicle'] = Variable<int>(idVehicle);
-    map['license_plate'] = Variable<String>(licensePlate);
-    map['brand'] = Variable<String>(brand);
-    if (!nullToAbsent || model != null) {
-      map['model'] = Variable<String>(model);
-    }
-    if (!nullToAbsent || year != null) {
-      map['year'] = Variable<int>(year);
-    }
-    map['status'] = Variable<String>(status);
-    map['mileage'] = Variable<int>(mileage);
-    if (!nullToAbsent || gpsDeviceId != null) {
-      map['gps_device_id'] = Variable<int>(gpsDeviceId);
-    }
-    if (!nullToAbsent || obdDeviceId != null) {
-      map['obd_device_id'] = Variable<int>(obdDeviceId);
-    }
-    map['is_active'] = Variable<bool>(isActive);
-    return map;
-  }
-
-  VehiclesCompanion toCompanion(bool nullToAbsent) {
-    return VehiclesCompanion(
-      idVehicle: Value(idVehicle),
-      licensePlate: Value(licensePlate),
-      brand: Value(brand),
-      model:
-          model == null && nullToAbsent ? const Value.absent() : Value(model),
-      year: year == null && nullToAbsent ? const Value.absent() : Value(year),
-      status: Value(status),
-      mileage: Value(mileage),
-      gpsDeviceId:
-          gpsDeviceId == null && nullToAbsent
-              ? const Value.absent()
-              : Value(gpsDeviceId),
-      obdDeviceId:
-          obdDeviceId == null && nullToAbsent
-              ? const Value.absent()
-              : Value(obdDeviceId),
-      isActive: Value(isActive),
-    );
-  }
-
-  factory Vehicle.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Vehicle(
-      idVehicle: serializer.fromJson<int>(json['idVehicle']),
-      licensePlate: serializer.fromJson<String>(json['licensePlate']),
-      brand: serializer.fromJson<String>(json['brand']),
-      model: serializer.fromJson<String?>(json['model']),
-      year: serializer.fromJson<int?>(json['year']),
-      status: serializer.fromJson<String>(json['status']),
-      mileage: serializer.fromJson<int>(json['mileage']),
-      gpsDeviceId: serializer.fromJson<int?>(json['gpsDeviceId']),
-      obdDeviceId: serializer.fromJson<int?>(json['obdDeviceId']),
-      isActive: serializer.fromJson<bool>(json['isActive']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'idVehicle': serializer.toJson<int>(idVehicle),
-      'licensePlate': serializer.toJson<String>(licensePlate),
-      'brand': serializer.toJson<String>(brand),
-      'model': serializer.toJson<String?>(model),
-      'year': serializer.toJson<int?>(year),
-      'status': serializer.toJson<String>(status),
-      'mileage': serializer.toJson<int>(mileage),
-      'gpsDeviceId': serializer.toJson<int?>(gpsDeviceId),
-      'obdDeviceId': serializer.toJson<int?>(obdDeviceId),
-      'isActive': serializer.toJson<bool>(isActive),
-    };
-  }
-
-  Vehicle copyWith({
-    int? idVehicle,
-    String? licensePlate,
-    String? brand,
-    Value<String?> model = const Value.absent(),
-    Value<int?> year = const Value.absent(),
-    String? status,
-    int? mileage,
-    Value<int?> gpsDeviceId = const Value.absent(),
-    Value<int?> obdDeviceId = const Value.absent(),
-    bool? isActive,
-  }) => Vehicle(
-    idVehicle: idVehicle ?? this.idVehicle,
-    licensePlate: licensePlate ?? this.licensePlate,
-    brand: brand ?? this.brand,
-    model: model.present ? model.value : this.model,
-    year: year.present ? year.value : this.year,
-    status: status ?? this.status,
-    mileage: mileage ?? this.mileage,
-    gpsDeviceId: gpsDeviceId.present ? gpsDeviceId.value : this.gpsDeviceId,
-    obdDeviceId: obdDeviceId.present ? obdDeviceId.value : this.obdDeviceId,
-    isActive: isActive ?? this.isActive,
-  );
-  Vehicle copyWithCompanion(VehiclesCompanion data) {
-    return Vehicle(
-      idVehicle: data.idVehicle.present ? data.idVehicle.value : this.idVehicle,
-      licensePlate:
-          data.licensePlate.present
-              ? data.licensePlate.value
-              : this.licensePlate,
-      brand: data.brand.present ? data.brand.value : this.brand,
-      model: data.model.present ? data.model.value : this.model,
-      year: data.year.present ? data.year.value : this.year,
-      status: data.status.present ? data.status.value : this.status,
-      mileage: data.mileage.present ? data.mileage.value : this.mileage,
-      gpsDeviceId:
-          data.gpsDeviceId.present ? data.gpsDeviceId.value : this.gpsDeviceId,
-      obdDeviceId:
-          data.obdDeviceId.present ? data.obdDeviceId.value : this.obdDeviceId,
-      isActive: data.isActive.present ? data.isActive.value : this.isActive,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('Vehicle(')
-          ..write('idVehicle: $idVehicle, ')
-          ..write('licensePlate: $licensePlate, ')
-          ..write('brand: $brand, ')
-          ..write('model: $model, ')
-          ..write('year: $year, ')
-          ..write('status: $status, ')
-          ..write('mileage: $mileage, ')
-          ..write('gpsDeviceId: $gpsDeviceId, ')
-          ..write('obdDeviceId: $obdDeviceId, ')
-          ..write('isActive: $isActive')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(
-    idVehicle,
-    licensePlate,
-    brand,
-    model,
-    year,
-    status,
-    mileage,
-    gpsDeviceId,
-    obdDeviceId,
-    isActive,
-  );
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is Vehicle &&
-          other.idVehicle == this.idVehicle &&
-          other.licensePlate == this.licensePlate &&
-          other.brand == this.brand &&
-          other.model == this.model &&
-          other.year == this.year &&
-          other.status == this.status &&
-          other.mileage == this.mileage &&
-          other.gpsDeviceId == this.gpsDeviceId &&
-          other.obdDeviceId == this.obdDeviceId &&
-          other.isActive == this.isActive);
-}
-
-class VehiclesCompanion extends UpdateCompanion<Vehicle> {
-  final Value<int> idVehicle;
-  final Value<String> licensePlate;
-  final Value<String> brand;
-  final Value<String?> model;
-  final Value<int?> year;
-  final Value<String> status;
-  final Value<int> mileage;
-  final Value<int?> gpsDeviceId;
-  final Value<int?> obdDeviceId;
-  final Value<bool> isActive;
-  const VehiclesCompanion({
-    this.idVehicle = const Value.absent(),
-    this.licensePlate = const Value.absent(),
-    this.brand = const Value.absent(),
-    this.model = const Value.absent(),
-    this.year = const Value.absent(),
-    this.status = const Value.absent(),
-    this.mileage = const Value.absent(),
-    this.gpsDeviceId = const Value.absent(),
-    this.obdDeviceId = const Value.absent(),
-    this.isActive = const Value.absent(),
-  });
-  VehiclesCompanion.insert({
-    this.idVehicle = const Value.absent(),
-    required String licensePlate,
-    required String brand,
-    this.model = const Value.absent(),
-    this.year = const Value.absent(),
-    this.status = const Value.absent(),
-    this.mileage = const Value.absent(),
-    this.gpsDeviceId = const Value.absent(),
-    this.obdDeviceId = const Value.absent(),
-    this.isActive = const Value.absent(),
-  }) : licensePlate = Value(licensePlate),
-       brand = Value(brand);
-  static Insertable<Vehicle> custom({
-    Expression<int>? idVehicle,
-    Expression<String>? licensePlate,
-    Expression<String>? brand,
-    Expression<String>? model,
-    Expression<int>? year,
-    Expression<String>? status,
-    Expression<int>? mileage,
-    Expression<int>? gpsDeviceId,
-    Expression<int>? obdDeviceId,
-    Expression<bool>? isActive,
-  }) {
-    return RawValuesInsertable({
-      if (idVehicle != null) 'id_vehicle': idVehicle,
-      if (licensePlate != null) 'license_plate': licensePlate,
-      if (brand != null) 'brand': brand,
-      if (model != null) 'model': model,
-      if (year != null) 'year': year,
-      if (status != null) 'status': status,
-      if (mileage != null) 'mileage': mileage,
-      if (gpsDeviceId != null) 'gps_device_id': gpsDeviceId,
-      if (obdDeviceId != null) 'obd_device_id': obdDeviceId,
-      if (isActive != null) 'is_active': isActive,
-    });
-  }
-
-  VehiclesCompanion copyWith({
-    Value<int>? idVehicle,
-    Value<String>? licensePlate,
-    Value<String>? brand,
-    Value<String?>? model,
-    Value<int?>? year,
-    Value<String>? status,
-    Value<int>? mileage,
-    Value<int?>? gpsDeviceId,
-    Value<int?>? obdDeviceId,
-    Value<bool>? isActive,
-  }) {
-    return VehiclesCompanion(
-      idVehicle: idVehicle ?? this.idVehicle,
-      licensePlate: licensePlate ?? this.licensePlate,
-      brand: brand ?? this.brand,
-      model: model ?? this.model,
-      year: year ?? this.year,
-      status: status ?? this.status,
-      mileage: mileage ?? this.mileage,
-      gpsDeviceId: gpsDeviceId ?? this.gpsDeviceId,
-      obdDeviceId: obdDeviceId ?? this.obdDeviceId,
-      isActive: isActive ?? this.isActive,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (idVehicle.present) {
-      map['id_vehicle'] = Variable<int>(idVehicle.value);
-    }
-    if (licensePlate.present) {
-      map['license_plate'] = Variable<String>(licensePlate.value);
-    }
-    if (brand.present) {
-      map['brand'] = Variable<String>(brand.value);
-    }
-    if (model.present) {
-      map['model'] = Variable<String>(model.value);
-    }
-    if (year.present) {
-      map['year'] = Variable<int>(year.value);
-    }
-    if (status.present) {
-      map['status'] = Variable<String>(status.value);
-    }
-    if (mileage.present) {
-      map['mileage'] = Variable<int>(mileage.value);
-    }
-    if (gpsDeviceId.present) {
-      map['gps_device_id'] = Variable<int>(gpsDeviceId.value);
-    }
-    if (obdDeviceId.present) {
-      map['obd_device_id'] = Variable<int>(obdDeviceId.value);
-    }
-    if (isActive.present) {
-      map['is_active'] = Variable<bool>(isActive.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('VehiclesCompanion(')
-          ..write('idVehicle: $idVehicle, ')
-          ..write('licensePlate: $licensePlate, ')
-          ..write('brand: $brand, ')
-          ..write('model: $model, ')
-          ..write('year: $year, ')
-          ..write('status: $status, ')
-          ..write('mileage: $mileage, ')
-          ..write('gpsDeviceId: $gpsDeviceId, ')
-          ..write('obdDeviceId: $obdDeviceId, ')
-          ..write('isActive: $isActive')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class $DriversTable extends Drivers with TableInfo<$DriversTable, Driver> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -1770,15 +1137,17 @@ class DriversCompanion extends UpdateCompanion<Driver> {
   }
 }
 
-class $StopsTable extends Stops with TableInfo<$StopsTable, Stop> {
+class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $StopsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idStopMeta = const VerificationMeta('idStop');
+  $VehiclesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idVehicleMeta = const VerificationMeta(
+    'idVehicle',
+  );
   @override
-  late final GeneratedColumn<int> idStop = GeneratedColumn<int>(
-    'id_stop',
+  late final GeneratedColumn<int> idVehicle = GeneratedColumn<int>(
+    'id_vehicle',
     aliasedName,
     false,
     hasAutoIncrement: true,
@@ -1788,40 +1157,118 @@ class $StopsTable extends Stops with TableInfo<$StopsTable, Stop> {
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
-  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  static const VerificationMeta _idDriverMeta = const VerificationMeta(
+    'idDriver',
+  );
   @override
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
-    'name',
+  late final GeneratedColumn<int> idDriver = GeneratedColumn<int>(
+    'id_driver',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'REFERENCES drivers(id_driver)',
+  );
+  static const VerificationMeta _licensePlateMeta = const VerificationMeta(
+    'licensePlate',
+  );
+  @override
+  late final GeneratedColumn<String> licensePlate = GeneratedColumn<String>(
+    'license_plate',
     aliasedName,
     false,
     additionalChecks: GeneratedColumn.checkTextLength(
       minTextLength: 1,
-      maxTextLength: 100,
+      maxTextLength: 10,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  );
+  static const VerificationMeta _brandMeta = const VerificationMeta('brand');
+  @override
+  late final GeneratedColumn<String> brand = GeneratedColumn<String>(
+    'brand',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 1,
+      maxTextLength: 50,
     ),
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _latitudeMeta = const VerificationMeta(
-    'latitude',
-  );
+  static const VerificationMeta _modelMeta = const VerificationMeta('model');
   @override
-  late final GeneratedColumn<double> latitude = GeneratedColumn<double>(
-    'latitude',
+  late final GeneratedColumn<String> model = GeneratedColumn<String>(
+    'model',
+    aliasedName,
+    true,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 1,
+      maxTextLength: 50,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _yearMeta = const VerificationMeta('year');
+  @override
+  late final GeneratedColumn<int> year = GeneratedColumn<int>(
+    'year',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
     aliasedName,
     false,
-    type: DriftSqlType.double,
-    requiredDuringInsert: true,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 1,
+      maxTextLength: 20,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('active'),
   );
-  static const VerificationMeta _longitudeMeta = const VerificationMeta(
-    'longitude',
+  static const VerificationMeta _mileageMeta = const VerificationMeta(
+    'mileage',
   );
   @override
-  late final GeneratedColumn<double> longitude = GeneratedColumn<double>(
-    'longitude',
+  late final GeneratedColumn<int> mileage = GeneratedColumn<int>(
+    'mileage',
     aliasedName,
     false,
-    type: DriftSqlType.double,
-    requiredDuringInsert: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _gpsDeviceIdMeta = const VerificationMeta(
+    'gpsDeviceId',
+  );
+  @override
+  late final GeneratedColumn<int> gpsDeviceId = GeneratedColumn<int>(
+    'gps_device_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL REFERENCES gps_devices(id_gps)',
+  );
+  static const VerificationMeta _obdDeviceIdMeta = const VerificationMeta(
+    'obdDeviceId',
+  );
+  @override
+  late final GeneratedColumn<int> obdDeviceId = GeneratedColumn<int>(
+    'obd_device_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL REFERENCES obd_devices(id_obd)',
   );
   static const VerificationMeta _isActiveMeta = const VerificationMeta(
     'isActive',
@@ -1840,53 +1287,104 @@ class $StopsTable extends Stops with TableInfo<$StopsTable, Stop> {
   );
   @override
   List<GeneratedColumn> get $columns => [
-    idStop,
-    name,
-    latitude,
-    longitude,
+    idVehicle,
+    idDriver,
+    licensePlate,
+    brand,
+    model,
+    year,
+    status,
+    mileage,
+    gpsDeviceId,
+    obdDeviceId,
     isActive,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'stops';
+  static const String $name = 'vehicles';
   @override
   VerificationContext validateIntegrity(
-    Insertable<Stop> instance, {
+    Insertable<Vehicle> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id_stop')) {
+    if (data.containsKey('id_vehicle')) {
       context.handle(
-        _idStopMeta,
-        idStop.isAcceptableOrUnknown(data['id_stop']!, _idStopMeta),
+        _idVehicleMeta,
+        idVehicle.isAcceptableOrUnknown(data['id_vehicle']!, _idVehicleMeta),
       );
     }
-    if (data.containsKey('name')) {
+    if (data.containsKey('id_driver')) {
       context.handle(
-        _nameMeta,
-        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+        _idDriverMeta,
+        idDriver.isAcceptableOrUnknown(data['id_driver']!, _idDriverMeta),
       );
     } else if (isInserting) {
-      context.missing(_nameMeta);
+      context.missing(_idDriverMeta);
     }
-    if (data.containsKey('latitude')) {
+    if (data.containsKey('license_plate')) {
       context.handle(
-        _latitudeMeta,
-        latitude.isAcceptableOrUnknown(data['latitude']!, _latitudeMeta),
+        _licensePlateMeta,
+        licensePlate.isAcceptableOrUnknown(
+          data['license_plate']!,
+          _licensePlateMeta,
+        ),
       );
     } else if (isInserting) {
-      context.missing(_latitudeMeta);
+      context.missing(_licensePlateMeta);
     }
-    if (data.containsKey('longitude')) {
+    if (data.containsKey('brand')) {
       context.handle(
-        _longitudeMeta,
-        longitude.isAcceptableOrUnknown(data['longitude']!, _longitudeMeta),
+        _brandMeta,
+        brand.isAcceptableOrUnknown(data['brand']!, _brandMeta),
       );
     } else if (isInserting) {
-      context.missing(_longitudeMeta);
+      context.missing(_brandMeta);
+    }
+    if (data.containsKey('model')) {
+      context.handle(
+        _modelMeta,
+        model.isAcceptableOrUnknown(data['model']!, _modelMeta),
+      );
+    }
+    if (data.containsKey('year')) {
+      context.handle(
+        _yearMeta,
+        year.isAcceptableOrUnknown(data['year']!, _yearMeta),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('mileage')) {
+      context.handle(
+        _mileageMeta,
+        mileage.isAcceptableOrUnknown(data['mileage']!, _mileageMeta),
+      );
+    }
+    if (data.containsKey('gps_device_id')) {
+      context.handle(
+        _gpsDeviceIdMeta,
+        gpsDeviceId.isAcceptableOrUnknown(
+          data['gps_device_id']!,
+          _gpsDeviceIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('obd_device_id')) {
+      context.handle(
+        _obdDeviceIdMeta,
+        obdDeviceId.isAcceptableOrUnknown(
+          data['obd_device_id']!,
+          _obdDeviceIdMeta,
+        ),
+      );
     }
     if (data.containsKey('is_active')) {
       context.handle(
@@ -1898,31 +1396,57 @@ class $StopsTable extends Stops with TableInfo<$StopsTable, Stop> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {idStop};
+  Set<GeneratedColumn> get $primaryKey => {idVehicle};
   @override
-  Stop map(Map<String, dynamic> data, {String? tablePrefix}) {
+  Vehicle map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Stop(
-      idStop:
+    return Vehicle(
+      idVehicle:
           attachedDatabase.typeMapping.read(
             DriftSqlType.int,
-            data['${effectivePrefix}id_stop'],
+            data['${effectivePrefix}id_vehicle'],
           )!,
-      name:
+      idDriver:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}id_driver'],
+          )!,
+      licensePlate:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
-            data['${effectivePrefix}name'],
+            data['${effectivePrefix}license_plate'],
           )!,
-      latitude:
+      brand:
           attachedDatabase.typeMapping.read(
-            DriftSqlType.double,
-            data['${effectivePrefix}latitude'],
+            DriftSqlType.string,
+            data['${effectivePrefix}brand'],
           )!,
-      longitude:
+      model: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}model'],
+      ),
+      year: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}year'],
+      ),
+      status:
           attachedDatabase.typeMapping.read(
-            DriftSqlType.double,
-            data['${effectivePrefix}longitude'],
+            DriftSqlType.string,
+            data['${effectivePrefix}status'],
           )!,
+      mileage:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}mileage'],
+          )!,
+      gpsDeviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}gps_device_id'],
+      ),
+      obdDeviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}obd_device_id'],
+      ),
       isActive:
           attachedDatabase.typeMapping.read(
             DriftSqlType.bool,
@@ -1932,55 +1456,100 @@ class $StopsTable extends Stops with TableInfo<$StopsTable, Stop> {
   }
 
   @override
-  $StopsTable createAlias(String alias) {
-    return $StopsTable(attachedDatabase, alias);
+  $VehiclesTable createAlias(String alias) {
+    return $VehiclesTable(attachedDatabase, alias);
   }
 }
 
-class Stop extends DataClass implements Insertable<Stop> {
-  final int idStop;
-  final String name;
-  final double latitude;
-  final double longitude;
+class Vehicle extends DataClass implements Insertable<Vehicle> {
+  final int idVehicle;
+  final int idDriver;
+  final String licensePlate;
+  final String brand;
+  final String? model;
+  final int? year;
+  final String status;
+  final int mileage;
+  final int? gpsDeviceId;
+  final int? obdDeviceId;
   final bool isActive;
-  const Stop({
-    required this.idStop,
-    required this.name,
-    required this.latitude,
-    required this.longitude,
+  const Vehicle({
+    required this.idVehicle,
+    required this.idDriver,
+    required this.licensePlate,
+    required this.brand,
+    this.model,
+    this.year,
+    required this.status,
+    required this.mileage,
+    this.gpsDeviceId,
+    this.obdDeviceId,
     required this.isActive,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id_stop'] = Variable<int>(idStop);
-    map['name'] = Variable<String>(name);
-    map['latitude'] = Variable<double>(latitude);
-    map['longitude'] = Variable<double>(longitude);
+    map['id_vehicle'] = Variable<int>(idVehicle);
+    map['id_driver'] = Variable<int>(idDriver);
+    map['license_plate'] = Variable<String>(licensePlate);
+    map['brand'] = Variable<String>(brand);
+    if (!nullToAbsent || model != null) {
+      map['model'] = Variable<String>(model);
+    }
+    if (!nullToAbsent || year != null) {
+      map['year'] = Variable<int>(year);
+    }
+    map['status'] = Variable<String>(status);
+    map['mileage'] = Variable<int>(mileage);
+    if (!nullToAbsent || gpsDeviceId != null) {
+      map['gps_device_id'] = Variable<int>(gpsDeviceId);
+    }
+    if (!nullToAbsent || obdDeviceId != null) {
+      map['obd_device_id'] = Variable<int>(obdDeviceId);
+    }
     map['is_active'] = Variable<bool>(isActive);
     return map;
   }
 
-  StopsCompanion toCompanion(bool nullToAbsent) {
-    return StopsCompanion(
-      idStop: Value(idStop),
-      name: Value(name),
-      latitude: Value(latitude),
-      longitude: Value(longitude),
+  VehiclesCompanion toCompanion(bool nullToAbsent) {
+    return VehiclesCompanion(
+      idVehicle: Value(idVehicle),
+      idDriver: Value(idDriver),
+      licensePlate: Value(licensePlate),
+      brand: Value(brand),
+      model:
+          model == null && nullToAbsent ? const Value.absent() : Value(model),
+      year: year == null && nullToAbsent ? const Value.absent() : Value(year),
+      status: Value(status),
+      mileage: Value(mileage),
+      gpsDeviceId:
+          gpsDeviceId == null && nullToAbsent
+              ? const Value.absent()
+              : Value(gpsDeviceId),
+      obdDeviceId:
+          obdDeviceId == null && nullToAbsent
+              ? const Value.absent()
+              : Value(obdDeviceId),
       isActive: Value(isActive),
     );
   }
 
-  factory Stop.fromJson(
+  factory Vehicle.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Stop(
-      idStop: serializer.fromJson<int>(json['idStop']),
-      name: serializer.fromJson<String>(json['name']),
-      latitude: serializer.fromJson<double>(json['latitude']),
-      longitude: serializer.fromJson<double>(json['longitude']),
+    return Vehicle(
+      idVehicle: serializer.fromJson<int>(json['idVehicle']),
+      idDriver: serializer.fromJson<int>(json['idDriver']),
+      licensePlate: serializer.fromJson<String>(json['licensePlate']),
+      brand: serializer.fromJson<String>(json['brand']),
+      model: serializer.fromJson<String?>(json['model']),
+      year: serializer.fromJson<int?>(json['year']),
+      status: serializer.fromJson<String>(json['status']),
+      mileage: serializer.fromJson<int>(json['mileage']),
+      gpsDeviceId: serializer.fromJson<int?>(json['gpsDeviceId']),
+      obdDeviceId: serializer.fromJson<int?>(json['obdDeviceId']),
       isActive: serializer.fromJson<bool>(json['isActive']),
     );
   }
@@ -1988,112 +1557,207 @@ class Stop extends DataClass implements Insertable<Stop> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'idStop': serializer.toJson<int>(idStop),
-      'name': serializer.toJson<String>(name),
-      'latitude': serializer.toJson<double>(latitude),
-      'longitude': serializer.toJson<double>(longitude),
+      'idVehicle': serializer.toJson<int>(idVehicle),
+      'idDriver': serializer.toJson<int>(idDriver),
+      'licensePlate': serializer.toJson<String>(licensePlate),
+      'brand': serializer.toJson<String>(brand),
+      'model': serializer.toJson<String?>(model),
+      'year': serializer.toJson<int?>(year),
+      'status': serializer.toJson<String>(status),
+      'mileage': serializer.toJson<int>(mileage),
+      'gpsDeviceId': serializer.toJson<int?>(gpsDeviceId),
+      'obdDeviceId': serializer.toJson<int?>(obdDeviceId),
       'isActive': serializer.toJson<bool>(isActive),
     };
   }
 
-  Stop copyWith({
-    int? idStop,
-    String? name,
-    double? latitude,
-    double? longitude,
+  Vehicle copyWith({
+    int? idVehicle,
+    int? idDriver,
+    String? licensePlate,
+    String? brand,
+    Value<String?> model = const Value.absent(),
+    Value<int?> year = const Value.absent(),
+    String? status,
+    int? mileage,
+    Value<int?> gpsDeviceId = const Value.absent(),
+    Value<int?> obdDeviceId = const Value.absent(),
     bool? isActive,
-  }) => Stop(
-    idStop: idStop ?? this.idStop,
-    name: name ?? this.name,
-    latitude: latitude ?? this.latitude,
-    longitude: longitude ?? this.longitude,
+  }) => Vehicle(
+    idVehicle: idVehicle ?? this.idVehicle,
+    idDriver: idDriver ?? this.idDriver,
+    licensePlate: licensePlate ?? this.licensePlate,
+    brand: brand ?? this.brand,
+    model: model.present ? model.value : this.model,
+    year: year.present ? year.value : this.year,
+    status: status ?? this.status,
+    mileage: mileage ?? this.mileage,
+    gpsDeviceId: gpsDeviceId.present ? gpsDeviceId.value : this.gpsDeviceId,
+    obdDeviceId: obdDeviceId.present ? obdDeviceId.value : this.obdDeviceId,
     isActive: isActive ?? this.isActive,
   );
-  Stop copyWithCompanion(StopsCompanion data) {
-    return Stop(
-      idStop: data.idStop.present ? data.idStop.value : this.idStop,
-      name: data.name.present ? data.name.value : this.name,
-      latitude: data.latitude.present ? data.latitude.value : this.latitude,
-      longitude: data.longitude.present ? data.longitude.value : this.longitude,
+  Vehicle copyWithCompanion(VehiclesCompanion data) {
+    return Vehicle(
+      idVehicle: data.idVehicle.present ? data.idVehicle.value : this.idVehicle,
+      idDriver: data.idDriver.present ? data.idDriver.value : this.idDriver,
+      licensePlate:
+          data.licensePlate.present
+              ? data.licensePlate.value
+              : this.licensePlate,
+      brand: data.brand.present ? data.brand.value : this.brand,
+      model: data.model.present ? data.model.value : this.model,
+      year: data.year.present ? data.year.value : this.year,
+      status: data.status.present ? data.status.value : this.status,
+      mileage: data.mileage.present ? data.mileage.value : this.mileage,
+      gpsDeviceId:
+          data.gpsDeviceId.present ? data.gpsDeviceId.value : this.gpsDeviceId,
+      obdDeviceId:
+          data.obdDeviceId.present ? data.obdDeviceId.value : this.obdDeviceId,
       isActive: data.isActive.present ? data.isActive.value : this.isActive,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('Stop(')
-          ..write('idStop: $idStop, ')
-          ..write('name: $name, ')
-          ..write('latitude: $latitude, ')
-          ..write('longitude: $longitude, ')
+    return (StringBuffer('Vehicle(')
+          ..write('idVehicle: $idVehicle, ')
+          ..write('idDriver: $idDriver, ')
+          ..write('licensePlate: $licensePlate, ')
+          ..write('brand: $brand, ')
+          ..write('model: $model, ')
+          ..write('year: $year, ')
+          ..write('status: $status, ')
+          ..write('mileage: $mileage, ')
+          ..write('gpsDeviceId: $gpsDeviceId, ')
+          ..write('obdDeviceId: $obdDeviceId, ')
           ..write('isActive: $isActive')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(idStop, name, latitude, longitude, isActive);
+  int get hashCode => Object.hash(
+    idVehicle,
+    idDriver,
+    licensePlate,
+    brand,
+    model,
+    year,
+    status,
+    mileage,
+    gpsDeviceId,
+    obdDeviceId,
+    isActive,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Stop &&
-          other.idStop == this.idStop &&
-          other.name == this.name &&
-          other.latitude == this.latitude &&
-          other.longitude == this.longitude &&
+      (other is Vehicle &&
+          other.idVehicle == this.idVehicle &&
+          other.idDriver == this.idDriver &&
+          other.licensePlate == this.licensePlate &&
+          other.brand == this.brand &&
+          other.model == this.model &&
+          other.year == this.year &&
+          other.status == this.status &&
+          other.mileage == this.mileage &&
+          other.gpsDeviceId == this.gpsDeviceId &&
+          other.obdDeviceId == this.obdDeviceId &&
           other.isActive == this.isActive);
 }
 
-class StopsCompanion extends UpdateCompanion<Stop> {
-  final Value<int> idStop;
-  final Value<String> name;
-  final Value<double> latitude;
-  final Value<double> longitude;
+class VehiclesCompanion extends UpdateCompanion<Vehicle> {
+  final Value<int> idVehicle;
+  final Value<int> idDriver;
+  final Value<String> licensePlate;
+  final Value<String> brand;
+  final Value<String?> model;
+  final Value<int?> year;
+  final Value<String> status;
+  final Value<int> mileage;
+  final Value<int?> gpsDeviceId;
+  final Value<int?> obdDeviceId;
   final Value<bool> isActive;
-  const StopsCompanion({
-    this.idStop = const Value.absent(),
-    this.name = const Value.absent(),
-    this.latitude = const Value.absent(),
-    this.longitude = const Value.absent(),
+  const VehiclesCompanion({
+    this.idVehicle = const Value.absent(),
+    this.idDriver = const Value.absent(),
+    this.licensePlate = const Value.absent(),
+    this.brand = const Value.absent(),
+    this.model = const Value.absent(),
+    this.year = const Value.absent(),
+    this.status = const Value.absent(),
+    this.mileage = const Value.absent(),
+    this.gpsDeviceId = const Value.absent(),
+    this.obdDeviceId = const Value.absent(),
     this.isActive = const Value.absent(),
   });
-  StopsCompanion.insert({
-    this.idStop = const Value.absent(),
-    required String name,
-    required double latitude,
-    required double longitude,
+  VehiclesCompanion.insert({
+    this.idVehicle = const Value.absent(),
+    required int idDriver,
+    required String licensePlate,
+    required String brand,
+    this.model = const Value.absent(),
+    this.year = const Value.absent(),
+    this.status = const Value.absent(),
+    this.mileage = const Value.absent(),
+    this.gpsDeviceId = const Value.absent(),
+    this.obdDeviceId = const Value.absent(),
     this.isActive = const Value.absent(),
-  }) : name = Value(name),
-       latitude = Value(latitude),
-       longitude = Value(longitude);
-  static Insertable<Stop> custom({
-    Expression<int>? idStop,
-    Expression<String>? name,
-    Expression<double>? latitude,
-    Expression<double>? longitude,
+  }) : idDriver = Value(idDriver),
+       licensePlate = Value(licensePlate),
+       brand = Value(brand);
+  static Insertable<Vehicle> custom({
+    Expression<int>? idVehicle,
+    Expression<int>? idDriver,
+    Expression<String>? licensePlate,
+    Expression<String>? brand,
+    Expression<String>? model,
+    Expression<int>? year,
+    Expression<String>? status,
+    Expression<int>? mileage,
+    Expression<int>? gpsDeviceId,
+    Expression<int>? obdDeviceId,
     Expression<bool>? isActive,
   }) {
     return RawValuesInsertable({
-      if (idStop != null) 'id_stop': idStop,
-      if (name != null) 'name': name,
-      if (latitude != null) 'latitude': latitude,
-      if (longitude != null) 'longitude': longitude,
+      if (idVehicle != null) 'id_vehicle': idVehicle,
+      if (idDriver != null) 'id_driver': idDriver,
+      if (licensePlate != null) 'license_plate': licensePlate,
+      if (brand != null) 'brand': brand,
+      if (model != null) 'model': model,
+      if (year != null) 'year': year,
+      if (status != null) 'status': status,
+      if (mileage != null) 'mileage': mileage,
+      if (gpsDeviceId != null) 'gps_device_id': gpsDeviceId,
+      if (obdDeviceId != null) 'obd_device_id': obdDeviceId,
       if (isActive != null) 'is_active': isActive,
     });
   }
 
-  StopsCompanion copyWith({
-    Value<int>? idStop,
-    Value<String>? name,
-    Value<double>? latitude,
-    Value<double>? longitude,
+  VehiclesCompanion copyWith({
+    Value<int>? idVehicle,
+    Value<int>? idDriver,
+    Value<String>? licensePlate,
+    Value<String>? brand,
+    Value<String?>? model,
+    Value<int?>? year,
+    Value<String>? status,
+    Value<int>? mileage,
+    Value<int?>? gpsDeviceId,
+    Value<int?>? obdDeviceId,
     Value<bool>? isActive,
   }) {
-    return StopsCompanion(
-      idStop: idStop ?? this.idStop,
-      name: name ?? this.name,
-      latitude: latitude ?? this.latitude,
-      longitude: longitude ?? this.longitude,
+    return VehiclesCompanion(
+      idVehicle: idVehicle ?? this.idVehicle,
+      idDriver: idDriver ?? this.idDriver,
+      licensePlate: licensePlate ?? this.licensePlate,
+      brand: brand ?? this.brand,
+      model: model ?? this.model,
+      year: year ?? this.year,
+      status: status ?? this.status,
+      mileage: mileage ?? this.mileage,
+      gpsDeviceId: gpsDeviceId ?? this.gpsDeviceId,
+      obdDeviceId: obdDeviceId ?? this.obdDeviceId,
       isActive: isActive ?? this.isActive,
     );
   }
@@ -2101,17 +1765,35 @@ class StopsCompanion extends UpdateCompanion<Stop> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (idStop.present) {
-      map['id_stop'] = Variable<int>(idStop.value);
+    if (idVehicle.present) {
+      map['id_vehicle'] = Variable<int>(idVehicle.value);
     }
-    if (name.present) {
-      map['name'] = Variable<String>(name.value);
+    if (idDriver.present) {
+      map['id_driver'] = Variable<int>(idDriver.value);
     }
-    if (latitude.present) {
-      map['latitude'] = Variable<double>(latitude.value);
+    if (licensePlate.present) {
+      map['license_plate'] = Variable<String>(licensePlate.value);
     }
-    if (longitude.present) {
-      map['longitude'] = Variable<double>(longitude.value);
+    if (brand.present) {
+      map['brand'] = Variable<String>(brand.value);
+    }
+    if (model.present) {
+      map['model'] = Variable<String>(model.value);
+    }
+    if (year.present) {
+      map['year'] = Variable<int>(year.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (mileage.present) {
+      map['mileage'] = Variable<int>(mileage.value);
+    }
+    if (gpsDeviceId.present) {
+      map['gps_device_id'] = Variable<int>(gpsDeviceId.value);
+    }
+    if (obdDeviceId.present) {
+      map['obd_device_id'] = Variable<int>(obdDeviceId.value);
     }
     if (isActive.present) {
       map['is_active'] = Variable<bool>(isActive.value);
@@ -2121,11 +1803,17 @@ class StopsCompanion extends UpdateCompanion<Stop> {
 
   @override
   String toString() {
-    return (StringBuffer('StopsCompanion(')
-          ..write('idStop: $idStop, ')
-          ..write('name: $name, ')
-          ..write('latitude: $latitude, ')
-          ..write('longitude: $longitude, ')
+    return (StringBuffer('VehiclesCompanion(')
+          ..write('idVehicle: $idVehicle, ')
+          ..write('idDriver: $idDriver, ')
+          ..write('licensePlate: $licensePlate, ')
+          ..write('brand: $brand, ')
+          ..write('model: $model, ')
+          ..write('year: $year, ')
+          ..write('status: $status, ')
+          ..write('mileage: $mileage, ')
+          ..write('gpsDeviceId: $gpsDeviceId, ')
+          ..write('obdDeviceId: $obdDeviceId, ')
           ..write('isActive: $isActive')
           ..write(')'))
         .toString();
@@ -2388,12 +2076,24 @@ class RoutesCompanion extends UpdateCompanion<Route> {
   }
 }
 
-class $RouteStopsTable extends RouteStops
-    with TableInfo<$RouteStopsTable, RouteStop> {
+class $StopsTable extends Stops with TableInfo<$StopsTable, Stop> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $RouteStopsTable(this.attachedDatabase, [this._alias]);
+  $StopsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idStopMeta = const VerificationMeta('idStop');
+  @override
+  late final GeneratedColumn<int> idStop = GeneratedColumn<int>(
+    'id_stop',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
   static const VerificationMeta _idRouteMeta = const VerificationMeta(
     'idRoute',
   );
@@ -2406,39 +2106,69 @@ class $RouteStopsTable extends RouteStops
     requiredDuringInsert: true,
     $customConstraints: 'REFERENCES routes(id_route)',
   );
-  static const VerificationMeta _idStopMeta = const VerificationMeta('idStop');
-  @override
-  late final GeneratedColumn<int> idStop = GeneratedColumn<int>(
-    'id_stop',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-    $customConstraints: 'REFERENCES stops(id_stop)',
-  );
-  static const VerificationMeta _orderMeta = const VerificationMeta('order');
-  @override
-  late final GeneratedColumn<int> order = GeneratedColumn<int>(
-    'order',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
+  static const VerificationMeta _latitudeMeta = const VerificationMeta(
+    'latitude',
   );
   @override
-  List<GeneratedColumn> get $columns => [idRoute, idStop, order];
+  late final GeneratedColumn<double> latitude = GeneratedColumn<double>(
+    'latitude',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _longitudeMeta = const VerificationMeta(
+    'longitude',
+  );
+  @override
+  late final GeneratedColumn<double> longitude = GeneratedColumn<double>(
+    'longitude',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _isActiveMeta = const VerificationMeta(
+    'isActive',
+  );
+  @override
+  late final GeneratedColumn<bool> isActive = GeneratedColumn<bool>(
+    'is_active',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_active" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    idStop,
+    idRoute,
+    latitude,
+    longitude,
+    isActive,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'route_stops';
+  static const String $name = 'stops';
   @override
   VerificationContext validateIntegrity(
-    Insertable<RouteStop> instance, {
+    Insertable<Stop> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
+    if (data.containsKey('id_stop')) {
+      context.handle(
+        _idStopMeta,
+        idStop.isAcceptableOrUnknown(data['id_stop']!, _idStopMeta),
+      );
+    }
     if (data.containsKey('id_route')) {
       context.handle(
         _idRouteMeta,
@@ -2447,208 +2177,635 @@ class $RouteStopsTable extends RouteStops
     } else if (isInserting) {
       context.missing(_idRouteMeta);
     }
-    if (data.containsKey('id_stop')) {
+    if (data.containsKey('latitude')) {
       context.handle(
-        _idStopMeta,
-        idStop.isAcceptableOrUnknown(data['id_stop']!, _idStopMeta),
+        _latitudeMeta,
+        latitude.isAcceptableOrUnknown(data['latitude']!, _latitudeMeta),
       );
     } else if (isInserting) {
-      context.missing(_idStopMeta);
+      context.missing(_latitudeMeta);
     }
-    if (data.containsKey('order')) {
+    if (data.containsKey('longitude')) {
       context.handle(
-        _orderMeta,
-        order.isAcceptableOrUnknown(data['order']!, _orderMeta),
+        _longitudeMeta,
+        longitude.isAcceptableOrUnknown(data['longitude']!, _longitudeMeta),
       );
     } else if (isInserting) {
-      context.missing(_orderMeta);
+      context.missing(_longitudeMeta);
+    }
+    if (data.containsKey('is_active')) {
+      context.handle(
+        _isActiveMeta,
+        isActive.isAcceptableOrUnknown(data['is_active']!, _isActiveMeta),
+      );
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {idRoute, order};
+  Set<GeneratedColumn> get $primaryKey => {idStop};
   @override
-  RouteStop map(Map<String, dynamic> data, {String? tablePrefix}) {
+  Stop map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return RouteStop(
-      idRoute:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}id_route'],
-          )!,
+    return Stop(
       idStop:
           attachedDatabase.typeMapping.read(
             DriftSqlType.int,
             data['${effectivePrefix}id_stop'],
           )!,
-      order:
+      idRoute:
           attachedDatabase.typeMapping.read(
             DriftSqlType.int,
-            data['${effectivePrefix}order'],
+            data['${effectivePrefix}id_route'],
+          )!,
+      latitude:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.double,
+            data['${effectivePrefix}latitude'],
+          )!,
+      longitude:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.double,
+            data['${effectivePrefix}longitude'],
+          )!,
+      isActive:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.bool,
+            data['${effectivePrefix}is_active'],
           )!,
     );
   }
 
   @override
-  $RouteStopsTable createAlias(String alias) {
-    return $RouteStopsTable(attachedDatabase, alias);
+  $StopsTable createAlias(String alias) {
+    return $StopsTable(attachedDatabase, alias);
   }
 }
 
-class RouteStop extends DataClass implements Insertable<RouteStop> {
-  final int idRoute;
+class Stop extends DataClass implements Insertable<Stop> {
   final int idStop;
-  final int order;
-  const RouteStop({
-    required this.idRoute,
+  final int idRoute;
+  final double latitude;
+  final double longitude;
+  final bool isActive;
+  const Stop({
     required this.idStop,
-    required this.order,
+    required this.idRoute,
+    required this.latitude,
+    required this.longitude,
+    required this.isActive,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id_route'] = Variable<int>(idRoute);
     map['id_stop'] = Variable<int>(idStop);
-    map['order'] = Variable<int>(order);
+    map['id_route'] = Variable<int>(idRoute);
+    map['latitude'] = Variable<double>(latitude);
+    map['longitude'] = Variable<double>(longitude);
+    map['is_active'] = Variable<bool>(isActive);
     return map;
   }
 
-  RouteStopsCompanion toCompanion(bool nullToAbsent) {
-    return RouteStopsCompanion(
-      idRoute: Value(idRoute),
+  StopsCompanion toCompanion(bool nullToAbsent) {
+    return StopsCompanion(
       idStop: Value(idStop),
-      order: Value(order),
+      idRoute: Value(idRoute),
+      latitude: Value(latitude),
+      longitude: Value(longitude),
+      isActive: Value(isActive),
     );
   }
 
-  factory RouteStop.fromJson(
+  factory Stop.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return RouteStop(
-      idRoute: serializer.fromJson<int>(json['idRoute']),
+    return Stop(
       idStop: serializer.fromJson<int>(json['idStop']),
-      order: serializer.fromJson<int>(json['order']),
+      idRoute: serializer.fromJson<int>(json['idRoute']),
+      latitude: serializer.fromJson<double>(json['latitude']),
+      longitude: serializer.fromJson<double>(json['longitude']),
+      isActive: serializer.fromJson<bool>(json['isActive']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'idRoute': serializer.toJson<int>(idRoute),
       'idStop': serializer.toJson<int>(idStop),
-      'order': serializer.toJson<int>(order),
+      'idRoute': serializer.toJson<int>(idRoute),
+      'latitude': serializer.toJson<double>(latitude),
+      'longitude': serializer.toJson<double>(longitude),
+      'isActive': serializer.toJson<bool>(isActive),
     };
   }
 
-  RouteStop copyWith({int? idRoute, int? idStop, int? order}) => RouteStop(
-    idRoute: idRoute ?? this.idRoute,
+  Stop copyWith({
+    int? idStop,
+    int? idRoute,
+    double? latitude,
+    double? longitude,
+    bool? isActive,
+  }) => Stop(
     idStop: idStop ?? this.idStop,
-    order: order ?? this.order,
+    idRoute: idRoute ?? this.idRoute,
+    latitude: latitude ?? this.latitude,
+    longitude: longitude ?? this.longitude,
+    isActive: isActive ?? this.isActive,
   );
-  RouteStop copyWithCompanion(RouteStopsCompanion data) {
-    return RouteStop(
-      idRoute: data.idRoute.present ? data.idRoute.value : this.idRoute,
+  Stop copyWithCompanion(StopsCompanion data) {
+    return Stop(
       idStop: data.idStop.present ? data.idStop.value : this.idStop,
-      order: data.order.present ? data.order.value : this.order,
+      idRoute: data.idRoute.present ? data.idRoute.value : this.idRoute,
+      latitude: data.latitude.present ? data.latitude.value : this.latitude,
+      longitude: data.longitude.present ? data.longitude.value : this.longitude,
+      isActive: data.isActive.present ? data.isActive.value : this.isActive,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('RouteStop(')
-          ..write('idRoute: $idRoute, ')
+    return (StringBuffer('Stop(')
           ..write('idStop: $idStop, ')
-          ..write('order: $order')
+          ..write('idRoute: $idRoute, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude, ')
+          ..write('isActive: $isActive')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(idRoute, idStop, order);
+  int get hashCode =>
+      Object.hash(idStop, idRoute, latitude, longitude, isActive);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is RouteStop &&
-          other.idRoute == this.idRoute &&
+      (other is Stop &&
           other.idStop == this.idStop &&
-          other.order == this.order);
+          other.idRoute == this.idRoute &&
+          other.latitude == this.latitude &&
+          other.longitude == this.longitude &&
+          other.isActive == this.isActive);
 }
 
-class RouteStopsCompanion extends UpdateCompanion<RouteStop> {
-  final Value<int> idRoute;
+class StopsCompanion extends UpdateCompanion<Stop> {
   final Value<int> idStop;
-  final Value<int> order;
-  final Value<int> rowid;
-  const RouteStopsCompanion({
-    this.idRoute = const Value.absent(),
+  final Value<int> idRoute;
+  final Value<double> latitude;
+  final Value<double> longitude;
+  final Value<bool> isActive;
+  const StopsCompanion({
     this.idStop = const Value.absent(),
-    this.order = const Value.absent(),
-    this.rowid = const Value.absent(),
+    this.idRoute = const Value.absent(),
+    this.latitude = const Value.absent(),
+    this.longitude = const Value.absent(),
+    this.isActive = const Value.absent(),
   });
-  RouteStopsCompanion.insert({
+  StopsCompanion.insert({
+    this.idStop = const Value.absent(),
     required int idRoute,
-    required int idStop,
-    required int order,
-    this.rowid = const Value.absent(),
+    required double latitude,
+    required double longitude,
+    this.isActive = const Value.absent(),
   }) : idRoute = Value(idRoute),
-       idStop = Value(idStop),
-       order = Value(order);
-  static Insertable<RouteStop> custom({
-    Expression<int>? idRoute,
+       latitude = Value(latitude),
+       longitude = Value(longitude);
+  static Insertable<Stop> custom({
     Expression<int>? idStop,
-    Expression<int>? order,
-    Expression<int>? rowid,
+    Expression<int>? idRoute,
+    Expression<double>? latitude,
+    Expression<double>? longitude,
+    Expression<bool>? isActive,
   }) {
     return RawValuesInsertable({
-      if (idRoute != null) 'id_route': idRoute,
       if (idStop != null) 'id_stop': idStop,
-      if (order != null) 'order': order,
-      if (rowid != null) 'rowid': rowid,
+      if (idRoute != null) 'id_route': idRoute,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
+      if (isActive != null) 'is_active': isActive,
     });
   }
 
-  RouteStopsCompanion copyWith({
-    Value<int>? idRoute,
+  StopsCompanion copyWith({
     Value<int>? idStop,
-    Value<int>? order,
-    Value<int>? rowid,
+    Value<int>? idRoute,
+    Value<double>? latitude,
+    Value<double>? longitude,
+    Value<bool>? isActive,
   }) {
-    return RouteStopsCompanion(
-      idRoute: idRoute ?? this.idRoute,
+    return StopsCompanion(
       idStop: idStop ?? this.idStop,
-      order: order ?? this.order,
-      rowid: rowid ?? this.rowid,
+      idRoute: idRoute ?? this.idRoute,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      isActive: isActive ?? this.isActive,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (idRoute.present) {
-      map['id_route'] = Variable<int>(idRoute.value);
-    }
     if (idStop.present) {
       map['id_stop'] = Variable<int>(idStop.value);
     }
-    if (order.present) {
-      map['order'] = Variable<int>(order.value);
+    if (idRoute.present) {
+      map['id_route'] = Variable<int>(idRoute.value);
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
+    if (latitude.present) {
+      map['latitude'] = Variable<double>(latitude.value);
+    }
+    if (longitude.present) {
+      map['longitude'] = Variable<double>(longitude.value);
+    }
+    if (isActive.present) {
+      map['is_active'] = Variable<bool>(isActive.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('RouteStopsCompanion(')
-          ..write('idRoute: $idRoute, ')
+    return (StringBuffer('StopsCompanion(')
           ..write('idStop: $idStop, ')
-          ..write('order: $order, ')
-          ..write('rowid: $rowid')
+          ..write('idRoute: $idRoute, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude, ')
+          ..write('isActive: $isActive')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RouteAssignmentsTable extends RouteAssignments
+    with TableInfo<$RouteAssignmentsTable, RouteAssignment> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RouteAssignmentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idAssignmentMeta = const VerificationMeta(
+    'idAssignment',
+  );
+  @override
+  late final GeneratedColumn<int> idAssignment = GeneratedColumn<int>(
+    'id_assignment',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _idRouteMeta = const VerificationMeta(
+    'idRoute',
+  );
+  @override
+  late final GeneratedColumn<int> idRoute = GeneratedColumn<int>(
+    'id_route',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'REFERENCES routes(id_route)',
+  );
+  static const VerificationMeta _idVehicleMeta = const VerificationMeta(
+    'idVehicle',
+  );
+  @override
+  late final GeneratedColumn<int> idVehicle = GeneratedColumn<int>(
+    'id_vehicle',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'REFERENCES vehicles(id_vehicle)',
+  );
+  static const VerificationMeta _assignedAtMeta = const VerificationMeta(
+    'assignedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> assignedAt = GeneratedColumn<DateTime>(
+    'assigned_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _isActiveMeta = const VerificationMeta(
+    'isActive',
+  );
+  @override
+  late final GeneratedColumn<bool> isActive = GeneratedColumn<bool>(
+    'is_active',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_active" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    idAssignment,
+    idRoute,
+    idVehicle,
+    assignedAt,
+    isActive,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'route_assignments';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RouteAssignment> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id_assignment')) {
+      context.handle(
+        _idAssignmentMeta,
+        idAssignment.isAcceptableOrUnknown(
+          data['id_assignment']!,
+          _idAssignmentMeta,
+        ),
+      );
+    }
+    if (data.containsKey('id_route')) {
+      context.handle(
+        _idRouteMeta,
+        idRoute.isAcceptableOrUnknown(data['id_route']!, _idRouteMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_idRouteMeta);
+    }
+    if (data.containsKey('id_vehicle')) {
+      context.handle(
+        _idVehicleMeta,
+        idVehicle.isAcceptableOrUnknown(data['id_vehicle']!, _idVehicleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_idVehicleMeta);
+    }
+    if (data.containsKey('assigned_at')) {
+      context.handle(
+        _assignedAtMeta,
+        assignedAt.isAcceptableOrUnknown(data['assigned_at']!, _assignedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_assignedAtMeta);
+    }
+    if (data.containsKey('is_active')) {
+      context.handle(
+        _isActiveMeta,
+        isActive.isAcceptableOrUnknown(data['is_active']!, _isActiveMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {idAssignment};
+  @override
+  RouteAssignment map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RouteAssignment(
+      idAssignment:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}id_assignment'],
+          )!,
+      idRoute:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}id_route'],
+          )!,
+      idVehicle:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}id_vehicle'],
+          )!,
+      assignedAt:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.dateTime,
+            data['${effectivePrefix}assigned_at'],
+          )!,
+      isActive:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.bool,
+            data['${effectivePrefix}is_active'],
+          )!,
+    );
+  }
+
+  @override
+  $RouteAssignmentsTable createAlias(String alias) {
+    return $RouteAssignmentsTable(attachedDatabase, alias);
+  }
+}
+
+class RouteAssignment extends DataClass implements Insertable<RouteAssignment> {
+  final int idAssignment;
+  final int idRoute;
+  final int idVehicle;
+  final DateTime assignedAt;
+  final bool isActive;
+  const RouteAssignment({
+    required this.idAssignment,
+    required this.idRoute,
+    required this.idVehicle,
+    required this.assignedAt,
+    required this.isActive,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id_assignment'] = Variable<int>(idAssignment);
+    map['id_route'] = Variable<int>(idRoute);
+    map['id_vehicle'] = Variable<int>(idVehicle);
+    map['assigned_at'] = Variable<DateTime>(assignedAt);
+    map['is_active'] = Variable<bool>(isActive);
+    return map;
+  }
+
+  RouteAssignmentsCompanion toCompanion(bool nullToAbsent) {
+    return RouteAssignmentsCompanion(
+      idAssignment: Value(idAssignment),
+      idRoute: Value(idRoute),
+      idVehicle: Value(idVehicle),
+      assignedAt: Value(assignedAt),
+      isActive: Value(isActive),
+    );
+  }
+
+  factory RouteAssignment.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RouteAssignment(
+      idAssignment: serializer.fromJson<int>(json['idAssignment']),
+      idRoute: serializer.fromJson<int>(json['idRoute']),
+      idVehicle: serializer.fromJson<int>(json['idVehicle']),
+      assignedAt: serializer.fromJson<DateTime>(json['assignedAt']),
+      isActive: serializer.fromJson<bool>(json['isActive']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'idAssignment': serializer.toJson<int>(idAssignment),
+      'idRoute': serializer.toJson<int>(idRoute),
+      'idVehicle': serializer.toJson<int>(idVehicle),
+      'assignedAt': serializer.toJson<DateTime>(assignedAt),
+      'isActive': serializer.toJson<bool>(isActive),
+    };
+  }
+
+  RouteAssignment copyWith({
+    int? idAssignment,
+    int? idRoute,
+    int? idVehicle,
+    DateTime? assignedAt,
+    bool? isActive,
+  }) => RouteAssignment(
+    idAssignment: idAssignment ?? this.idAssignment,
+    idRoute: idRoute ?? this.idRoute,
+    idVehicle: idVehicle ?? this.idVehicle,
+    assignedAt: assignedAt ?? this.assignedAt,
+    isActive: isActive ?? this.isActive,
+  );
+  RouteAssignment copyWithCompanion(RouteAssignmentsCompanion data) {
+    return RouteAssignment(
+      idAssignment:
+          data.idAssignment.present
+              ? data.idAssignment.value
+              : this.idAssignment,
+      idRoute: data.idRoute.present ? data.idRoute.value : this.idRoute,
+      idVehicle: data.idVehicle.present ? data.idVehicle.value : this.idVehicle,
+      assignedAt:
+          data.assignedAt.present ? data.assignedAt.value : this.assignedAt,
+      isActive: data.isActive.present ? data.isActive.value : this.isActive,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RouteAssignment(')
+          ..write('idAssignment: $idAssignment, ')
+          ..write('idRoute: $idRoute, ')
+          ..write('idVehicle: $idVehicle, ')
+          ..write('assignedAt: $assignedAt, ')
+          ..write('isActive: $isActive')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(idAssignment, idRoute, idVehicle, assignedAt, isActive);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RouteAssignment &&
+          other.idAssignment == this.idAssignment &&
+          other.idRoute == this.idRoute &&
+          other.idVehicle == this.idVehicle &&
+          other.assignedAt == this.assignedAt &&
+          other.isActive == this.isActive);
+}
+
+class RouteAssignmentsCompanion extends UpdateCompanion<RouteAssignment> {
+  final Value<int> idAssignment;
+  final Value<int> idRoute;
+  final Value<int> idVehicle;
+  final Value<DateTime> assignedAt;
+  final Value<bool> isActive;
+  const RouteAssignmentsCompanion({
+    this.idAssignment = const Value.absent(),
+    this.idRoute = const Value.absent(),
+    this.idVehicle = const Value.absent(),
+    this.assignedAt = const Value.absent(),
+    this.isActive = const Value.absent(),
+  });
+  RouteAssignmentsCompanion.insert({
+    this.idAssignment = const Value.absent(),
+    required int idRoute,
+    required int idVehicle,
+    required DateTime assignedAt,
+    this.isActive = const Value.absent(),
+  }) : idRoute = Value(idRoute),
+       idVehicle = Value(idVehicle),
+       assignedAt = Value(assignedAt);
+  static Insertable<RouteAssignment> custom({
+    Expression<int>? idAssignment,
+    Expression<int>? idRoute,
+    Expression<int>? idVehicle,
+    Expression<DateTime>? assignedAt,
+    Expression<bool>? isActive,
+  }) {
+    return RawValuesInsertable({
+      if (idAssignment != null) 'id_assignment': idAssignment,
+      if (idRoute != null) 'id_route': idRoute,
+      if (idVehicle != null) 'id_vehicle': idVehicle,
+      if (assignedAt != null) 'assigned_at': assignedAt,
+      if (isActive != null) 'is_active': isActive,
+    });
+  }
+
+  RouteAssignmentsCompanion copyWith({
+    Value<int>? idAssignment,
+    Value<int>? idRoute,
+    Value<int>? idVehicle,
+    Value<DateTime>? assignedAt,
+    Value<bool>? isActive,
+  }) {
+    return RouteAssignmentsCompanion(
+      idAssignment: idAssignment ?? this.idAssignment,
+      idRoute: idRoute ?? this.idRoute,
+      idVehicle: idVehicle ?? this.idVehicle,
+      assignedAt: assignedAt ?? this.assignedAt,
+      isActive: isActive ?? this.isActive,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (idAssignment.present) {
+      map['id_assignment'] = Variable<int>(idAssignment.value);
+    }
+    if (idRoute.present) {
+      map['id_route'] = Variable<int>(idRoute.value);
+    }
+    if (idVehicle.present) {
+      map['id_vehicle'] = Variable<int>(idVehicle.value);
+    }
+    if (assignedAt.present) {
+      map['assigned_at'] = Variable<DateTime>(assignedAt.value);
+    }
+    if (isActive.present) {
+      map['is_active'] = Variable<bool>(isActive.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RouteAssignmentsCompanion(')
+          ..write('idAssignment: $idAssignment, ')
+          ..write('idRoute: $idRoute, ')
+          ..write('idVehicle: $idVehicle, ')
+          ..write('assignedAt: $assignedAt, ')
+          ..write('isActive: $isActive')
           ..write(')'))
         .toString();
   }
@@ -3470,11 +3627,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $GpsDevicesTable gpsDevices = $GpsDevicesTable(this);
   late final $ObdDevicesTable obdDevices = $ObdDevicesTable(this);
-  late final $VehiclesTable vehicles = $VehiclesTable(this);
   late final $DriversTable drivers = $DriversTable(this);
-  late final $StopsTable stops = $StopsTable(this);
+  late final $VehiclesTable vehicles = $VehiclesTable(this);
   late final $RoutesTable routes = $RoutesTable(this);
-  late final $RouteStopsTable routeStops = $RouteStopsTable(this);
+  late final $StopsTable stops = $StopsTable(this);
+  late final $RouteAssignmentsTable routeAssignments = $RouteAssignmentsTable(
+    this,
+  );
   late final $MaintenancesTable maintenances = $MaintenancesTable(this);
   late final $MaintenanceDetailsTable maintenanceDetails =
       $MaintenanceDetailsTable(this);
@@ -3496,11 +3655,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     gpsDevices,
     obdDevices,
-    vehicles,
     drivers,
-    stops,
+    vehicles,
     routes,
-    routeStops,
+    stops,
+    routeAssignments,
     maintenances,
     maintenanceDetails,
   ];
@@ -4120,9 +4279,306 @@ typedef $$ObdDevicesTableProcessedTableManager =
       ObdDevice,
       PrefetchHooks Function({bool vehiclesRefs})
     >;
+typedef $$DriversTableCreateCompanionBuilder =
+    DriversCompanion Function({
+      Value<int> idDriver,
+      required String firstName,
+      required String lastName,
+      required String idNumber,
+      Value<bool> isActive,
+    });
+typedef $$DriversTableUpdateCompanionBuilder =
+    DriversCompanion Function({
+      Value<int> idDriver,
+      Value<String> firstName,
+      Value<String> lastName,
+      Value<String> idNumber,
+      Value<bool> isActive,
+    });
+
+final class $$DriversTableReferences
+    extends BaseReferences<_$AppDatabase, $DriversTable, Driver> {
+  $$DriversTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$VehiclesTable, List<Vehicle>> _vehiclesRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.vehicles,
+    aliasName: $_aliasNameGenerator(db.drivers.idDriver, db.vehicles.idDriver),
+  );
+
+  $$VehiclesTableProcessedTableManager get vehiclesRefs {
+    final manager = $$VehiclesTableTableManager($_db, $_db.vehicles).filter(
+      (f) => f.idDriver.idDriver.sqlEquals($_itemColumn<int>('id_driver')!),
+    );
+
+    final cache = $_typedResult.readTableOrNull(_vehiclesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$DriversTableFilterComposer
+    extends Composer<_$AppDatabase, $DriversTable> {
+  $$DriversTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get idDriver => $composableBuilder(
+    column: $table.idDriver,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get firstName => $composableBuilder(
+    column: $table.firstName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastName => $composableBuilder(
+    column: $table.lastName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get idNumber => $composableBuilder(
+    column: $table.idNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isActive => $composableBuilder(
+    column: $table.isActive,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  Expression<bool> vehiclesRefs(
+    Expression<bool> Function($$VehiclesTableFilterComposer f) f,
+  ) {
+    final $$VehiclesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.idDriver,
+      referencedTable: $db.vehicles,
+      getReferencedColumn: (t) => t.idDriver,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$VehiclesTableFilterComposer(
+            $db: $db,
+            $table: $db.vehicles,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$DriversTableOrderingComposer
+    extends Composer<_$AppDatabase, $DriversTable> {
+  $$DriversTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get idDriver => $composableBuilder(
+    column: $table.idDriver,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get firstName => $composableBuilder(
+    column: $table.firstName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastName => $composableBuilder(
+    column: $table.lastName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get idNumber => $composableBuilder(
+    column: $table.idNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isActive => $composableBuilder(
+    column: $table.isActive,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$DriversTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DriversTable> {
+  $$DriversTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get idDriver =>
+      $composableBuilder(column: $table.idDriver, builder: (column) => column);
+
+  GeneratedColumn<String> get firstName =>
+      $composableBuilder(column: $table.firstName, builder: (column) => column);
+
+  GeneratedColumn<String> get lastName =>
+      $composableBuilder(column: $table.lastName, builder: (column) => column);
+
+  GeneratedColumn<String> get idNumber =>
+      $composableBuilder(column: $table.idNumber, builder: (column) => column);
+
+  GeneratedColumn<bool> get isActive =>
+      $composableBuilder(column: $table.isActive, builder: (column) => column);
+
+  Expression<T> vehiclesRefs<T extends Object>(
+    Expression<T> Function($$VehiclesTableAnnotationComposer a) f,
+  ) {
+    final $$VehiclesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.idDriver,
+      referencedTable: $db.vehicles,
+      getReferencedColumn: (t) => t.idDriver,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$VehiclesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.vehicles,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$DriversTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DriversTable,
+          Driver,
+          $$DriversTableFilterComposer,
+          $$DriversTableOrderingComposer,
+          $$DriversTableAnnotationComposer,
+          $$DriversTableCreateCompanionBuilder,
+          $$DriversTableUpdateCompanionBuilder,
+          (Driver, $$DriversTableReferences),
+          Driver,
+          PrefetchHooks Function({bool vehiclesRefs})
+        > {
+  $$DriversTableTableManager(_$AppDatabase db, $DriversTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer:
+              () => $$DriversTableFilterComposer($db: db, $table: table),
+          createOrderingComposer:
+              () => $$DriversTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer:
+              () => $$DriversTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> idDriver = const Value.absent(),
+                Value<String> firstName = const Value.absent(),
+                Value<String> lastName = const Value.absent(),
+                Value<String> idNumber = const Value.absent(),
+                Value<bool> isActive = const Value.absent(),
+              }) => DriversCompanion(
+                idDriver: idDriver,
+                firstName: firstName,
+                lastName: lastName,
+                idNumber: idNumber,
+                isActive: isActive,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> idDriver = const Value.absent(),
+                required String firstName,
+                required String lastName,
+                required String idNumber,
+                Value<bool> isActive = const Value.absent(),
+              }) => DriversCompanion.insert(
+                idDriver: idDriver,
+                firstName: firstName,
+                lastName: lastName,
+                idNumber: idNumber,
+                isActive: isActive,
+              ),
+          withReferenceMapper:
+              (p0) =>
+                  p0
+                      .map(
+                        (e) => (
+                          e.readTable(table),
+                          $$DriversTableReferences(db, table, e),
+                        ),
+                      )
+                      .toList(),
+          prefetchHooksCallback: ({vehiclesRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (vehiclesRefs) db.vehicles],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (vehiclesRefs)
+                    await $_getPrefetchedData<Driver, $DriversTable, Vehicle>(
+                      currentTable: table,
+                      referencedTable: $$DriversTableReferences
+                          ._vehiclesRefsTable(db),
+                      managerFromTypedResult:
+                          (p0) =>
+                              $$DriversTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).vehiclesRefs,
+                      referencedItemsForCurrentItem:
+                          (item, referencedItems) => referencedItems.where(
+                            (e) => e.idDriver == item.idDriver,
+                          ),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$DriversTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DriversTable,
+      Driver,
+      $$DriversTableFilterComposer,
+      $$DriversTableOrderingComposer,
+      $$DriversTableAnnotationComposer,
+      $$DriversTableCreateCompanionBuilder,
+      $$DriversTableUpdateCompanionBuilder,
+      (Driver, $$DriversTableReferences),
+      Driver,
+      PrefetchHooks Function({bool vehiclesRefs})
+    >;
 typedef $$VehiclesTableCreateCompanionBuilder =
     VehiclesCompanion Function({
       Value<int> idVehicle,
+      required int idDriver,
       required String licensePlate,
       required String brand,
       Value<String?> model,
@@ -4136,6 +4592,7 @@ typedef $$VehiclesTableCreateCompanionBuilder =
 typedef $$VehiclesTableUpdateCompanionBuilder =
     VehiclesCompanion Function({
       Value<int> idVehicle,
+      Value<int> idDriver,
       Value<String> licensePlate,
       Value<String> brand,
       Value<String?> model,
@@ -4150,6 +4607,25 @@ typedef $$VehiclesTableUpdateCompanionBuilder =
 final class $$VehiclesTableReferences
     extends BaseReferences<_$AppDatabase, $VehiclesTable, Vehicle> {
   $$VehiclesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $DriversTable _idDriverTable(_$AppDatabase db) =>
+      db.drivers.createAlias(
+        $_aliasNameGenerator(db.vehicles.idDriver, db.drivers.idDriver),
+      );
+
+  $$DriversTableProcessedTableManager get idDriver {
+    final $_column = $_itemColumn<int>('id_driver')!;
+
+    final manager = $$DriversTableTableManager(
+      $_db,
+      $_db.drivers,
+    ).filter((f) => f.idDriver.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_idDriverTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
 
   static $GpsDevicesTable _gpsDeviceIdTable(_$AppDatabase db) =>
       db.gpsDevices.createAlias(
@@ -4186,6 +4662,31 @@ final class $$VehiclesTableReferences
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$RouteAssignmentsTable, List<RouteAssignment>>
+  _routeAssignmentsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.routeAssignments,
+    aliasName: $_aliasNameGenerator(
+      db.vehicles.idVehicle,
+      db.routeAssignments.idVehicle,
+    ),
+  );
+
+  $$RouteAssignmentsTableProcessedTableManager get routeAssignmentsRefs {
+    final manager = $$RouteAssignmentsTableTableManager(
+      $_db,
+      $_db.routeAssignments,
+    ).filter(
+      (f) => f.idVehicle.idVehicle.sqlEquals($_itemColumn<int>('id_vehicle')!),
+    );
+
+    final cache = $_typedResult.readTableOrNull(
+      _routeAssignmentsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
     );
   }
 
@@ -4262,6 +4763,29 @@ class $$VehiclesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  $$DriversTableFilterComposer get idDriver {
+    final $$DriversTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.idDriver,
+      referencedTable: $db.drivers,
+      getReferencedColumn: (t) => t.idDriver,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DriversTableFilterComposer(
+            $db: $db,
+            $table: $db.drivers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
   $$GpsDevicesTableFilterComposer get gpsDeviceId {
     final $$GpsDevicesTableFilterComposer composer = $composerBuilder(
       composer: this,
@@ -4306,6 +4830,31 @@ class $$VehiclesTableFilterComposer
           ),
     );
     return composer;
+  }
+
+  Expression<bool> routeAssignmentsRefs(
+    Expression<bool> Function($$RouteAssignmentsTableFilterComposer f) f,
+  ) {
+    final $$RouteAssignmentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.idVehicle,
+      referencedTable: $db.routeAssignments,
+      getReferencedColumn: (t) => t.idVehicle,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RouteAssignmentsTableFilterComposer(
+            $db: $db,
+            $table: $db.routeAssignments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
   }
 
   Expression<bool> maintenancesRefs(
@@ -4382,6 +4931,29 @@ class $$VehiclesTableOrderingComposer
     column: $table.isActive,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$DriversTableOrderingComposer get idDriver {
+    final $$DriversTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.idDriver,
+      referencedTable: $db.drivers,
+      getReferencedColumn: (t) => t.idDriver,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DriversTableOrderingComposer(
+            $db: $db,
+            $table: $db.drivers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 
   $$GpsDevicesTableOrderingComposer get gpsDeviceId {
     final $$GpsDevicesTableOrderingComposer composer = $composerBuilder(
@@ -4465,6 +5037,29 @@ class $$VehiclesTableAnnotationComposer
   GeneratedColumn<bool> get isActive =>
       $composableBuilder(column: $table.isActive, builder: (column) => column);
 
+  $$DriversTableAnnotationComposer get idDriver {
+    final $$DriversTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.idDriver,
+      referencedTable: $db.drivers,
+      getReferencedColumn: (t) => t.idDriver,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DriversTableAnnotationComposer(
+            $db: $db,
+            $table: $db.drivers,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
   $$GpsDevicesTableAnnotationComposer get gpsDeviceId {
     final $$GpsDevicesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
@@ -4511,6 +5106,31 @@ class $$VehiclesTableAnnotationComposer
     return composer;
   }
 
+  Expression<T> routeAssignmentsRefs<T extends Object>(
+    Expression<T> Function($$RouteAssignmentsTableAnnotationComposer a) f,
+  ) {
+    final $$RouteAssignmentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.idVehicle,
+      referencedTable: $db.routeAssignments,
+      getReferencedColumn: (t) => t.idVehicle,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RouteAssignmentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.routeAssignments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
   Expression<T> maintenancesRefs<T extends Object>(
     Expression<T> Function($$MaintenancesTableAnnotationComposer a) f,
   ) {
@@ -4551,8 +5171,10 @@ class $$VehiclesTableTableManager
           (Vehicle, $$VehiclesTableReferences),
           Vehicle,
           PrefetchHooks Function({
+            bool idDriver,
             bool gpsDeviceId,
             bool obdDeviceId,
+            bool routeAssignmentsRefs,
             bool maintenancesRefs,
           })
         > {
@@ -4570,6 +5192,7 @@ class $$VehiclesTableTableManager
           updateCompanionCallback:
               ({
                 Value<int> idVehicle = const Value.absent(),
+                Value<int> idDriver = const Value.absent(),
                 Value<String> licensePlate = const Value.absent(),
                 Value<String> brand = const Value.absent(),
                 Value<String?> model = const Value.absent(),
@@ -4581,6 +5204,7 @@ class $$VehiclesTableTableManager
                 Value<bool> isActive = const Value.absent(),
               }) => VehiclesCompanion(
                 idVehicle: idVehicle,
+                idDriver: idDriver,
                 licensePlate: licensePlate,
                 brand: brand,
                 model: model,
@@ -4594,6 +5218,7 @@ class $$VehiclesTableTableManager
           createCompanionCallback:
               ({
                 Value<int> idVehicle = const Value.absent(),
+                required int idDriver,
                 required String licensePlate,
                 required String brand,
                 Value<String?> model = const Value.absent(),
@@ -4605,6 +5230,7 @@ class $$VehiclesTableTableManager
                 Value<bool> isActive = const Value.absent(),
               }) => VehiclesCompanion.insert(
                 idVehicle: idVehicle,
+                idDriver: idDriver,
                 licensePlate: licensePlate,
                 brand: brand,
                 model: model,
@@ -4626,13 +5252,18 @@ class $$VehiclesTableTableManager
                       )
                       .toList(),
           prefetchHooksCallback: ({
+            idDriver = false,
             gpsDeviceId = false,
             obdDeviceId = false,
+            routeAssignmentsRefs = false,
             maintenancesRefs = false,
           }) {
             return PrefetchHooks(
               db: db,
-              explicitlyWatchedTables: [if (maintenancesRefs) db.maintenances],
+              explicitlyWatchedTables: [
+                if (routeAssignmentsRefs) db.routeAssignments,
+                if (maintenancesRefs) db.maintenances,
+              ],
               addJoins: <
                 T extends TableManagerState<
                   dynamic,
@@ -4648,6 +5279,20 @@ class $$VehiclesTableTableManager
                   dynamic
                 >
               >(state) {
+                if (idDriver) {
+                  state =
+                      state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.idDriver,
+                            referencedTable: $$VehiclesTableReferences
+                                ._idDriverTable(db),
+                            referencedColumn:
+                                $$VehiclesTableReferences
+                                    ._idDriverTable(db)
+                                    .idDriver,
+                          )
+                          as T;
+                }
                 if (gpsDeviceId) {
                   state =
                       state.withJoin(
@@ -4681,6 +5326,28 @@ class $$VehiclesTableTableManager
               },
               getPrefetchedDataCallback: (items) async {
                 return [
+                  if (routeAssignmentsRefs)
+                    await $_getPrefetchedData<
+                      Vehicle,
+                      $VehiclesTable,
+                      RouteAssignment
+                    >(
+                      currentTable: table,
+                      referencedTable: $$VehiclesTableReferences
+                          ._routeAssignmentsRefsTable(db),
+                      managerFromTypedResult:
+                          (p0) =>
+                              $$VehiclesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).routeAssignmentsRefs,
+                      referencedItemsForCurrentItem:
+                          (item, referencedItems) => referencedItems.where(
+                            (e) => e.idVehicle == item.idVehicle,
+                          ),
+                      typedResults: items,
+                    ),
                   if (maintenancesRefs)
                     await $_getPrefetchedData<
                       Vehicle,
@@ -4724,500 +5391,12 @@ typedef $$VehiclesTableProcessedTableManager =
       (Vehicle, $$VehiclesTableReferences),
       Vehicle,
       PrefetchHooks Function({
+        bool idDriver,
         bool gpsDeviceId,
         bool obdDeviceId,
+        bool routeAssignmentsRefs,
         bool maintenancesRefs,
       })
-    >;
-typedef $$DriversTableCreateCompanionBuilder =
-    DriversCompanion Function({
-      Value<int> idDriver,
-      required String firstName,
-      required String lastName,
-      required String idNumber,
-      Value<bool> isActive,
-    });
-typedef $$DriversTableUpdateCompanionBuilder =
-    DriversCompanion Function({
-      Value<int> idDriver,
-      Value<String> firstName,
-      Value<String> lastName,
-      Value<String> idNumber,
-      Value<bool> isActive,
-    });
-
-class $$DriversTableFilterComposer
-    extends Composer<_$AppDatabase, $DriversTable> {
-  $$DriversTableFilterComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnFilters<int> get idDriver => $composableBuilder(
-    column: $table.idDriver,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get firstName => $composableBuilder(
-    column: $table.firstName,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get lastName => $composableBuilder(
-    column: $table.lastName,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get idNumber => $composableBuilder(
-    column: $table.idNumber,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<bool> get isActive => $composableBuilder(
-    column: $table.isActive,
-    builder: (column) => ColumnFilters(column),
-  );
-}
-
-class $$DriversTableOrderingComposer
-    extends Composer<_$AppDatabase, $DriversTable> {
-  $$DriversTableOrderingComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnOrderings<int> get idDriver => $composableBuilder(
-    column: $table.idDriver,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get firstName => $composableBuilder(
-    column: $table.firstName,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get lastName => $composableBuilder(
-    column: $table.lastName,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get idNumber => $composableBuilder(
-    column: $table.idNumber,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<bool> get isActive => $composableBuilder(
-    column: $table.isActive,
-    builder: (column) => ColumnOrderings(column),
-  );
-}
-
-class $$DriversTableAnnotationComposer
-    extends Composer<_$AppDatabase, $DriversTable> {
-  $$DriversTableAnnotationComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  GeneratedColumn<int> get idDriver =>
-      $composableBuilder(column: $table.idDriver, builder: (column) => column);
-
-  GeneratedColumn<String> get firstName =>
-      $composableBuilder(column: $table.firstName, builder: (column) => column);
-
-  GeneratedColumn<String> get lastName =>
-      $composableBuilder(column: $table.lastName, builder: (column) => column);
-
-  GeneratedColumn<String> get idNumber =>
-      $composableBuilder(column: $table.idNumber, builder: (column) => column);
-
-  GeneratedColumn<bool> get isActive =>
-      $composableBuilder(column: $table.isActive, builder: (column) => column);
-}
-
-class $$DriversTableTableManager
-    extends
-        RootTableManager<
-          _$AppDatabase,
-          $DriversTable,
-          Driver,
-          $$DriversTableFilterComposer,
-          $$DriversTableOrderingComposer,
-          $$DriversTableAnnotationComposer,
-          $$DriversTableCreateCompanionBuilder,
-          $$DriversTableUpdateCompanionBuilder,
-          (Driver, BaseReferences<_$AppDatabase, $DriversTable, Driver>),
-          Driver,
-          PrefetchHooks Function()
-        > {
-  $$DriversTableTableManager(_$AppDatabase db, $DriversTable table)
-    : super(
-        TableManagerState(
-          db: db,
-          table: table,
-          createFilteringComposer:
-              () => $$DriversTableFilterComposer($db: db, $table: table),
-          createOrderingComposer:
-              () => $$DriversTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer:
-              () => $$DriversTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback:
-              ({
-                Value<int> idDriver = const Value.absent(),
-                Value<String> firstName = const Value.absent(),
-                Value<String> lastName = const Value.absent(),
-                Value<String> idNumber = const Value.absent(),
-                Value<bool> isActive = const Value.absent(),
-              }) => DriversCompanion(
-                idDriver: idDriver,
-                firstName: firstName,
-                lastName: lastName,
-                idNumber: idNumber,
-                isActive: isActive,
-              ),
-          createCompanionCallback:
-              ({
-                Value<int> idDriver = const Value.absent(),
-                required String firstName,
-                required String lastName,
-                required String idNumber,
-                Value<bool> isActive = const Value.absent(),
-              }) => DriversCompanion.insert(
-                idDriver: idDriver,
-                firstName: firstName,
-                lastName: lastName,
-                idNumber: idNumber,
-                isActive: isActive,
-              ),
-          withReferenceMapper:
-              (p0) =>
-                  p0
-                      .map(
-                        (e) => (
-                          e.readTable(table),
-                          BaseReferences(db, table, e),
-                        ),
-                      )
-                      .toList(),
-          prefetchHooksCallback: null,
-        ),
-      );
-}
-
-typedef $$DriversTableProcessedTableManager =
-    ProcessedTableManager<
-      _$AppDatabase,
-      $DriversTable,
-      Driver,
-      $$DriversTableFilterComposer,
-      $$DriversTableOrderingComposer,
-      $$DriversTableAnnotationComposer,
-      $$DriversTableCreateCompanionBuilder,
-      $$DriversTableUpdateCompanionBuilder,
-      (Driver, BaseReferences<_$AppDatabase, $DriversTable, Driver>),
-      Driver,
-      PrefetchHooks Function()
-    >;
-typedef $$StopsTableCreateCompanionBuilder =
-    StopsCompanion Function({
-      Value<int> idStop,
-      required String name,
-      required double latitude,
-      required double longitude,
-      Value<bool> isActive,
-    });
-typedef $$StopsTableUpdateCompanionBuilder =
-    StopsCompanion Function({
-      Value<int> idStop,
-      Value<String> name,
-      Value<double> latitude,
-      Value<double> longitude,
-      Value<bool> isActive,
-    });
-
-final class $$StopsTableReferences
-    extends BaseReferences<_$AppDatabase, $StopsTable, Stop> {
-  $$StopsTableReferences(super.$_db, super.$_table, super.$_typedResult);
-
-  static MultiTypedResultKey<$RouteStopsTable, List<RouteStop>>
-  _routeStopsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-    db.routeStops,
-    aliasName: $_aliasNameGenerator(db.stops.idStop, db.routeStops.idStop),
-  );
-
-  $$RouteStopsTableProcessedTableManager get routeStopsRefs {
-    final manager = $$RouteStopsTableTableManager(
-      $_db,
-      $_db.routeStops,
-    ).filter((f) => f.idStop.idStop.sqlEquals($_itemColumn<int>('id_stop')!));
-
-    final cache = $_typedResult.readTableOrNull(_routeStopsRefsTable($_db));
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: cache),
-    );
-  }
-}
-
-class $$StopsTableFilterComposer extends Composer<_$AppDatabase, $StopsTable> {
-  $$StopsTableFilterComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnFilters<int> get idStop => $composableBuilder(
-    column: $table.idStop,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get name => $composableBuilder(
-    column: $table.name,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<double> get latitude => $composableBuilder(
-    column: $table.latitude,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<double> get longitude => $composableBuilder(
-    column: $table.longitude,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<bool> get isActive => $composableBuilder(
-    column: $table.isActive,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  Expression<bool> routeStopsRefs(
-    Expression<bool> Function($$RouteStopsTableFilterComposer f) f,
-  ) {
-    final $$RouteStopsTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.idStop,
-      referencedTable: $db.routeStops,
-      getReferencedColumn: (t) => t.idStop,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$RouteStopsTableFilterComposer(
-            $db: $db,
-            $table: $db.routeStops,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-}
-
-class $$StopsTableOrderingComposer
-    extends Composer<_$AppDatabase, $StopsTable> {
-  $$StopsTableOrderingComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnOrderings<int> get idStop => $composableBuilder(
-    column: $table.idStop,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get name => $composableBuilder(
-    column: $table.name,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<double> get latitude => $composableBuilder(
-    column: $table.latitude,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<double> get longitude => $composableBuilder(
-    column: $table.longitude,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<bool> get isActive => $composableBuilder(
-    column: $table.isActive,
-    builder: (column) => ColumnOrderings(column),
-  );
-}
-
-class $$StopsTableAnnotationComposer
-    extends Composer<_$AppDatabase, $StopsTable> {
-  $$StopsTableAnnotationComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  GeneratedColumn<int> get idStop =>
-      $composableBuilder(column: $table.idStop, builder: (column) => column);
-
-  GeneratedColumn<String> get name =>
-      $composableBuilder(column: $table.name, builder: (column) => column);
-
-  GeneratedColumn<double> get latitude =>
-      $composableBuilder(column: $table.latitude, builder: (column) => column);
-
-  GeneratedColumn<double> get longitude =>
-      $composableBuilder(column: $table.longitude, builder: (column) => column);
-
-  GeneratedColumn<bool> get isActive =>
-      $composableBuilder(column: $table.isActive, builder: (column) => column);
-
-  Expression<T> routeStopsRefs<T extends Object>(
-    Expression<T> Function($$RouteStopsTableAnnotationComposer a) f,
-  ) {
-    final $$RouteStopsTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.idStop,
-      referencedTable: $db.routeStops,
-      getReferencedColumn: (t) => t.idStop,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$RouteStopsTableAnnotationComposer(
-            $db: $db,
-            $table: $db.routeStops,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-}
-
-class $$StopsTableTableManager
-    extends
-        RootTableManager<
-          _$AppDatabase,
-          $StopsTable,
-          Stop,
-          $$StopsTableFilterComposer,
-          $$StopsTableOrderingComposer,
-          $$StopsTableAnnotationComposer,
-          $$StopsTableCreateCompanionBuilder,
-          $$StopsTableUpdateCompanionBuilder,
-          (Stop, $$StopsTableReferences),
-          Stop,
-          PrefetchHooks Function({bool routeStopsRefs})
-        > {
-  $$StopsTableTableManager(_$AppDatabase db, $StopsTable table)
-    : super(
-        TableManagerState(
-          db: db,
-          table: table,
-          createFilteringComposer:
-              () => $$StopsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer:
-              () => $$StopsTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer:
-              () => $$StopsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback:
-              ({
-                Value<int> idStop = const Value.absent(),
-                Value<String> name = const Value.absent(),
-                Value<double> latitude = const Value.absent(),
-                Value<double> longitude = const Value.absent(),
-                Value<bool> isActive = const Value.absent(),
-              }) => StopsCompanion(
-                idStop: idStop,
-                name: name,
-                latitude: latitude,
-                longitude: longitude,
-                isActive: isActive,
-              ),
-          createCompanionCallback:
-              ({
-                Value<int> idStop = const Value.absent(),
-                required String name,
-                required double latitude,
-                required double longitude,
-                Value<bool> isActive = const Value.absent(),
-              }) => StopsCompanion.insert(
-                idStop: idStop,
-                name: name,
-                latitude: latitude,
-                longitude: longitude,
-                isActive: isActive,
-              ),
-          withReferenceMapper:
-              (p0) =>
-                  p0
-                      .map(
-                        (e) => (
-                          e.readTable(table),
-                          $$StopsTableReferences(db, table, e),
-                        ),
-                      )
-                      .toList(),
-          prefetchHooksCallback: ({routeStopsRefs = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [if (routeStopsRefs) db.routeStops],
-              addJoins: null,
-              getPrefetchedDataCallback: (items) async {
-                return [
-                  if (routeStopsRefs)
-                    await $_getPrefetchedData<Stop, $StopsTable, RouteStop>(
-                      currentTable: table,
-                      referencedTable: $$StopsTableReferences
-                          ._routeStopsRefsTable(db),
-                      managerFromTypedResult:
-                          (p0) =>
-                              $$StopsTableReferences(
-                                db,
-                                table,
-                                p0,
-                              ).routeStopsRefs,
-                      referencedItemsForCurrentItem:
-                          (item, referencedItems) => referencedItems.where(
-                            (e) => e.idStop == item.idStop,
-                          ),
-                      typedResults: items,
-                    ),
-                ];
-              },
-            );
-          },
-        ),
-      );
-}
-
-typedef $$StopsTableProcessedTableManager =
-    ProcessedTableManager<
-      _$AppDatabase,
-      $StopsTable,
-      Stop,
-      $$StopsTableFilterComposer,
-      $$StopsTableOrderingComposer,
-      $$StopsTableAnnotationComposer,
-      $$StopsTableCreateCompanionBuilder,
-      $$StopsTableUpdateCompanionBuilder,
-      (Stop, $$StopsTableReferences),
-      Stop,
-      PrefetchHooks Function({bool routeStopsRefs})
     >;
 typedef $$RoutesTableCreateCompanionBuilder =
     RoutesCompanion Function({
@@ -5236,18 +5415,44 @@ final class $$RoutesTableReferences
     extends BaseReferences<_$AppDatabase, $RoutesTable, Route> {
   $$RoutesTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static MultiTypedResultKey<$RouteStopsTable, List<RouteStop>>
-  _routeStopsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-    db.routeStops,
-    aliasName: $_aliasNameGenerator(db.routes.idRoute, db.routeStops.idRoute),
+  static MultiTypedResultKey<$StopsTable, List<Stop>> _stopsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.stops,
+    aliasName: $_aliasNameGenerator(db.routes.idRoute, db.stops.idRoute),
   );
 
-  $$RouteStopsTableProcessedTableManager get routeStopsRefs {
-    final manager = $$RouteStopsTableTableManager($_db, $_db.routeStops).filter(
+  $$StopsTableProcessedTableManager get stopsRefs {
+    final manager = $$StopsTableTableManager($_db, $_db.stops).filter(
       (f) => f.idRoute.idRoute.sqlEquals($_itemColumn<int>('id_route')!),
     );
 
-    final cache = $_typedResult.readTableOrNull(_routeStopsRefsTable($_db));
+    final cache = $_typedResult.readTableOrNull(_stopsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$RouteAssignmentsTable, List<RouteAssignment>>
+  _routeAssignmentsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.routeAssignments,
+    aliasName: $_aliasNameGenerator(
+      db.routes.idRoute,
+      db.routeAssignments.idRoute,
+    ),
+  );
+
+  $$RouteAssignmentsTableProcessedTableManager get routeAssignmentsRefs {
+    final manager = $$RouteAssignmentsTableTableManager(
+      $_db,
+      $_db.routeAssignments,
+    ).filter(
+      (f) => f.idRoute.idRoute.sqlEquals($_itemColumn<int>('id_route')!),
+    );
+
+    final cache = $_typedResult.readTableOrNull(
+      _routeAssignmentsRefsTable($_db),
+    );
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -5278,22 +5483,47 @@ class $$RoutesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  Expression<bool> routeStopsRefs(
-    Expression<bool> Function($$RouteStopsTableFilterComposer f) f,
+  Expression<bool> stopsRefs(
+    Expression<bool> Function($$StopsTableFilterComposer f) f,
   ) {
-    final $$RouteStopsTableFilterComposer composer = $composerBuilder(
+    final $$StopsTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.idRoute,
-      referencedTable: $db.routeStops,
+      referencedTable: $db.stops,
       getReferencedColumn: (t) => t.idRoute,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$RouteStopsTableFilterComposer(
+          }) => $$StopsTableFilterComposer(
             $db: $db,
-            $table: $db.routeStops,
+            $table: $db.stops,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> routeAssignmentsRefs(
+    Expression<bool> Function($$RouteAssignmentsTableFilterComposer f) f,
+  ) {
+    final $$RouteAssignmentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.idRoute,
+      referencedTable: $db.routeAssignments,
+      getReferencedColumn: (t) => t.idRoute,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RouteAssignmentsTableFilterComposer(
+            $db: $db,
+            $table: $db.routeAssignments,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -5347,22 +5577,47 @@ class $$RoutesTableAnnotationComposer
   GeneratedColumn<bool> get isActive =>
       $composableBuilder(column: $table.isActive, builder: (column) => column);
 
-  Expression<T> routeStopsRefs<T extends Object>(
-    Expression<T> Function($$RouteStopsTableAnnotationComposer a) f,
+  Expression<T> stopsRefs<T extends Object>(
+    Expression<T> Function($$StopsTableAnnotationComposer a) f,
   ) {
-    final $$RouteStopsTableAnnotationComposer composer = $composerBuilder(
+    final $$StopsTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.idRoute,
-      referencedTable: $db.routeStops,
+      referencedTable: $db.stops,
       getReferencedColumn: (t) => t.idRoute,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$RouteStopsTableAnnotationComposer(
+          }) => $$StopsTableAnnotationComposer(
             $db: $db,
-            $table: $db.routeStops,
+            $table: $db.stops,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> routeAssignmentsRefs<T extends Object>(
+    Expression<T> Function($$RouteAssignmentsTableAnnotationComposer a) f,
+  ) {
+    final $$RouteAssignmentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.idRoute,
+      referencedTable: $db.routeAssignments,
+      getReferencedColumn: (t) => t.idRoute,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RouteAssignmentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.routeAssignments,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -5386,7 +5641,7 @@ class $$RoutesTableTableManager
           $$RoutesTableUpdateCompanionBuilder,
           (Route, $$RoutesTableReferences),
           Route,
-          PrefetchHooks Function({bool routeStopsRefs})
+          PrefetchHooks Function({bool stopsRefs, bool routeAssignmentsRefs})
         > {
   $$RoutesTableTableManager(_$AppDatabase db, $RoutesTable table)
     : super(
@@ -5429,25 +5684,50 @@ class $$RoutesTableTableManager
                         ),
                       )
                       .toList(),
-          prefetchHooksCallback: ({routeStopsRefs = false}) {
+          prefetchHooksCallback: ({
+            stopsRefs = false,
+            routeAssignmentsRefs = false,
+          }) {
             return PrefetchHooks(
               db: db,
-              explicitlyWatchedTables: [if (routeStopsRefs) db.routeStops],
+              explicitlyWatchedTables: [
+                if (stopsRefs) db.stops,
+                if (routeAssignmentsRefs) db.routeAssignments,
+              ],
               addJoins: null,
               getPrefetchedDataCallback: (items) async {
                 return [
-                  if (routeStopsRefs)
-                    await $_getPrefetchedData<Route, $RoutesTable, RouteStop>(
+                  if (stopsRefs)
+                    await $_getPrefetchedData<Route, $RoutesTable, Stop>(
+                      currentTable: table,
+                      referencedTable: $$RoutesTableReferences._stopsRefsTable(
+                        db,
+                      ),
+                      managerFromTypedResult:
+                          (p0) =>
+                              $$RoutesTableReferences(db, table, p0).stopsRefs,
+                      referencedItemsForCurrentItem:
+                          (item, referencedItems) => referencedItems.where(
+                            (e) => e.idRoute == item.idRoute,
+                          ),
+                      typedResults: items,
+                    ),
+                  if (routeAssignmentsRefs)
+                    await $_getPrefetchedData<
+                      Route,
+                      $RoutesTable,
+                      RouteAssignment
+                    >(
                       currentTable: table,
                       referencedTable: $$RoutesTableReferences
-                          ._routeStopsRefsTable(db),
+                          ._routeAssignmentsRefsTable(db),
                       managerFromTypedResult:
                           (p0) =>
                               $$RoutesTableReferences(
                                 db,
                                 table,
                                 p0,
-                              ).routeStopsRefs,
+                              ).routeAssignmentsRefs,
                       referencedItemsForCurrentItem:
                           (item, referencedItems) => referencedItems.where(
                             (e) => e.idRoute == item.idRoute,
@@ -5474,29 +5754,349 @@ typedef $$RoutesTableProcessedTableManager =
       $$RoutesTableUpdateCompanionBuilder,
       (Route, $$RoutesTableReferences),
       Route,
-      PrefetchHooks Function({bool routeStopsRefs})
+      PrefetchHooks Function({bool stopsRefs, bool routeAssignmentsRefs})
     >;
-typedef $$RouteStopsTableCreateCompanionBuilder =
-    RouteStopsCompanion Function({
-      required int idRoute,
-      required int idStop,
-      required int order,
-      Value<int> rowid,
-    });
-typedef $$RouteStopsTableUpdateCompanionBuilder =
-    RouteStopsCompanion Function({
-      Value<int> idRoute,
+typedef $$StopsTableCreateCompanionBuilder =
+    StopsCompanion Function({
       Value<int> idStop,
-      Value<int> order,
-      Value<int> rowid,
+      required int idRoute,
+      required double latitude,
+      required double longitude,
+      Value<bool> isActive,
+    });
+typedef $$StopsTableUpdateCompanionBuilder =
+    StopsCompanion Function({
+      Value<int> idStop,
+      Value<int> idRoute,
+      Value<double> latitude,
+      Value<double> longitude,
+      Value<bool> isActive,
     });
 
-final class $$RouteStopsTableReferences
-    extends BaseReferences<_$AppDatabase, $RouteStopsTable, RouteStop> {
-  $$RouteStopsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+final class $$StopsTableReferences
+    extends BaseReferences<_$AppDatabase, $StopsTable, Stop> {
+  $$StopsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static $RoutesTable _idRouteTable(_$AppDatabase db) => db.routes.createAlias(
-    $_aliasNameGenerator(db.routeStops.idRoute, db.routes.idRoute),
+    $_aliasNameGenerator(db.stops.idRoute, db.routes.idRoute),
+  );
+
+  $$RoutesTableProcessedTableManager get idRoute {
+    final $_column = $_itemColumn<int>('id_route')!;
+
+    final manager = $$RoutesTableTableManager(
+      $_db,
+      $_db.routes,
+    ).filter((f) => f.idRoute.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_idRouteTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$StopsTableFilterComposer extends Composer<_$AppDatabase, $StopsTable> {
+  $$StopsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get idStop => $composableBuilder(
+    column: $table.idStop,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get latitude => $composableBuilder(
+    column: $table.latitude,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get longitude => $composableBuilder(
+    column: $table.longitude,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isActive => $composableBuilder(
+    column: $table.isActive,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$RoutesTableFilterComposer get idRoute {
+    final $$RoutesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.idRoute,
+      referencedTable: $db.routes,
+      getReferencedColumn: (t) => t.idRoute,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RoutesTableFilterComposer(
+            $db: $db,
+            $table: $db.routes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$StopsTableOrderingComposer
+    extends Composer<_$AppDatabase, $StopsTable> {
+  $$StopsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get idStop => $composableBuilder(
+    column: $table.idStop,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get latitude => $composableBuilder(
+    column: $table.latitude,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get longitude => $composableBuilder(
+    column: $table.longitude,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isActive => $composableBuilder(
+    column: $table.isActive,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$RoutesTableOrderingComposer get idRoute {
+    final $$RoutesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.idRoute,
+      referencedTable: $db.routes,
+      getReferencedColumn: (t) => t.idRoute,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RoutesTableOrderingComposer(
+            $db: $db,
+            $table: $db.routes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$StopsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $StopsTable> {
+  $$StopsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get idStop =>
+      $composableBuilder(column: $table.idStop, builder: (column) => column);
+
+  GeneratedColumn<double> get latitude =>
+      $composableBuilder(column: $table.latitude, builder: (column) => column);
+
+  GeneratedColumn<double> get longitude =>
+      $composableBuilder(column: $table.longitude, builder: (column) => column);
+
+  GeneratedColumn<bool> get isActive =>
+      $composableBuilder(column: $table.isActive, builder: (column) => column);
+
+  $$RoutesTableAnnotationComposer get idRoute {
+    final $$RoutesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.idRoute,
+      referencedTable: $db.routes,
+      getReferencedColumn: (t) => t.idRoute,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RoutesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.routes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$StopsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $StopsTable,
+          Stop,
+          $$StopsTableFilterComposer,
+          $$StopsTableOrderingComposer,
+          $$StopsTableAnnotationComposer,
+          $$StopsTableCreateCompanionBuilder,
+          $$StopsTableUpdateCompanionBuilder,
+          (Stop, $$StopsTableReferences),
+          Stop,
+          PrefetchHooks Function({bool idRoute})
+        > {
+  $$StopsTableTableManager(_$AppDatabase db, $StopsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer:
+              () => $$StopsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer:
+              () => $$StopsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer:
+              () => $$StopsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> idStop = const Value.absent(),
+                Value<int> idRoute = const Value.absent(),
+                Value<double> latitude = const Value.absent(),
+                Value<double> longitude = const Value.absent(),
+                Value<bool> isActive = const Value.absent(),
+              }) => StopsCompanion(
+                idStop: idStop,
+                idRoute: idRoute,
+                latitude: latitude,
+                longitude: longitude,
+                isActive: isActive,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> idStop = const Value.absent(),
+                required int idRoute,
+                required double latitude,
+                required double longitude,
+                Value<bool> isActive = const Value.absent(),
+              }) => StopsCompanion.insert(
+                idStop: idStop,
+                idRoute: idRoute,
+                latitude: latitude,
+                longitude: longitude,
+                isActive: isActive,
+              ),
+          withReferenceMapper:
+              (p0) =>
+                  p0
+                      .map(
+                        (e) => (
+                          e.readTable(table),
+                          $$StopsTableReferences(db, table, e),
+                        ),
+                      )
+                      .toList(),
+          prefetchHooksCallback: ({idRoute = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                T extends TableManagerState<
+                  dynamic,
+                  dynamic,
+                  dynamic,
+                  dynamic,
+                  dynamic,
+                  dynamic,
+                  dynamic,
+                  dynamic,
+                  dynamic,
+                  dynamic,
+                  dynamic
+                >
+              >(state) {
+                if (idRoute) {
+                  state =
+                      state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.idRoute,
+                            referencedTable: $$StopsTableReferences
+                                ._idRouteTable(db),
+                            referencedColumn:
+                                $$StopsTableReferences
+                                    ._idRouteTable(db)
+                                    .idRoute,
+                          )
+                          as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$StopsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $StopsTable,
+      Stop,
+      $$StopsTableFilterComposer,
+      $$StopsTableOrderingComposer,
+      $$StopsTableAnnotationComposer,
+      $$StopsTableCreateCompanionBuilder,
+      $$StopsTableUpdateCompanionBuilder,
+      (Stop, $$StopsTableReferences),
+      Stop,
+      PrefetchHooks Function({bool idRoute})
+    >;
+typedef $$RouteAssignmentsTableCreateCompanionBuilder =
+    RouteAssignmentsCompanion Function({
+      Value<int> idAssignment,
+      required int idRoute,
+      required int idVehicle,
+      required DateTime assignedAt,
+      Value<bool> isActive,
+    });
+typedef $$RouteAssignmentsTableUpdateCompanionBuilder =
+    RouteAssignmentsCompanion Function({
+      Value<int> idAssignment,
+      Value<int> idRoute,
+      Value<int> idVehicle,
+      Value<DateTime> assignedAt,
+      Value<bool> isActive,
+    });
+
+final class $$RouteAssignmentsTableReferences
+    extends
+        BaseReferences<_$AppDatabase, $RouteAssignmentsTable, RouteAssignment> {
+  $$RouteAssignmentsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $RoutesTable _idRouteTable(_$AppDatabase db) => db.routes.createAlias(
+    $_aliasNameGenerator(db.routeAssignments.idRoute, db.routes.idRoute),
   );
 
   $$RoutesTableProcessedTableManager get idRoute {
@@ -5513,18 +6113,22 @@ final class $$RouteStopsTableReferences
     );
   }
 
-  static $StopsTable _idStopTable(_$AppDatabase db) => db.stops.createAlias(
-    $_aliasNameGenerator(db.routeStops.idStop, db.stops.idStop),
-  );
+  static $VehiclesTable _idVehicleTable(_$AppDatabase db) =>
+      db.vehicles.createAlias(
+        $_aliasNameGenerator(
+          db.routeAssignments.idVehicle,
+          db.vehicles.idVehicle,
+        ),
+      );
 
-  $$StopsTableProcessedTableManager get idStop {
-    final $_column = $_itemColumn<int>('id_stop')!;
+  $$VehiclesTableProcessedTableManager get idVehicle {
+    final $_column = $_itemColumn<int>('id_vehicle')!;
 
-    final manager = $$StopsTableTableManager(
+    final manager = $$VehiclesTableTableManager(
       $_db,
-      $_db.stops,
-    ).filter((f) => f.idStop.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_idStopTable($_db));
+      $_db.vehicles,
+    ).filter((f) => f.idVehicle.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_idVehicleTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
@@ -5532,17 +6136,27 @@ final class $$RouteStopsTableReferences
   }
 }
 
-class $$RouteStopsTableFilterComposer
-    extends Composer<_$AppDatabase, $RouteStopsTable> {
-  $$RouteStopsTableFilterComposer({
+class $$RouteAssignmentsTableFilterComposer
+    extends Composer<_$AppDatabase, $RouteAssignmentsTable> {
+  $$RouteAssignmentsTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<int> get order => $composableBuilder(
-    column: $table.order,
+  ColumnFilters<int> get idAssignment => $composableBuilder(
+    column: $table.idAssignment,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get assignedAt => $composableBuilder(
+    column: $table.assignedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isActive => $composableBuilder(
+    column: $table.isActive,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5569,20 +6183,20 @@ class $$RouteStopsTableFilterComposer
     return composer;
   }
 
-  $$StopsTableFilterComposer get idStop {
-    final $$StopsTableFilterComposer composer = $composerBuilder(
+  $$VehiclesTableFilterComposer get idVehicle {
+    final $$VehiclesTableFilterComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.idStop,
-      referencedTable: $db.stops,
-      getReferencedColumn: (t) => t.idStop,
+      getCurrentColumn: (t) => t.idVehicle,
+      referencedTable: $db.vehicles,
+      getReferencedColumn: (t) => t.idVehicle,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$StopsTableFilterComposer(
+          }) => $$VehiclesTableFilterComposer(
             $db: $db,
-            $table: $db.stops,
+            $table: $db.vehicles,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -5593,17 +6207,27 @@ class $$RouteStopsTableFilterComposer
   }
 }
 
-class $$RouteStopsTableOrderingComposer
-    extends Composer<_$AppDatabase, $RouteStopsTable> {
-  $$RouteStopsTableOrderingComposer({
+class $$RouteAssignmentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $RouteAssignmentsTable> {
+  $$RouteAssignmentsTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<int> get order => $composableBuilder(
-    column: $table.order,
+  ColumnOrderings<int> get idAssignment => $composableBuilder(
+    column: $table.idAssignment,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get assignedAt => $composableBuilder(
+    column: $table.assignedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isActive => $composableBuilder(
+    column: $table.isActive,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -5630,20 +6254,20 @@ class $$RouteStopsTableOrderingComposer
     return composer;
   }
 
-  $$StopsTableOrderingComposer get idStop {
-    final $$StopsTableOrderingComposer composer = $composerBuilder(
+  $$VehiclesTableOrderingComposer get idVehicle {
+    final $$VehiclesTableOrderingComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.idStop,
-      referencedTable: $db.stops,
-      getReferencedColumn: (t) => t.idStop,
+      getCurrentColumn: (t) => t.idVehicle,
+      referencedTable: $db.vehicles,
+      getReferencedColumn: (t) => t.idVehicle,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$StopsTableOrderingComposer(
+          }) => $$VehiclesTableOrderingComposer(
             $db: $db,
-            $table: $db.stops,
+            $table: $db.vehicles,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -5654,17 +6278,27 @@ class $$RouteStopsTableOrderingComposer
   }
 }
 
-class $$RouteStopsTableAnnotationComposer
-    extends Composer<_$AppDatabase, $RouteStopsTable> {
-  $$RouteStopsTableAnnotationComposer({
+class $$RouteAssignmentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RouteAssignmentsTable> {
+  $$RouteAssignmentsTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get order =>
-      $composableBuilder(column: $table.order, builder: (column) => column);
+  GeneratedColumn<int> get idAssignment => $composableBuilder(
+    column: $table.idAssignment,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get assignedAt => $composableBuilder(
+    column: $table.assignedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isActive =>
+      $composableBuilder(column: $table.isActive, builder: (column) => column);
 
   $$RoutesTableAnnotationComposer get idRoute {
     final $$RoutesTableAnnotationComposer composer = $composerBuilder(
@@ -5689,20 +6323,20 @@ class $$RouteStopsTableAnnotationComposer
     return composer;
   }
 
-  $$StopsTableAnnotationComposer get idStop {
-    final $$StopsTableAnnotationComposer composer = $composerBuilder(
+  $$VehiclesTableAnnotationComposer get idVehicle {
+    final $$VehiclesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.idStop,
-      referencedTable: $db.stops,
-      getReferencedColumn: (t) => t.idStop,
+      getCurrentColumn: (t) => t.idVehicle,
+      referencedTable: $db.vehicles,
+      getReferencedColumn: (t) => t.idVehicle,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$StopsTableAnnotationComposer(
+          }) => $$VehiclesTableAnnotationComposer(
             $db: $db,
-            $table: $db.stops,
+            $table: $db.vehicles,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -5713,55 +6347,68 @@ class $$RouteStopsTableAnnotationComposer
   }
 }
 
-class $$RouteStopsTableTableManager
+class $$RouteAssignmentsTableTableManager
     extends
         RootTableManager<
           _$AppDatabase,
-          $RouteStopsTable,
-          RouteStop,
-          $$RouteStopsTableFilterComposer,
-          $$RouteStopsTableOrderingComposer,
-          $$RouteStopsTableAnnotationComposer,
-          $$RouteStopsTableCreateCompanionBuilder,
-          $$RouteStopsTableUpdateCompanionBuilder,
-          (RouteStop, $$RouteStopsTableReferences),
-          RouteStop,
-          PrefetchHooks Function({bool idRoute, bool idStop})
+          $RouteAssignmentsTable,
+          RouteAssignment,
+          $$RouteAssignmentsTableFilterComposer,
+          $$RouteAssignmentsTableOrderingComposer,
+          $$RouteAssignmentsTableAnnotationComposer,
+          $$RouteAssignmentsTableCreateCompanionBuilder,
+          $$RouteAssignmentsTableUpdateCompanionBuilder,
+          (RouteAssignment, $$RouteAssignmentsTableReferences),
+          RouteAssignment,
+          PrefetchHooks Function({bool idRoute, bool idVehicle})
         > {
-  $$RouteStopsTableTableManager(_$AppDatabase db, $RouteStopsTable table)
-    : super(
+  $$RouteAssignmentsTableTableManager(
+    _$AppDatabase db,
+    $RouteAssignmentsTable table,
+  ) : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer:
-              () => $$RouteStopsTableFilterComposer($db: db, $table: table),
+              () =>
+                  $$RouteAssignmentsTableFilterComposer($db: db, $table: table),
           createOrderingComposer:
-              () => $$RouteStopsTableOrderingComposer($db: db, $table: table),
+              () => $$RouteAssignmentsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
           createComputedFieldComposer:
-              () => $$RouteStopsTableAnnotationComposer($db: db, $table: table),
+              () => $$RouteAssignmentsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
           updateCompanionCallback:
               ({
+                Value<int> idAssignment = const Value.absent(),
                 Value<int> idRoute = const Value.absent(),
-                Value<int> idStop = const Value.absent(),
-                Value<int> order = const Value.absent(),
-                Value<int> rowid = const Value.absent(),
-              }) => RouteStopsCompanion(
+                Value<int> idVehicle = const Value.absent(),
+                Value<DateTime> assignedAt = const Value.absent(),
+                Value<bool> isActive = const Value.absent(),
+              }) => RouteAssignmentsCompanion(
+                idAssignment: idAssignment,
                 idRoute: idRoute,
-                idStop: idStop,
-                order: order,
-                rowid: rowid,
+                idVehicle: idVehicle,
+                assignedAt: assignedAt,
+                isActive: isActive,
               ),
           createCompanionCallback:
               ({
+                Value<int> idAssignment = const Value.absent(),
                 required int idRoute,
-                required int idStop,
-                required int order,
-                Value<int> rowid = const Value.absent(),
-              }) => RouteStopsCompanion.insert(
+                required int idVehicle,
+                required DateTime assignedAt,
+                Value<bool> isActive = const Value.absent(),
+              }) => RouteAssignmentsCompanion.insert(
+                idAssignment: idAssignment,
                 idRoute: idRoute,
-                idStop: idStop,
-                order: order,
-                rowid: rowid,
+                idVehicle: idVehicle,
+                assignedAt: assignedAt,
+                isActive: isActive,
               ),
           withReferenceMapper:
               (p0) =>
@@ -5769,11 +6416,11 @@ class $$RouteStopsTableTableManager
                       .map(
                         (e) => (
                           e.readTable(table),
-                          $$RouteStopsTableReferences(db, table, e),
+                          $$RouteAssignmentsTableReferences(db, table, e),
                         ),
                       )
                       .toList(),
-          prefetchHooksCallback: ({idRoute = false, idStop = false}) {
+          prefetchHooksCallback: ({idRoute = false, idVehicle = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
@@ -5797,26 +6444,26 @@ class $$RouteStopsTableTableManager
                       state.withJoin(
                             currentTable: table,
                             currentColumn: table.idRoute,
-                            referencedTable: $$RouteStopsTableReferences
+                            referencedTable: $$RouteAssignmentsTableReferences
                                 ._idRouteTable(db),
                             referencedColumn:
-                                $$RouteStopsTableReferences
+                                $$RouteAssignmentsTableReferences
                                     ._idRouteTable(db)
                                     .idRoute,
                           )
                           as T;
                 }
-                if (idStop) {
+                if (idVehicle) {
                   state =
                       state.withJoin(
                             currentTable: table,
-                            currentColumn: table.idStop,
-                            referencedTable: $$RouteStopsTableReferences
-                                ._idStopTable(db),
+                            currentColumn: table.idVehicle,
+                            referencedTable: $$RouteAssignmentsTableReferences
+                                ._idVehicleTable(db),
                             referencedColumn:
-                                $$RouteStopsTableReferences
-                                    ._idStopTable(db)
-                                    .idStop,
+                                $$RouteAssignmentsTableReferences
+                                    ._idVehicleTable(db)
+                                    .idVehicle,
                           )
                           as T;
                 }
@@ -5832,19 +6479,19 @@ class $$RouteStopsTableTableManager
       );
 }
 
-typedef $$RouteStopsTableProcessedTableManager =
+typedef $$RouteAssignmentsTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $RouteStopsTable,
-      RouteStop,
-      $$RouteStopsTableFilterComposer,
-      $$RouteStopsTableOrderingComposer,
-      $$RouteStopsTableAnnotationComposer,
-      $$RouteStopsTableCreateCompanionBuilder,
-      $$RouteStopsTableUpdateCompanionBuilder,
-      (RouteStop, $$RouteStopsTableReferences),
-      RouteStop,
-      PrefetchHooks Function({bool idRoute, bool idStop})
+      $RouteAssignmentsTable,
+      RouteAssignment,
+      $$RouteAssignmentsTableFilterComposer,
+      $$RouteAssignmentsTableOrderingComposer,
+      $$RouteAssignmentsTableAnnotationComposer,
+      $$RouteAssignmentsTableCreateCompanionBuilder,
+      $$RouteAssignmentsTableUpdateCompanionBuilder,
+      (RouteAssignment, $$RouteAssignmentsTableReferences),
+      RouteAssignment,
+      PrefetchHooks Function({bool idRoute, bool idVehicle})
     >;
 typedef $$MaintenancesTableCreateCompanionBuilder =
     MaintenancesCompanion Function({
@@ -6642,16 +7289,16 @@ class $AppDatabaseManager {
       $$GpsDevicesTableTableManager(_db, _db.gpsDevices);
   $$ObdDevicesTableTableManager get obdDevices =>
       $$ObdDevicesTableTableManager(_db, _db.obdDevices);
-  $$VehiclesTableTableManager get vehicles =>
-      $$VehiclesTableTableManager(_db, _db.vehicles);
   $$DriversTableTableManager get drivers =>
       $$DriversTableTableManager(_db, _db.drivers);
-  $$StopsTableTableManager get stops =>
-      $$StopsTableTableManager(_db, _db.stops);
+  $$VehiclesTableTableManager get vehicles =>
+      $$VehiclesTableTableManager(_db, _db.vehicles);
   $$RoutesTableTableManager get routes =>
       $$RoutesTableTableManager(_db, _db.routes);
-  $$RouteStopsTableTableManager get routeStops =>
-      $$RouteStopsTableTableManager(_db, _db.routeStops);
+  $$StopsTableTableManager get stops =>
+      $$StopsTableTableManager(_db, _db.stops);
+  $$RouteAssignmentsTableTableManager get routeAssignments =>
+      $$RouteAssignmentsTableTableManager(_db, _db.routeAssignments);
   $$MaintenancesTableTableManager get maintenances =>
       $$MaintenancesTableTableManager(_db, _db.maintenances);
   $$MaintenanceDetailsTableTableManager get maintenanceDetails =>

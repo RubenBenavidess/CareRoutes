@@ -21,6 +21,8 @@ class ObdDevices extends Table {
 // 3. Vehicles
 class Vehicles extends Table {
   IntColumn get idVehicle => integer().autoIncrement()();
+  IntColumn get idDriver =>
+      integer().customConstraint('REFERENCES drivers(id_driver)')();
   TextColumn get licensePlate => text().withLength(min: 1, max: 10).unique()();
   TextColumn get brand => text().withLength(min: 1, max: 50)();
   TextColumn get model => text().withLength(min: 1, max: 50).nullable()();
@@ -50,12 +52,14 @@ class Drivers extends Table {
   BoolColumn get isActive => boolean().withDefault(const Constant(true))();
 }
 
-// 5. Stops
-class Stops extends Table {
-  IntColumn get idStop => integer().autoIncrement()();
-  TextColumn get name => text().withLength(min: 1, max: 100)();
-  RealColumn get latitude => real()();
-  RealColumn get longitude => real()();
+// 5. RputeAssignments
+class RouteAssignments extends Table {
+  IntColumn get idAssignment => integer().autoIncrement()();
+  IntColumn get idRoute =>
+      integer().customConstraint('REFERENCES routes(id_route)')();
+  IntColumn get idVehicle =>
+      integer().customConstraint('REFERENCES vehicles(id_vehicle)')();
+  DateTimeColumn get assignedAt => dateTime()();
   BoolColumn get isActive => boolean().withDefault(const Constant(true))();
 }
 
@@ -66,16 +70,14 @@ class Routes extends Table {
   BoolColumn get isActive => boolean().withDefault(const Constant(true))();
 }
 
-// 7. RouteStops (sequence)
-class RouteStops extends Table {
+// 7. Stops (sequence)
+class Stops extends Table {
+  IntColumn get idStop => integer().autoIncrement()();
   IntColumn get idRoute =>
       integer().customConstraint('REFERENCES routes(id_route)')();
-  IntColumn get idStop =>
-      integer().customConstraint('REFERENCES stops(id_stop)')();
-  IntColumn get order => integer()();
-
-  @override
-  Set<Column> get primaryKey => {idRoute, order};
+  RealColumn get latitude => real()();
+  RealColumn get longitude => real()();
+  BoolColumn get isActive => boolean().withDefault(const Constant(true))();
 }
 
 // 8. Maintenances

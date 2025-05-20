@@ -1,5 +1,3 @@
-import 'package:care_routes/screens/drop_zone.dart';
-
 import 'screen_pages.dart';
 import 'side_menu.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +9,7 @@ class HomeState extends StatefulWidget {
 }
 
 class _HomeStateState extends State<HomeState> {
-  int _selectedIndex = 4;
+  int _selectedIndex = 2;
 
   /// Map each index to the screen you want to show.
   /// Add your other screens (AssignCustodians, ConsultVehicles, etc.) here.
