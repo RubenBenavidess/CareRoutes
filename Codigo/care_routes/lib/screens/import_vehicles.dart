@@ -1,6 +1,8 @@
 import '../themes/button_style.dart';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/material.dart';
+import 'package:cross_file/cross_file.dart';
+import '../services/import_services.dart';
 
 class DropZoneWidget extends StatefulWidget {
   const DropZoneWidget({super.key});
@@ -62,7 +64,12 @@ class _DropZoneWidgetState extends State<DropZoneWidget> {
                       (_) => setState(() => _bg = Colors.orangeAccent), // hover
                   onDragExited:
                       (_) => setState(() => _bg = Colors.green), // sale
-                  onDragDone: (_) => setState(() => _bg = Colors.blue),
+                  onDragDone: (details) async {
+                    setState(() => _bg = Colors.blue);
+                    for (final xfile in details.files) {
+                      await ImportServices.importFile(xfile);
+                    }
+                  },
                   child: AnimatedContainer(
                     width: double.infinity,
                     height: dropHeight,
@@ -85,6 +92,7 @@ class _DropZoneWidgetState extends State<DropZoneWidget> {
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 20),
 
                 // ★ Botones alineados a la derecha, pero **dentro** del ancho maxWidth
