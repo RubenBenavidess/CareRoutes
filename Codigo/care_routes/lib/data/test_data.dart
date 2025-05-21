@@ -25,6 +25,12 @@ class TestDataSeeder {
     final count = await db.select(db.drivers).get().then((list) => list.length);
     if (count > 0) return;
 
+    // dataframe excel = excel{'nonbre', 'apell', 'dni'}
+
+    // nombre_conductores = excel['NOMBRE CONDUCTORES'].toList();
+    // dni_conductores = excel['DNI CONDUCTORES'].toList();
+    // apellido_conductores = excel['APELLIDO CONDUCTORES'].toList();
+
     final drivers = [
       DriversCompanion.insert(
         firstName: 'Juan',
@@ -63,7 +69,10 @@ class TestDataSeeder {
 
   /// Carga dispositivos GPS de prueba
   Future<void> _seedGpsDevices() async {
-    final count = await db.select(db.gpsDevices).get().then((list) => list.length);
+    final count = await db
+        .select(db.gpsDevices)
+        .get()
+        .then((list) => list.length);
     if (count > 0) return;
 
     final devices = [
@@ -93,7 +102,10 @@ class TestDataSeeder {
 
   /// Carga dispositivos OBD de prueba
   Future<void> _seedObdDevices() async {
-    final count = await db.select(db.obdDevices).get().then((list) => list.length);
+    final count = await db
+        .select(db.obdDevices)
+        .get()
+        .then((list) => list.length);
     if (count > 0) return;
 
     final devices = [
@@ -123,7 +135,10 @@ class TestDataSeeder {
 
   /// Carga vehículos de prueba
   Future<void> _seedVehicles() async {
-    final count = await db.select(db.vehicles).get().then((list) => list.length);
+    final count = await db
+        .select(db.vehicles)
+        .get()
+        .then((list) => list.length);
     if (count > 0) return;
 
     // Primero obtener los IDs de conductores, GPS y OBD
@@ -208,9 +223,7 @@ class TestDataSeeder {
       RoutesCompanion.insert(
         date: DateTime.now().subtract(const Duration(days: 1)),
       ),
-      RoutesCompanion.insert(
-        date: DateTime.now(),
-      ),
+      RoutesCompanion.insert(date: DateTime.now()),
     ];
 
     await db.transaction(() async {
@@ -229,25 +242,27 @@ class TestDataSeeder {
     if (routes.isEmpty) return;
 
     List<StopsCompanion> allStops = [];
-    
+
     // Coordenadas base (Lima, Perú)
     final baseLatitude = -12.046374;
     final baseLongitude = -77.042793;
-    
+
     for (var route in routes) {
       // Generar 3-5 paradas por ruta
       final stopCount = 3 + (route.idRoute % 3); // 3-5 paradas
-      
+
       for (var i = 0; i < stopCount; i++) {
         // Añadir pequeñas variaciones a las coordenadas base
         final latitude = baseLatitude + (i * 0.002) + (route.idRoute * 0.001);
         final longitude = baseLongitude + (i * 0.002) - (route.idRoute * 0.001);
-        
-        allStops.add(StopsCompanion.insert(
-          idRoute: route.idRoute,
-          latitude: latitude,
-          longitude: longitude,
-        ));
+
+        allStops.add(
+          StopsCompanion.insert(
+            idRoute: route.idRoute,
+            latitude: latitude,
+            longitude: longitude,
+          ),
+        );
       }
     }
 
@@ -260,26 +275,31 @@ class TestDataSeeder {
 
   /// Carga asignaciones de rutas
   Future<void> _seedRouteAssignments() async {
-    final count = await db.select(db.routeAssignments).get().then((list) => list.length);
+    final count = await db
+        .select(db.routeAssignments)
+        .get()
+        .then((list) => list.length);
     if (count > 0) return;
 
     final routes = await db.select(db.routes).get();
     final vehicles = await db.select(db.vehicles).get();
-    
+
     if (routes.isEmpty || vehicles.isEmpty) return;
 
     List<RouteAssignmentsCompanion> assignments = [];
-    
+
     // Asignar vehículos a rutas
     for (var i = 0; i < routes.length; i++) {
       // Asignar vehículos de forma circular si hay más rutas que vehículos
       final vehicleIndex = i % vehicles.length;
-      
-      assignments.add(RouteAssignmentsCompanion.insert(
-        idRoute: routes[i].idRoute,
-        idVehicle: vehicles[vehicleIndex].idVehicle,
-        assignedAt: DateTime.now().subtract(Duration(days: i)),
-      ));
+
+      assignments.add(
+        RouteAssignmentsCompanion.insert(
+          idRoute: routes[i].idRoute,
+          idVehicle: vehicles[vehicleIndex].idVehicle,
+          assignedAt: DateTime.now().subtract(Duration(days: i)),
+        ),
+      );
     }
 
     await db.transaction(() async {
@@ -291,31 +311,38 @@ class TestDataSeeder {
 
   /// Carga datos de mantenimiento
   Future<void> _seedMaintenances() async {
-    final maintenanceCount = await db.select(db.maintenances).get().then((list) => list.length);
+    final maintenanceCount = await db
+        .select(db.maintenances)
+        .get()
+        .then((list) => list.length);
     if (maintenanceCount > 0) return;
 
     final vehicles = await db.select(db.vehicles).get();
     if (vehicles.isEmpty) return;
 
     List<MaintenancesCompanion> maintenances = [];
-    
+
     // Crear mantenimientos para cada vehículo
     for (var vehicle in vehicles) {
       // Un mantenimiento antiguo
-      maintenances.add(MaintenancesCompanion.insert(
-        idVehicle: vehicle.idVehicle,
-        maintenanceDate: DateTime.now().subtract(const Duration(days: 60)),
-        vehicleMileage: vehicle.mileage - 3000,
-        details: const Value('Mantenimiento preventivo'),
-      ));
-      
+      maintenances.add(
+        MaintenancesCompanion.insert(
+          idVehicle: vehicle.idVehicle,
+          maintenanceDate: DateTime.now().subtract(const Duration(days: 60)),
+          vehicleMileage: vehicle.mileage - 3000,
+          details: const Value('Mantenimiento preventivo'),
+        ),
+      );
+
       // Un mantenimiento reciente
-      maintenances.add(MaintenancesCompanion.insert(
-        idVehicle: vehicle.idVehicle,
-        maintenanceDate: DateTime.now().subtract(const Duration(days: 15)),
-        vehicleMileage: vehicle.mileage - 500,
-        details: const Value('Cambio de aceite y filtros'),
-      ));
+      maintenances.add(
+        MaintenancesCompanion.insert(
+          idVehicle: vehicle.idVehicle,
+          maintenanceDate: DateTime.now().subtract(const Duration(days: 15)),
+          vehicleMileage: vehicle.mileage - 500,
+          details: const Value('Cambio de aceite y filtros'),
+        ),
+      );
     }
 
     // Insertar mantenimientos y luego sus detalles
@@ -324,7 +351,9 @@ class TestDataSeeder {
       for (final maintenance in maintenances) {
         final id = await db.into(db.maintenances).insert(maintenance);
         // Obtener el mantenimiento insertado para luego crear sus detalles
-        final inserted = await (db.select(db.maintenances)..where((m) => m.idMaintenance.equals(id))).getSingle();
+        final inserted =
+            await (db.select(db.maintenances)
+              ..where((m) => m.idMaintenance.equals(id))).getSingle();
         insertedMaintenances.add(inserted);
       }
     });
@@ -334,33 +363,43 @@ class TestDataSeeder {
     for (var maintenance in insertedMaintenances) {
       if (maintenance.idMaintenance % 2 == 0) {
         // Para mantenimientos pares (los más recientes)
-        details.add(MaintenanceDetailsCompanion.insert(
-          idMaintenance: maintenance.idMaintenance,
-          description: 'Cambio de aceite',
-          cost: const Value(45.0),
-        ));
-        details.add(MaintenanceDetailsCompanion.insert(
-          idMaintenance: maintenance.idMaintenance,
-          description: 'Cambio de filtro de aire',
-          cost: const Value(20.0),
-        ));
+        details.add(
+          MaintenanceDetailsCompanion.insert(
+            idMaintenance: maintenance.idMaintenance,
+            description: 'Cambio de aceite',
+            cost: const Value(45.0),
+          ),
+        );
+        details.add(
+          MaintenanceDetailsCompanion.insert(
+            idMaintenance: maintenance.idMaintenance,
+            description: 'Cambio de filtro de aire',
+            cost: const Value(20.0),
+          ),
+        );
       } else {
         // Para mantenimientos impares (los más antiguos)
-        details.add(MaintenanceDetailsCompanion.insert(
-          idMaintenance: maintenance.idMaintenance,
-          description: 'Revisión general',
-          cost: const Value(80.0),
-        ));
-        details.add(MaintenanceDetailsCompanion.insert(
-          idMaintenance: maintenance.idMaintenance,
-          description: 'Alineación y balanceo',
-          cost: const Value(60.0),
-        ));
-        details.add(MaintenanceDetailsCompanion.insert(
-          idMaintenance: maintenance.idMaintenance,
-          description: 'Cambio de filtro de combustible',
-          cost: const Value(35.0),
-        ));
+        details.add(
+          MaintenanceDetailsCompanion.insert(
+            idMaintenance: maintenance.idMaintenance,
+            description: 'Revisión general',
+            cost: const Value(80.0),
+          ),
+        );
+        details.add(
+          MaintenanceDetailsCompanion.insert(
+            idMaintenance: maintenance.idMaintenance,
+            description: 'Alineación y balanceo',
+            cost: const Value(60.0),
+          ),
+        );
+        details.add(
+          MaintenanceDetailsCompanion.insert(
+            idMaintenance: maintenance.idMaintenance,
+            description: 'Cambio de filtro de combustible',
+            cost: const Value(35.0),
+          ),
+        );
       }
     }
 

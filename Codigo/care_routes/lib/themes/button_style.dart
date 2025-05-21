@@ -19,3 +19,13 @@ class CancelButtonStyle {
     padding: EdgeInsets.symmetric(horizontal: 24, vertical: 14),
   );
 }
+
+class RestButtonStyle {
+  static final ButtonStyle elevated = ElevatedButton.styleFrom(
+    backgroundColor: const Color.fromARGB(255, 85, 85, 85),
+    foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+    side: const BorderSide(color: Color.fromARGB(1, 191, 79, 79)),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+  );
+}
