@@ -2,11 +2,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../domain/vehicle_with_driver.dart';
 
 class AssignRoutesState {
-  const AssignRoutesState({this.selected = const []});
+  const AssignRoutesState({
+    this.selected = const [],
+    this.dates    = const {}
+  });
   final List<VehicleWithDriver> selected;
+  final Map<int, DateTime?> dates;
 
-  AssignRoutesState copyWith({List<VehicleWithDriver>? selected}) =>
-      AssignRoutesState(selected: selected ?? this.selected);
+  AssignRoutesState copyWith({List<VehicleWithDriver>? selected, Map<int, DateTime?>? dates}) =>
+      AssignRoutesState(
+        selected: selected ?? this.selected,
+        dates: dates ?? this.dates,
+      );
 }
 
 class AssignRoutesController extends StateNotifier<AssignRoutesState> {
@@ -17,6 +24,12 @@ class AssignRoutesController extends StateNotifier<AssignRoutesState> {
     final list = [...state.selected];
     list.contains(v) ? list.remove(v) : list.add(v);
     state = state.copyWith(selected: list);
+  }
+
+  void setDate(VehicleWithDriver v, DateTime date) {
+    final newDates = Map<int, DateTime?>.from(state.dates)
+      ..[v.idVehicle] = date;
+    state = state.copyWith(dates: newDates);
   }
 }
 
