@@ -1,35 +1,82 @@
-import 'package:care_routes/providers/database_providers.dart';
+import 'dart:async';
+import 'package:care_routes/data/database.dart';
+import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../domain/usable_driver.dart';
-import '../data/daos/drivers_dao.dart';
+import '../providers/database_providers.dart';
 
-// Class that allows the interaction with service and manage the state of course.
+// Opción 1: Usando StateNotifier con manejo correcto de streams
+class UsableDriverNotifier
+    extends StateNotifier<AsyncValue<List<UsableDriver>>> {
+  final Ref _ref;
+  StreamSubscription<List<Driver>>? _subscription;
 
-class UsableDriverNotifier extends StateNotifier<List<UsableDriver>>{
+  UsableDriverNotifier(this._ref) : super(const AsyncValue.loading()) {
+    _initializeStream();
+  }
 
-    late DriversDao _usableDriversService;
+  void _initializeStream() {
+    state = const AsyncValue.loading();
 
-    UsableDriverNotifier() : super([]);
+    // Cancelar suscripción anterior si existe
+    _subscription?.cancel();
 
-    void initService(WidgetRef ref){
-        _usableDriversService = DriversDao(ref.read(dbProvider));
+    try {
+      final driversDao = _ref.read(driversDaoProvider);
+
+      _subscription = driversDao.watchAllActive().listen(
+        (drivers) {
+          final usableDrivers =
+              drivers
+                  .map(
+                    (driver) => UsableDriver(
+                      idDriver: driver.idDriver,
+                      firstName: driver.firstName,
+                      lastName: driver.lastName,
+                      idNumber: driver.idNumber,
+                    ),
+                  )
+                  .toList();
+
+          state = AsyncValue.data(usableDrivers);
+        },
+        onError: (error, stackTrace) {
+          state = AsyncValue.error(error, stackTrace);
+        },
+      );
+    } catch (error, stackTrace) {
+      state = AsyncValue.error(error, stackTrace);
     }
+  }
 
-    Future<void> loadUsableDrivers() async {
-        final drivers = await _usableDriversService.getAllActive();
-        // List<UsableDriver> usableDrivers = List.of(drivers.map(
-        //     (d) => UsableDriver(
-        //         idDriver: d.idDriver, firstName: d.firstName,
-        //         lastName: d.lastName, idNumber: d.idNumber)
-        // ));
-         List<UsableDriver> usableDrivers = List.from(
-            [UsableDriver(idDriver: 1, firstName: "Ruben", lastName: "Benavides", idNumber: "1723011696")]
-         );
-        state = usableDrivers;
-    }
-
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
 }
 
-final usableDriverNotifierProvider = StateNotifierProvider<UsableDriverNotifier, List<UsableDriver>>(
-  (ref) => UsableDriverNotifier()
-);
+// Provider principal
+final usableDriverNotifierProvider =
+    StateNotifierProvider<UsableDriverNotifier, AsyncValue<List<UsableDriver>>>(
+      (ref) => UsableDriverNotifier(ref),
+    );
+
+// Opción 2 (RECOMENDADA): Usar StreamProvider directamente
+final usableDriversStreamProvider = StreamProvider<List<UsableDriver>>((ref) {
+  final driversDao = ref.watch(driversDaoProvider);
+
+  return driversDao.watchAllActive().map(
+    (drivers) =>
+        drivers
+            .map(
+              (driver) => UsableDriver(
+                idDriver: driver.idDriver,
+                firstName: driver.firstName,
+                lastName: driver.lastName,
+                idNumber: driver.idNumber,
+              ),
+            )
+            .toList(),
+  );
+});

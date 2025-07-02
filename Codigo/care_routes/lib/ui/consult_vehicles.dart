@@ -21,7 +21,7 @@ class ConsultVehicles extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              "Seleccione el vehículo y la ruta",
+              "Vehículos Disponibles",
               style: TextStyle(
                 fontSize: 20,
                 color: const Color(0xFF000000),
@@ -30,7 +30,6 @@ class ConsultVehicles extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            // Add your vehicle and route selection widgets here
           ],
         ),
       ),
