@@ -89,19 +89,30 @@ class SideMenu extends StatelessWidget {
 
                     const Divider(color: Color(0xFF76777C)),
 
+                    // — Sección Conductores —
+                    const _SectionHeader('Conductores'),
+                    SideMenuItem(
+                      icon: Icons.delivery_dining,
+                      label: 'Consultar Conductores',
+                      isSelected: selectedIndex == 6,
+                      onTap: () => onIndexChanged(6),
+                    ),
+
+                    const Divider(color: Color(0xFF76777C)),
+
                     // — Sección Mantenimientos —
                     const _SectionHeader('Mantenimientos'),
                     SideMenuItem(
                       icon: Icons.build,
                       label: 'Registrar Mantenimientos',
-                      isSelected: selectedIndex == 6,
-                      onTap: () => onIndexChanged(6),
+                      isSelected: selectedIndex == 7,
+                      onTap: () => onIndexChanged(7),
                     ),
                     SideMenuItem(
                       icon: Icons.history,
                       label: 'Ver Mantenimientos',
-                      isSelected: selectedIndex == 7,
-                      onTap: () => onIndexChanged(7),
+                      isSelected: selectedIndex == 8,
+                      onTap: () => onIndexChanged(8),
                     ),
 
                     const Divider(color: Color(0xFF76777C)),
@@ -111,8 +122,8 @@ class SideMenu extends StatelessWidget {
                     SideMenuItem(
                       icon: Icons.pie_chart,
                       label: 'Generar Reportes',
-                      isSelected: selectedIndex == 8,
-                      onTap: () => onIndexChanged(8),
+                      isSelected: selectedIndex == 9,
+                      onTap: () => onIndexChanged(9),
                     ),
                   ],
                 ),
@@ -123,8 +134,8 @@ class SideMenu extends StatelessWidget {
               SideMenuItem(
                 icon: Icons.settings,
                 label: 'Configuración',
-                isSelected: selectedIndex == 9,
-                onTap: () => onIndexChanged(9),
+                isSelected: selectedIndex == 10,
+                onTap: () => onIndexChanged(10),
               ),
               Padding(
                 padding: const EdgeInsets.all(16),
@@ -135,7 +146,7 @@ class SideMenu extends StatelessWidget {
         ),
       ),
     );
-    
+
   }
 }
 

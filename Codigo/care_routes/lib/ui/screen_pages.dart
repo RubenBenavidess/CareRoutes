@@ -6,6 +6,8 @@ export 'create_routes.dart';
 export 'assign_routes.dart';
 export 'consult_routes.dart';
 
+export 'consult_drivers.dart';
+
 export 'register_maintenance.dart';
 export 'consult_maintenance.dart';
 

@@ -20,6 +20,7 @@ class _HomeStateState extends State<HomeState> {
     CreateRoutes(),
     AssignRoutes(),
     ConsultRoutes(),
+    ConsultDriversWidget(),
     RegisterMaintenance(),
     ConsultMaintenance(),
     GenerateReports(),
