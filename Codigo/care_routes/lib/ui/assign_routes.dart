@@ -1,4 +1,4 @@
-import 'package:care_routes/domain/vehicle_with_driver.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';  // Importante para detectar clic derecho
 import 'package:flutter_map/flutter_map.dart';
@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'reusable_widgets/vehicle_search_select.dart';
+
+import '../domain/vehicle_with_driver.dart';
 import '../controllers/assign_routes_controller.dart';
 
 // Proveedor para el estado del mapa

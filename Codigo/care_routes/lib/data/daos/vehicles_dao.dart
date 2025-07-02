@@ -33,6 +33,7 @@ class VehiclesDao extends DatabaseAccessor<AppDatabase>
   )).write(const VehiclesCompanion(isActive: Value(false)));
 
 
+
   /// Busca por placa o por nombre de conductor.
   Stream<List<VehicleWithDriver>> search(String query) {
     final veh = alias(vehicles, 'v');
