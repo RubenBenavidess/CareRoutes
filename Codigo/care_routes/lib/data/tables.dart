@@ -22,7 +22,7 @@ class ObdDevices extends Table {
 class Vehicles extends Table {
   IntColumn get idVehicle => integer().autoIncrement()();
   IntColumn get idDriver =>
-      integer().customConstraint('REFERENCES drivers(id_driver)')();
+      integer().customConstraint('NULL REFERENCES drivers(id_driver)')();
   TextColumn get licensePlate => text().withLength(min: 1, max: 10).unique()();
   TextColumn get brand => text().withLength(min: 1, max: 50)();
   TextColumn get model => text().withLength(min: 1, max: 50).nullable()();
