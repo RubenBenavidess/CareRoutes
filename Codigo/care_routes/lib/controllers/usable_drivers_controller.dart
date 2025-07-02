@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:care_routes/data/database.dart';
-import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../domain/usable_driver.dart';
 import '../providers/database_providers.dart';
