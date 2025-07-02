@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'enums.dart';
 
 // 1. GPS Devices
 class GpsDevices extends Table {
@@ -27,10 +28,10 @@ class Vehicles extends Table {
   TextColumn get brand => text().withLength(min: 1, max: 50)();
   TextColumn get model => text().withLength(min: 1, max: 50).nullable()();
   IntColumn get year => integer().nullable()();
-  TextColumn get status =>
-      text()
-          .withLength(min: 1, max: 20)
-          .withDefault(const Constant('active'))();
+  
+  IntColumn get status => intEnum<VehicleStatus>()
+      .withDefault(const Constant(0))();
+
   IntColumn get mileage => integer().withDefault(const Constant(0))();
   IntColumn get gpsDeviceId =>
       integer().nullable().customConstraint(
