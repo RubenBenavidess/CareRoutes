@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'tables.dart';
 import 'daos/daos.dart';
 import 'dart:io';
+import 'enums.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;

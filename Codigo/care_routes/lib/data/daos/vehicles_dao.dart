@@ -33,7 +33,6 @@ class VehiclesDao extends DatabaseAccessor<AppDatabase>
   )).write(const VehiclesCompanion(isActive: Value(false)));
 
 
-
   /// Busca por placa o por nombre de conductor.
   Stream<List<VehicleWithDriver>> search(String query) {
     final veh = alias(vehicles, 'v');
@@ -72,5 +71,15 @@ class VehiclesDao extends DatabaseAccessor<AppDatabase>
             idNumber: row.read(drv.idNumber)!,
           );
         }).toList());
+  }
+
+  Future<int> assignDriver(int vehicleId, int driverId) {
+    return (update(vehicles)..where((t) => t.idVehicle.equals(vehicleId)))
+        .write(VehiclesCompanion(idDriver: Value(driverId)));
+  }
+
+  Future<int> unassignDriver(int vehicleId) {
+    return (update(vehicles)..where((t) => t.idVehicle.equals(vehicleId)))
+        .write(const VehiclesCompanion(idDriver: Value(null)));
   }
 }

@@ -151,7 +151,7 @@ class TestDataSeeder {
 
     final vehicles = [
       VehiclesCompanion.insert(
-        idDriver: drivers[0].idDriver,
+        idDriver: Value(drivers[0].idDriver),
         licensePlate: 'ABC123',
         brand: 'Toyota',
         model: const Value('Corolla'),
@@ -161,7 +161,7 @@ class TestDataSeeder {
         obdDeviceId: Value(obdDevices[0].idObd),
       ),
       VehiclesCompanion.insert(
-        idDriver: drivers[1].idDriver,
+        idDriver: Value(drivers[1].idDriver),
         licensePlate: 'DEF456',
         brand: 'Honda',
         model: const Value('Civic'),
@@ -171,7 +171,7 @@ class TestDataSeeder {
         obdDeviceId: Value(obdDevices[1].idObd),
       ),
       VehiclesCompanion.insert(
-        idDriver: drivers[2].idDriver,
+        idDriver: Value(drivers[2].idDriver),
         licensePlate: 'GHI789',
         brand: 'Nissan',
         model: const Value('Sentra'),
@@ -181,7 +181,7 @@ class TestDataSeeder {
         obdDeviceId: Value(obdDevices[2].idObd),
       ),
       VehiclesCompanion.insert(
-        idDriver: drivers[3].idDriver,
+        idDriver: Value(drivers[3].idDriver),
         licensePlate: 'JKL012',
         brand: 'Hyundai',
         model: const Value('Elantra'),
@@ -189,7 +189,7 @@ class TestDataSeeder {
         mileage: const Value(35000),
       ),
       VehiclesCompanion.insert(
-        idDriver: drivers[4].idDriver,
+        idDriver: Value(drivers[4].idDriver),
         licensePlate: 'MNO345',
         brand: 'Ford',
         model: const Value('Focus'),

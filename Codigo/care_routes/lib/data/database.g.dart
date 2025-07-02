@@ -1164,9 +1164,9 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
   late final GeneratedColumn<int> idDriver = GeneratedColumn<int>(
     'id_driver',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.int,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
     $customConstraints: 'NULL REFERENCES drivers(id_driver)',
   );
   static const VerificationMeta _licensePlateMeta = const VerificationMeta(
@@ -1318,8 +1318,6 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
         _idDriverMeta,
         idDriver.isAcceptableOrUnknown(data['id_driver']!, _idDriverMeta),
       );
-    } else if (isInserting) {
-      context.missing(_idDriverMeta);
     }
     if (data.containsKey('license_plate')) {
       context.handle(
@@ -1396,11 +1394,10 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
             DriftSqlType.int,
             data['${effectivePrefix}id_vehicle'],
           )!,
-      idDriver:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}id_driver'],
-          )!,
+      idDriver: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id_driver'],
+      ),
       licensePlate:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
@@ -1457,7 +1454,7 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
 
 class Vehicle extends DataClass implements Insertable<Vehicle> {
   final int idVehicle;
-  final int idDriver;
+  final int? idDriver;
   final String licensePlate;
   final String brand;
   final String? model;
@@ -1469,7 +1466,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
   final bool isActive;
   const Vehicle({
     required this.idVehicle,
-    required this.idDriver,
+    this.idDriver,
     required this.licensePlate,
     required this.brand,
     this.model,
@@ -1484,7 +1481,9 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id_vehicle'] = Variable<int>(idVehicle);
-    map['id_driver'] = Variable<int>(idDriver);
+    if (!nullToAbsent || idDriver != null) {
+      map['id_driver'] = Variable<int>(idDriver);
+    }
     map['license_plate'] = Variable<String>(licensePlate);
     map['brand'] = Variable<String>(brand);
     if (!nullToAbsent || model != null) {
@@ -1512,7 +1511,10 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
   VehiclesCompanion toCompanion(bool nullToAbsent) {
     return VehiclesCompanion(
       idVehicle: Value(idVehicle),
-      idDriver: Value(idDriver),
+      idDriver:
+          idDriver == null && nullToAbsent
+              ? const Value.absent()
+              : Value(idDriver),
       licensePlate: Value(licensePlate),
       brand: Value(brand),
       model:
@@ -1539,7 +1541,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Vehicle(
       idVehicle: serializer.fromJson<int>(json['idVehicle']),
-      idDriver: serializer.fromJson<int>(json['idDriver']),
+      idDriver: serializer.fromJson<int?>(json['idDriver']),
       licensePlate: serializer.fromJson<String>(json['licensePlate']),
       brand: serializer.fromJson<String>(json['brand']),
       model: serializer.fromJson<String?>(json['model']),
@@ -1558,7 +1560,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'idVehicle': serializer.toJson<int>(idVehicle),
-      'idDriver': serializer.toJson<int>(idDriver),
+      'idDriver': serializer.toJson<int?>(idDriver),
       'licensePlate': serializer.toJson<String>(licensePlate),
       'brand': serializer.toJson<String>(brand),
       'model': serializer.toJson<String?>(model),
@@ -1575,7 +1577,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
 
   Vehicle copyWith({
     int? idVehicle,
-    int? idDriver,
+    Value<int?> idDriver = const Value.absent(),
     String? licensePlate,
     String? brand,
     Value<String?> model = const Value.absent(),
@@ -1587,7 +1589,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
     bool? isActive,
   }) => Vehicle(
     idVehicle: idVehicle ?? this.idVehicle,
-    idDriver: idDriver ?? this.idDriver,
+    idDriver: idDriver.present ? idDriver.value : this.idDriver,
     licensePlate: licensePlate ?? this.licensePlate,
     brand: brand ?? this.brand,
     model: model.present ? model.value : this.model,
@@ -1670,7 +1672,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
 
 class VehiclesCompanion extends UpdateCompanion<Vehicle> {
   final Value<int> idVehicle;
-  final Value<int> idDriver;
+  final Value<int?> idDriver;
   final Value<String> licensePlate;
   final Value<String> brand;
   final Value<String?> model;
@@ -1695,7 +1697,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
   });
   VehiclesCompanion.insert({
     this.idVehicle = const Value.absent(),
-    required int idDriver,
+    this.idDriver = const Value.absent(),
     required String licensePlate,
     required String brand,
     this.model = const Value.absent(),
@@ -1705,8 +1707,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
     this.gpsDeviceId = const Value.absent(),
     this.obdDeviceId = const Value.absent(),
     this.isActive = const Value.absent(),
-  }) : idDriver = Value(idDriver),
-       licensePlate = Value(licensePlate),
+  }) : licensePlate = Value(licensePlate),
        brand = Value(brand);
   static Insertable<Vehicle> custom({
     Expression<int>? idVehicle,
@@ -1738,7 +1739,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
 
   VehiclesCompanion copyWith({
     Value<int>? idVehicle,
-    Value<int>? idDriver,
+    Value<int?>? idDriver,
     Value<String>? licensePlate,
     Value<String>? brand,
     Value<String?>? model,
@@ -2108,7 +2109,7 @@ class $StopsTable extends Stops with TableInfo<$StopsTable, Stop> {
     false,
     type: DriftSqlType.int,
     requiredDuringInsert: true,
-    $customConstraints: 'REFERENCES routes(id_route)',
+    $customConstraints: 'NOT NULL REFERENCES routes(id_route)',
   );
   static const VerificationMeta _latitudeMeta = const VerificationMeta(
     'latitude',
@@ -2473,7 +2474,7 @@ class $RouteAssignmentsTable extends RouteAssignments
     false,
     type: DriftSqlType.int,
     requiredDuringInsert: true,
-    $customConstraints: 'REFERENCES routes(id_route)',
+    $customConstraints: 'NOT NULL REFERENCES routes(id_route)',
   );
   static const VerificationMeta _idVehicleMeta = const VerificationMeta(
     'idVehicle',
@@ -2485,7 +2486,7 @@ class $RouteAssignmentsTable extends RouteAssignments
     false,
     type: DriftSqlType.int,
     requiredDuringInsert: true,
-    $customConstraints: 'REFERENCES vehicles(id_vehicle)',
+    $customConstraints: 'NOT NULL REFERENCES vehicles(id_vehicle)',
   );
   static const VerificationMeta _assignedAtMeta = const VerificationMeta(
     'assignedAt',
@@ -2846,7 +2847,7 @@ class $MaintenancesTable extends Maintenances
     false,
     type: DriftSqlType.int,
     requiredDuringInsert: true,
-    $customConstraints: 'REFERENCES vehicles(id_vehicle)',
+    $customConstraints: 'NOT NULL REFERENCES vehicles(id_vehicle)',
   );
   static const VerificationMeta _maintenanceDateMeta = const VerificationMeta(
     'maintenanceDate',
@@ -3285,7 +3286,7 @@ class $MaintenanceDetailsTable extends MaintenanceDetails
     false,
     type: DriftSqlType.int,
     requiredDuringInsert: true,
-    $customConstraints: 'REFERENCES maintenances(id_maintenance)',
+    $customConstraints: 'NOT NULL REFERENCES maintenances(id_maintenance)',
   );
   static const VerificationMeta _descriptionMeta = const VerificationMeta(
     'description',
@@ -4582,7 +4583,7 @@ typedef $$DriversTableProcessedTableManager =
 typedef $$VehiclesTableCreateCompanionBuilder =
     VehiclesCompanion Function({
       Value<int> idVehicle,
-      required int idDriver,
+      Value<int?> idDriver,
       required String licensePlate,
       required String brand,
       Value<String?> model,
@@ -4596,7 +4597,7 @@ typedef $$VehiclesTableCreateCompanionBuilder =
 typedef $$VehiclesTableUpdateCompanionBuilder =
     VehiclesCompanion Function({
       Value<int> idVehicle,
-      Value<int> idDriver,
+      Value<int?> idDriver,
       Value<String> licensePlate,
       Value<String> brand,
       Value<String?> model,
@@ -4617,9 +4618,9 @@ final class $$VehiclesTableReferences
         $_aliasNameGenerator(db.vehicles.idDriver, db.drivers.idDriver),
       );
 
-  $$DriversTableProcessedTableManager get idDriver {
-    final $_column = $_itemColumn<int>('id_driver')!;
-
+  $$DriversTableProcessedTableManager? get idDriver {
+    final $_column = $_itemColumn<int>('id_driver');
+    if ($_column == null) return null;
     final manager = $$DriversTableTableManager(
       $_db,
       $_db.drivers,
@@ -5197,7 +5198,7 @@ class $$VehiclesTableTableManager
           updateCompanionCallback:
               ({
                 Value<int> idVehicle = const Value.absent(),
-                Value<int> idDriver = const Value.absent(),
+                Value<int?> idDriver = const Value.absent(),
                 Value<String> licensePlate = const Value.absent(),
                 Value<String> brand = const Value.absent(),
                 Value<String?> model = const Value.absent(),
@@ -5223,7 +5224,7 @@ class $$VehiclesTableTableManager
           createCompanionCallback:
               ({
                 Value<int> idVehicle = const Value.absent(),
-                required int idDriver,
+                Value<int?> idDriver = const Value.absent(),
                 required String licensePlate,
                 required String brand,
                 Value<String?> model = const Value.absent(),

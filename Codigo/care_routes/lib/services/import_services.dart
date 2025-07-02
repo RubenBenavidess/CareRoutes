@@ -218,7 +218,7 @@ class ImportServices {
                     : const Value.absent(),
             year: year != null ? Value(year) : const Value.absent(),
             mileage: mileage != null ? Value(mileage) : const Value.absent(),
-            idDriver: 1,
+            idDriver: Value(null),
           );
 
           vehicles.add(vehicle);
