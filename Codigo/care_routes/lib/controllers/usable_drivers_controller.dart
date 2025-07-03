@@ -61,7 +61,6 @@ final usableDriverNotifierProvider =
       (ref) => UsableDriverNotifier(ref),
     );
 
-// Opción 2 (RECOMENDADA): Usar StreamProvider directamente
 final usableDriversStreamProvider = StreamProvider<List<UsableDriver>>((ref) {
   final driversDao = ref.watch(driversDaoProvider);
 

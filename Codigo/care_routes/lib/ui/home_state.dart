@@ -17,7 +17,6 @@ class _HomeStateState extends State<HomeState> {
     DropZoneWidget(),
     AssignCustodians(),
     ConsultVehicles(),
-    CreateRoutes(),
     AssignRoutes(),
     ConsultRoutes(),
     ConsultDriversWidget(),
