@@ -22,7 +22,8 @@ class SideMenu extends StatelessWidget {
               // — Header fijo —
               SizedBox(
                 height: 72,
-                child: DrawerHeader( margin: EdgeInsets.zero,
+                child: DrawerHeader(
+                  margin: EdgeInsets.zero,
                   padding: EdgeInsets.zero,
                   decoration: const BoxDecoration(color: Color(0xFFF2F2F2)),
                   child: Center(
@@ -68,23 +69,18 @@ class SideMenu extends StatelessWidget {
 
                     // — Sección Rutas —
                     const _SectionHeader('Rutas'),
+
                     SideMenuItem(
-                      icon: Icons.add_road,
-                      label: 'Crear Rutas',
+                      icon: Icons.map,
+                      label: 'Asignar Rutas',
                       isSelected: selectedIndex == 3,
                       onTap: () => onIndexChanged(3),
                     ),
                     SideMenuItem(
-                      icon: Icons.map,
-                      label: 'Asignar Rutas',
-                      isSelected: selectedIndex == 4,
-                      onTap: () => onIndexChanged(4),
-                    ),
-                    SideMenuItem(
                       icon: Icons.visibility,
                       label: 'Ver Rutas',
-                      isSelected: selectedIndex == 5,
-                      onTap: () => onIndexChanged(5),
+                      isSelected: selectedIndex == 4,
+                      onTap: () => onIndexChanged(4),
                     ),
 
                     const Divider(color: Color(0xFF76777C)),
@@ -94,8 +90,8 @@ class SideMenu extends StatelessWidget {
                     SideMenuItem(
                       icon: Icons.delivery_dining,
                       label: 'Consultar Conductores',
-                      isSelected: selectedIndex == 6,
-                      onTap: () => onIndexChanged(6),
+                      isSelected: selectedIndex == 5,
+                      onTap: () => onIndexChanged(5),
                     ),
 
                     const Divider(color: Color(0xFF76777C)),
@@ -105,14 +101,14 @@ class SideMenu extends StatelessWidget {
                     SideMenuItem(
                       icon: Icons.build,
                       label: 'Registrar Mantenimientos',
-                      isSelected: selectedIndex == 7,
-                      onTap: () => onIndexChanged(7),
+                      isSelected: selectedIndex == 6,
+                      onTap: () => onIndexChanged(6),
                     ),
                     SideMenuItem(
                       icon: Icons.history,
                       label: 'Ver Mantenimientos',
-                      isSelected: selectedIndex == 8,
-                      onTap: () => onIndexChanged(8),
+                      isSelected: selectedIndex == 7,
+                      onTap: () => onIndexChanged(7),
                     ),
 
                     const Divider(color: Color(0xFF76777C)),
@@ -122,8 +118,8 @@ class SideMenu extends StatelessWidget {
                     SideMenuItem(
                       icon: Icons.pie_chart,
                       label: 'Generar Reportes',
-                      isSelected: selectedIndex == 9,
-                      onTap: () => onIndexChanged(9),
+                      isSelected: selectedIndex == 8,
+                      onTap: () => onIndexChanged(8),
                     ),
                   ],
                 ),
@@ -134,8 +130,8 @@ class SideMenu extends StatelessWidget {
               SideMenuItem(
                 icon: Icons.settings,
                 label: 'Configuración',
-                isSelected: selectedIndex == 10,
-                onTap: () => onIndexChanged(10),
+                isSelected: selectedIndex == 9,
+                onTap: () => onIndexChanged(9),
               ),
               Padding(
                 padding: const EdgeInsets.all(16),
@@ -146,7 +142,6 @@ class SideMenu extends StatelessWidget {
         ),
       ),
     );
-
   }
 }
 
@@ -196,17 +191,18 @@ class _SideMenuItemState extends State<SideMenuItem> {
     // Colores base
     const bgSelected = Color(0xFF0973AD);
     const fgSelected = Color(0xFFF2F2F2);
-    const fgDefault  = Color(0xFF76777C);
-    const bgHover    = Color(0xFFE0E0E0);
+    const fgDefault = Color(0xFF76777C);
+    const bgHover = Color(0xFFE0E0E0);
 
-    final bgColor = widget.isSelected
-        ? bgSelected
-        : (_isHovered ? bgHover : Colors.transparent);
+    final bgColor =
+        widget.isSelected
+            ? bgSelected
+            : (_isHovered ? bgHover : Colors.transparent);
     final fgColor = widget.isSelected ? fgSelected : fgDefault;
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
-      onExit:  (_) => setState(() => _isHovered = false),
+      onExit: (_) => setState(() => _isHovered = false),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         decoration: BoxDecoration(

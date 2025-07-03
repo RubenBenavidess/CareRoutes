@@ -53,7 +53,7 @@ class ConsultDriversWidget extends ConsumerWidget {
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundColor: const Color(0xFF0973AD),
-                    child: Text(driver.firstName[0]),
+                    child: Icon(Icons.person, color: Colors.white, size: 32),
                   ),
                   title: Text('${driver.firstName} ${driver.lastName}'),
                   subtitle: Text('ID: ${driver.idNumber}'),

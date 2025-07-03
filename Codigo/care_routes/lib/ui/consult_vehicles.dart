@@ -1,4 +1,6 @@
 // ui/consult_vehicles.dart
+import 'package:care_routes/data/database.dart';
+import 'package:care_routes/domain/usable_vehicle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../controllers/usable_vehicles_controller.dart';
@@ -282,7 +284,7 @@ class _ConsultVehiclesState extends ConsumerState<ConsultVehicles> {
     }
   }
 
-  void _showVehicleDetails(BuildContext context, dynamic vehicle) {
+  void _showVehicleDetails(BuildContext context, UsableVehicle vehicle) {
     showDialog(
       context: context,
       builder:
@@ -296,7 +298,7 @@ class _ConsultVehiclesState extends ConsumerState<ConsultVehicles> {
                 _detailRow('Modelo', vehicle.model),
                 _detailRow('Año', vehicle.year.toString()),
                 _detailRow('Kilometraje', '${vehicle.mileage} km'),
-                _detailRow('Estado', vehicle.status),
+                _detailRow('Estado', vehicle.status.name.toUpperCase()),
               ],
             ),
             actions: [
