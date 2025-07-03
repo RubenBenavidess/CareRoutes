@@ -1,3 +1,4 @@
+import 'package:care_routes/data/daos/daos.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/database.dart';
@@ -29,4 +30,10 @@ final vehiclesDaoProvider = Provider<VehiclesDao>((ref) {
 final driversDaoProvider = Provider<DriversDao>((ref) {
   final db = ref.watch(dbProvider);
   return DriversDao(db);
+});
+
+/// DAO de rutas
+final routesDaoProvider = Provider<RoutesDao>((ref){
+  final db = ref.watch(dbProvider);
+  return RoutesDao(db);
 });
