@@ -1,3 +1,4 @@
+import 'package:care_routes/data/enums.dart';
 import 'package:care_routes/domain/vehicle_with_driver.dart';
 import 'package:drift/drift.dart';
 import '../database.dart';
@@ -75,11 +76,11 @@ class VehiclesDao extends DatabaseAccessor<AppDatabase>
 
   Future<int> assignDriver(int vehicleId, int driverId) {
     return (update(vehicles)..where((t) => t.idVehicle.equals(vehicleId)))
-        .write(VehiclesCompanion(idDriver: Value(driverId)));
+        .write(VehiclesCompanion(idDriver: Value(driverId), status: Value(VehicleStatus.assigned)));
   }
 
   Future<int> unassignDriver(int vehicleId) {
     return (update(vehicles)..where((t) => t.idVehicle.equals(vehicleId)))
-        .write(const VehiclesCompanion(idDriver: Value(null)));
+        .write(const VehiclesCompanion(idDriver: Value(null), status: Value(VehicleStatus.available)));
   }
 }

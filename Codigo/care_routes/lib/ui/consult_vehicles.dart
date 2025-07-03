@@ -53,10 +53,10 @@ class ConsultVehicles extends ConsumerWidget {
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundColor: const Color(0xFF0973AD),
-                    child: Text(vehicle.brand[0]),
+                    child: Text(vehicle.licensePlate[0]),
                   ),
-                  title: Text('${vehicle.brand} ${vehicle.brand}'),
-                  subtitle: Text('ID: ${vehicle.brand}'),
+                  title: Text('${vehicle.brand} ${vehicle.model}'),
+                  subtitle: Text('ID: ${vehicle.licensePlate}'),
                 ),
               );
             },
