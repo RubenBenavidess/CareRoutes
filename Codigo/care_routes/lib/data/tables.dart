@@ -29,10 +29,8 @@ class Vehicles extends Table {
   TextColumn get brand => text().withLength(min: 1, max: 50)();
   TextColumn get model => text().withLength(min: 1, max: 50).nullable()();
   IntColumn get year => integer().nullable()();
-  
-  IntColumn get status => intEnum<VehicleStatus>()
-      .withDefault(const Constant(0))(); // 0 = VehicleStatus.available
-
+  TextColumn get status => textEnum<VehicleStatus>()
+      .withDefault(const Constant('available'))();
   IntColumn get mileage => integer().withDefault(const Constant(0))();
   IntColumn get gpsDeviceId =>
       integer().nullable().customConstraint(

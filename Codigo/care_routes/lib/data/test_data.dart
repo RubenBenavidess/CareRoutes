@@ -1,3 +1,4 @@
+import 'package:care_routes/data/enums.dart';
 import 'package:drift/drift.dart';
 import 'database.dart';
 
@@ -159,6 +160,7 @@ class TestDataSeeder {
         mileage: const Value(15000),
         gpsDeviceId: Value(gpsDevices[0].idGps),
         obdDeviceId: Value(obdDevices[0].idObd),
+        status: Value(VehicleStatus.assigned),
       ),
       VehiclesCompanion.insert(
         idDriver: Value(drivers[1].idDriver),
@@ -169,6 +171,7 @@ class TestDataSeeder {
         mileage: const Value(22000),
         gpsDeviceId: Value(gpsDevices[1].idGps),
         obdDeviceId: Value(obdDevices[1].idObd),
+        status: Value(VehicleStatus.assigned),
       ),
       VehiclesCompanion.insert(
         idDriver: Value(drivers[2].idDriver),
@@ -179,6 +182,7 @@ class TestDataSeeder {
         mileage: const Value(8000),
         gpsDeviceId: Value(gpsDevices[2].idGps),
         obdDeviceId: Value(obdDevices[2].idObd),
+        status: Value(VehicleStatus.assigned),
       ),
       VehiclesCompanion.insert(
         idDriver: Value(drivers[3].idDriver),
@@ -187,6 +191,7 @@ class TestDataSeeder {
         model: const Value('Elantra'),
         year: const Value(2018),
         mileage: const Value(35000),
+        status: Value(VehicleStatus.assigned),
       ),
       VehiclesCompanion.insert(
         idDriver: Value(drivers[4].idDriver),
@@ -195,6 +200,7 @@ class TestDataSeeder {
         model: const Value('Focus'),
         year: const Value(2020),
         mileage: const Value(18000),
+        status: Value(VehicleStatus.assigned),
       ),
     ];
 

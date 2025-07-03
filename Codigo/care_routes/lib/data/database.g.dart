@@ -1221,14 +1221,14 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
     requiredDuringInsert: false,
   );
   @override
-  late final GeneratedColumnWithTypeConverter<VehicleStatus, int> status =
-      GeneratedColumn<int>(
+  late final GeneratedColumnWithTypeConverter<VehicleStatus, String> status =
+      GeneratedColumn<String>(
         'status',
         aliasedName,
         false,
-        type: DriftSqlType.int,
+        type: DriftSqlType.string,
         requiredDuringInsert: false,
-        defaultValue: const Constant(0),
+        defaultValue: const Constant('available'),
       ).withConverter<VehicleStatus>($VehiclesTable.$converterstatus);
   static const VerificationMeta _mileageMeta = const VerificationMeta(
     'mileage',
@@ -1418,7 +1418,7 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
       ),
       status: $VehiclesTable.$converterstatus.fromSql(
         attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
+          DriftSqlType.string,
           data['${effectivePrefix}status'],
         )!,
       ),
@@ -1448,8 +1448,8 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
     return $VehiclesTable(attachedDatabase, alias);
   }
 
-  static JsonTypeConverter2<VehicleStatus, int, int> $converterstatus =
-      const EnumIndexConverter<VehicleStatus>(VehicleStatus.values);
+  static JsonTypeConverter2<VehicleStatus, String, String> $converterstatus =
+      const EnumNameConverter<VehicleStatus>(VehicleStatus.values);
 }
 
 class Vehicle extends DataClass implements Insertable<Vehicle> {
@@ -1493,7 +1493,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
       map['year'] = Variable<int>(year);
     }
     {
-      map['status'] = Variable<int>(
+      map['status'] = Variable<String>(
         $VehiclesTable.$converterstatus.toSql(status),
       );
     }
@@ -1547,7 +1547,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
       model: serializer.fromJson<String?>(json['model']),
       year: serializer.fromJson<int?>(json['year']),
       status: $VehiclesTable.$converterstatus.fromJson(
-        serializer.fromJson<int>(json['status']),
+        serializer.fromJson<String>(json['status']),
       ),
       mileage: serializer.fromJson<int>(json['mileage']),
       gpsDeviceId: serializer.fromJson<int?>(json['gpsDeviceId']),
@@ -1565,7 +1565,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
       'brand': serializer.toJson<String>(brand),
       'model': serializer.toJson<String?>(model),
       'year': serializer.toJson<int?>(year),
-      'status': serializer.toJson<int>(
+      'status': serializer.toJson<String>(
         $VehiclesTable.$converterstatus.toJson(status),
       ),
       'mileage': serializer.toJson<int>(mileage),
@@ -1716,7 +1716,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
     Expression<String>? brand,
     Expression<String>? model,
     Expression<int>? year,
-    Expression<int>? status,
+    Expression<String>? status,
     Expression<int>? mileage,
     Expression<int>? gpsDeviceId,
     Expression<int>? obdDeviceId,
@@ -1787,7 +1787,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
       map['year'] = Variable<int>(year.value);
     }
     if (status.present) {
-      map['status'] = Variable<int>(
+      map['status'] = Variable<String>(
         $VehiclesTable.$converterstatus.toSql(status.value),
       );
     }
@@ -4753,7 +4753,7 @@ class $$VehiclesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnWithTypeConverterFilters<VehicleStatus, VehicleStatus, int>
+  ColumnWithTypeConverterFilters<VehicleStatus, VehicleStatus, String>
   get status => $composableBuilder(
     column: $table.status,
     builder: (column) => ColumnWithTypeConverterFilters(column),
@@ -4923,7 +4923,7 @@ class $$VehiclesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get status => $composableBuilder(
+  ColumnOrderings<String> get status => $composableBuilder(
     column: $table.status,
     builder: (column) => ColumnOrderings(column),
   );
@@ -5034,7 +5034,7 @@ class $$VehiclesTableAnnotationComposer
   GeneratedColumn<int> get year =>
       $composableBuilder(column: $table.year, builder: (column) => column);
 
-  GeneratedColumnWithTypeConverter<VehicleStatus, int> get status =>
+  GeneratedColumnWithTypeConverter<VehicleStatus, String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
 
   GeneratedColumn<int> get mileage =>
