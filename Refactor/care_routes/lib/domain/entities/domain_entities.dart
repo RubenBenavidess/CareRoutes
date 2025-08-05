@@ -1,0 +1,9 @@
+export 'driver.dart';
+export 'gps_device.dart';
+export 'obd_device.dart';
+export 'vehicle.dart';
+export 'route_assignment.dart';
+export 'route.dart';
+export 'stop.dart';
+export 'maintenance.dart';
+export 'maintenance_detail.dart';
