@@ -44,6 +44,10 @@ dependencies:
   path: ^1.9.1
   sqlite3: ^2.8.0
   sqlite3_flutter_libs: ^0.5.39
+  flutter_map: ^8.2.1
+  latlong2: ^0.9.1
+  geolocator: ^10.1.0  # Para obtener ubicación actual
+  permission_handler: ^11.1.0  # Para permisos
 
 dev_dependencies:
   flutter_test:
