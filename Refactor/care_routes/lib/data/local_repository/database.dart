@@ -2,11 +2,10 @@ import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 import 'tables.dart';
 import 'daos/daos.dart';
-import 'dart:io';
 import '../../domain/enums.dart';
-import 'package:drift/native.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
+
+// Import condicional del connection helper
+import 'database_connection_native.dart' if (dart.library.js) 'database_connection_web.dart';
 
 part 'database.g.dart';
 
@@ -33,20 +32,24 @@ part 'database.g.dart';
     MaintenanceDetailsDao,
   ],
 )
-
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.e);
 
   @override
   int get schemaVersion => 1;
 
-  /// Limpia y reinicia la base de datos con datos de prueba
-  /// Útil para desarrollo y testing
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    beforeOpen: (details) async {
+      if (!kIsWeb) {
+        await customStatement('PRAGMA foreign_keys = ON');
+      }
+    },
+  );
+
   Future<void> resetDatabase() async {
     if (kDebugMode) {
-      // Solo permitimos reseteo en modo debug
       await transaction(() async {
-        // Eliminar datos en orden inverso para evitar problemas de integridad referencial
         await delete(maintenanceDetails).go();
         await delete(maintenances).go();
         await delete(routeAssignments).go();
@@ -57,45 +60,26 @@ class AppDatabase extends _$AppDatabase {
         await delete(gpsDevices).go();
         await delete(drivers).go();
       });
-      
     }
   }
 
-  /// Método para inicializar la base de datos con datos de prueba
+  Future<void> validateConnection() async {
+    try {
+      await customSelect('SELECT 1 as test').get();
+      debugPrint('✅ Database connection validated successfully');
+    } catch (e) {
+      debugPrint('❌ Database connection failed: $e');
+      rethrow;
+    }
+  }
+
   static Future<AppDatabase> initAndSeed() async {
     final db = AppDatabase.open();
-        
+    await db.validateConnection();
     return db;
   }
 
   factory AppDatabase.open() {
-    final executor = _openConnection();
-    return AppDatabase(executor);
+    return AppDatabase(createDatabaseConnection());
   }
 }
-
-// lazy database asincrono para abrir la base cuando se necesite
-LazyDatabase _openConnection() {
-  return LazyDatabase(() async {
-      if (kIsWeb) {
-        // TODO: Cambiar a drift wasm
-        final dbFolder = await getApplicationDocumentsDirectory();
-        // ruta al archivo .sqlite dentro de la carpeta de docs
-        final file = File(p.join(dbFolder.path, 'app_database.sqlite'));
-        // usa nativedatabase para moviles y desktop
-        return NativeDatabase.createInBackground(file);
-      }
-      else{
-        //Obtiene la carpeta de docs de la app
-        // y crea la base de datos en esa carpeta
-        final dbFolder = await getApplicationDocumentsDirectory();
-        // ruta al archivo .sqlite dentro de la carpeta de docs
-        final file = File(p.join(dbFolder.path, 'app_database.sqlite'));
-        // usa nativedatabase para moviles y desktop
-        return NativeDatabase.createInBackground(file);
-      }
-      
-    }
-  );
-}
-
