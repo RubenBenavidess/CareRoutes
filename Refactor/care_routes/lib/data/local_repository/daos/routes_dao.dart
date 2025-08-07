@@ -24,6 +24,9 @@ class RoutesDao extends DatabaseAccessor<AppDatabase> with _$RoutesDaoMixin {
 
   Future<bool> updateRoute(Route route) => update(routes).replace(route);
 
+  Future<bool> updateRouteE(RoutesCompanion entity) =>
+      update(routes).replace(entity);
+
   Future<int> softDeleteRoute(int id) => (update(routes)..where(
     (t) => t.idRoute.equals(
       id,

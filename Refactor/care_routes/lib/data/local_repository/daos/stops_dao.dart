@@ -32,4 +32,25 @@ class StopsDao extends DatabaseAccessor<AppDatabase> with _$StopsDaoMixin {
       (select(stops)..where(
         (t) => t.idRoute.equals(id) & t.isActive.equals(true),
       )).get();
+
+  Future<List<Stop>> getStopsByRouteIdOrdered(int id) async {
+    final query = select(stops)
+      ..where((t) => t.idRoute.equals(id) & t.isActive.equals(true))
+      ..orderBy([
+        (t) => OrderingTerm(expression: t.idRoute, mode: OrderingMode.asc),
+      ]);
+
+    return query.get();
+  }
+
+  Future<void> deleteStopsByRouteId(int routeId) async {
+    await (delete(stops)..where((t) => t.idRoute.equals(routeId))).go();
+  }
+
+  Future<List<Stop>> getStopsByRouteId(int routeId) async {
+    final query = select(stops)
+      ..where((t) => t.idRoute.equals(routeId) & t.isActive.equals(true));
+
+    return query.get();
+  }
 }

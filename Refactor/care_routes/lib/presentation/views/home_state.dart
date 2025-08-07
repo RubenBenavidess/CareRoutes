@@ -19,8 +19,8 @@ class HomeState extends StatelessWidget {
             final List<Widget> pages = [
               const FileUploadView(), // Tu nueva vista con Provider
               const ConsultVehicles(),
-              const ConsultVehicles(),
-              const ConsultVehicles(),
+              const RouteManagementScreen(),
+              const RoutesOverviewScreen(),
               const MaintenanceCrudView(),
               const ReportsView(),
               const RouteManagementScreen(),

@@ -1,8 +1,11 @@
 //main.dart
 import 'package:care_routes/domain/use_cases/assign_route_usecase.dart';
 import 'package:care_routes/domain/use_cases/create_route_usecase.dart';
+import 'package:care_routes/domain/use_cases/get_assigned_vehicles_usecase.dart';
+import 'package:care_routes/domain/use_cases/get_routes_with_assignments_usecase.dart';
 import 'package:care_routes/domain/use_cases/manage_route_assginments_usecase.dart';
 import 'package:care_routes/domain/use_cases/search_route_usecase.dart';
+import 'package:care_routes/domain/use_cases/update_route_usecase.dart';
 import 'package:care_routes/presentation/viewmodels/route_management_viewmodel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -160,6 +163,28 @@ Future<void> _setupDependencies() async {
     ),
   );
 
+  getIt.registerSingleton<UpdateRouteUseCase>(
+    UpdateRouteUseCase(
+      routesDao: database.routesDao, 
+      stopsDao: database.stopsDao
+    )
+  );
+
+  getIt.registerSingleton<GetAssignedVehiclesUseCase>(
+    GetAssignedVehiclesUseCase(
+      vehiclesDao: database.vehiclesDao, 
+      assignmentsDao: database.routeAssignmentsDao
+    )
+  );
+
+  getIt.registerSingleton<GetRoutesWithAssignmentsUseCase>(
+    GetRoutesWithAssignmentsUseCase(
+      routesDao: database.routesDao, 
+      stopsDao: database.stopsDao, 
+      assignmentsDao: database.routeAssignmentsDao, 
+      vehiclesDao: database.vehiclesDao
+    )
+  );
 }
 
 class CareRoutesApp extends StatelessWidget {
@@ -200,7 +225,9 @@ class CareRoutesApp extends StatelessWidget {
             assignRouteUseCase: GetIt.instance<AssignRouteUseCase>(),
             searchRoutesUseCase: GetIt.instance<SearchRoutesUseCase>(),
             manageAssignmentsUseCase: GetIt.instance<ManageRouteAssignmentsUseCase>(),
-
+            updateRouteUseCase: GetIt.instance<UpdateRouteUseCase>(),
+            getAssignedVehiclesUseCase: GetIt.instance<GetAssignedVehiclesUseCase>(),
+            getRoutesWithAssignmentsUseCase: GetIt.instance<GetRoutesWithAssignmentsUseCase>(),
           ),
         ),
       ],

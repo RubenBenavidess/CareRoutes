@@ -75,5 +75,13 @@ class RouteAssignmentsDao extends DatabaseAccessor<AppDatabase> with _$RouteAssi
     );
 
     return updateRouteAssignmentS(updatedAssignment);
+  }
+
+  Future<List<RouteAssignment>> getAssignmentsByRouteId(int id) async {
+    final query = select(routeAssignments)..where(
+      (t) => t.idRoute.equals(id) & t.isActive.equals(true),
+    );
+
+    return query.get();
   } 
 }
