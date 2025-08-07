@@ -27,6 +27,7 @@ part 'database.g.dart';
     DriversDao,
     StopsDao,
     RoutesDao,
+    RouteAssignmentsDao,
     MaintenancesDao,
     MaintenanceDetailsDao,
   ],

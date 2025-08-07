@@ -3611,6 +3611,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final DriversDao driversDao = DriversDao(this as AppDatabase);
   late final StopsDao stopsDao = StopsDao(this as AppDatabase);
   late final RoutesDao routesDao = RoutesDao(this as AppDatabase);
+  late final RouteAssignmentsDao routeAssignmentsDao = RouteAssignmentsDao(
+    this as AppDatabase,
+  );
   late final MaintenancesDao maintenancesDao = MaintenancesDao(
     this as AppDatabase,
   );

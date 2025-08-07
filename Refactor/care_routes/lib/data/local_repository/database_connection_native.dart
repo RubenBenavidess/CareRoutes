@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:flutter/foundation.dart';
+// ignore: unused_import
 import 'package:sqlite3/sqlite3.dart' as sqlite3_native;
 
 LazyDatabase createDatabaseConnection() {
