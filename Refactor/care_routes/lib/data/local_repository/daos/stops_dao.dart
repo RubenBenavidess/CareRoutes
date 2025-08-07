@@ -27,4 +27,9 @@ class StopsDao extends DatabaseAccessor<AppDatabase> with _$StopsDaoMixin {
   Future<int> softDeleteStop(int id) => (update(stops)..where(
     (t) => t.idStop.equals(id),
   )).write(const StopsCompanion(isActive: Value(false)));
+
+  Future<List<Stop>> getStopsByRoute(int id) =>
+      (select(stops)..where(
+        (t) => t.idRoute.equals(id) & t.isActive.equals(true),
+      )).get();
 }

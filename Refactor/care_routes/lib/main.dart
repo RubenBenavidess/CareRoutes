@@ -1,4 +1,5 @@
 //main.dart
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:care_routes/presentation/views/home_state.dart';
@@ -12,20 +13,51 @@ import 'package:care_routes/domain/use_cases/assign_driver_usecase.dart'; // <- 
 import 'package:care_routes/data/local_repository/database.dart';
 import 'package:get_it/get_it.dart';
 import 'package:care_routes/domain/use_cases/vehicle_location_usecase.dart';
+import 'package:sqlite3/sqlite3.dart';
 
 import 'data/local_repository/daos/daos.dart';
+import 'presentation/views/error_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   try {
+    // Inicializar según la plataforma
+    await _initializePlatformSpecific();
+    
     // Configurar dependencias
     await _setupDependencies();
     
     runApp(const CareRoutesApp());
   } catch (e) {
     debugPrint('❌ Error initializing app: $e');
-    runApp(const ErrorApp());
+    runApp(ErrorApp(error: e.toString()));
+  }
+}
+
+Future<void> _initializePlatformSpecific() async {
+  if (kIsWeb) {
+    debugPrint('🌐 Running on web - WASM will be loaded by database connection');
+    // No necesitamos inicializar nada específico para web aquí
+  } else {
+    debugPrint('📱💻 Running on native platform - initializing SQLite3');
+    await _initSqlite3Native();
+  }
+}
+
+Future<void> _initSqlite3Native() async {
+  if (!kIsWeb) {
+    try {
+      // Verificar que SQLite3 funciona
+      final testDb = sqlite3.openInMemory();
+      testDb.execute('SELECT 1');
+      testDb.dispose();
+      
+      debugPrint('✅ Native SQLite3 initialized successfully');
+    } catch (e) {
+      debugPrint('❌ Failed to initialize native SQLite3: $e');
+      rethrow;
+    }
   }
 }
 
@@ -93,30 +125,6 @@ class CareRoutesApp extends StatelessWidget {
         theme: mainTheme,
         home: const HomeState(),
         debugShowCheckedModeBanner: false,
-      ),
-    );
-  }
-}
-
-class ErrorApp extends StatelessWidget {
-  const ErrorApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.error, size: 64, color: Colors.red),
-              SizedBox(height: 16),
-              Text('Error al inicializar la aplicación'),
-              SizedBox(height: 8),
-              Text('Revisa la consola para más detalles'),
-            ],
-          ),
-        ),
       ),
     );
   }

@@ -1828,6 +1828,19 @@ class $RoutesTable extends Routes with TableInfo<$RoutesTable, Route> {
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 1,
+      maxTextLength: 100,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _isActiveMeta = const VerificationMeta(
     'isActive',
   );
@@ -1844,7 +1857,7 @@ class $RoutesTable extends Routes with TableInfo<$RoutesTable, Route> {
     defaultValue: const Constant(true),
   );
   @override
-  List<GeneratedColumn> get $columns => [idRoute, isActive];
+  List<GeneratedColumn> get $columns => [idRoute, name, isActive];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1862,6 +1875,14 @@ class $RoutesTable extends Routes with TableInfo<$RoutesTable, Route> {
         _idRouteMeta,
         idRoute.isAcceptableOrUnknown(data['id_route']!, _idRouteMeta),
       );
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
     }
     if (data.containsKey('is_active')) {
       context.handle(
@@ -1882,6 +1903,10 @@ class $RoutesTable extends Routes with TableInfo<$RoutesTable, Route> {
         DriftSqlType.int,
         data['${effectivePrefix}id_route'],
       )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
       isActive: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}is_active'],
@@ -1897,18 +1922,28 @@ class $RoutesTable extends Routes with TableInfo<$RoutesTable, Route> {
 
 class Route extends DataClass implements Insertable<Route> {
   final int idRoute;
+  final String name;
   final bool isActive;
-  const Route({required this.idRoute, required this.isActive});
+  const Route({
+    required this.idRoute,
+    required this.name,
+    required this.isActive,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id_route'] = Variable<int>(idRoute);
+    map['name'] = Variable<String>(name);
     map['is_active'] = Variable<bool>(isActive);
     return map;
   }
 
   RoutesCompanion toCompanion(bool nullToAbsent) {
-    return RoutesCompanion(idRoute: Value(idRoute), isActive: Value(isActive));
+    return RoutesCompanion(
+      idRoute: Value(idRoute),
+      name: Value(name),
+      isActive: Value(isActive),
+    );
   }
 
   factory Route.fromJson(
@@ -1918,6 +1953,7 @@ class Route extends DataClass implements Insertable<Route> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Route(
       idRoute: serializer.fromJson<int>(json['idRoute']),
+      name: serializer.fromJson<String>(json['name']),
       isActive: serializer.fromJson<bool>(json['isActive']),
     );
   }
@@ -1926,17 +1962,20 @@ class Route extends DataClass implements Insertable<Route> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'idRoute': serializer.toJson<int>(idRoute),
+      'name': serializer.toJson<String>(name),
       'isActive': serializer.toJson<bool>(isActive),
     };
   }
 
-  Route copyWith({int? idRoute, bool? isActive}) => Route(
+  Route copyWith({int? idRoute, String? name, bool? isActive}) => Route(
     idRoute: idRoute ?? this.idRoute,
+    name: name ?? this.name,
     isActive: isActive ?? this.isActive,
   );
   Route copyWithCompanion(RoutesCompanion data) {
     return Route(
       idRoute: data.idRoute.present ? data.idRoute.value : this.idRoute,
+      name: data.name.present ? data.name.value : this.name,
       isActive: data.isActive.present ? data.isActive.value : this.isActive,
     );
   }
@@ -1945,45 +1984,57 @@ class Route extends DataClass implements Insertable<Route> {
   String toString() {
     return (StringBuffer('Route(')
           ..write('idRoute: $idRoute, ')
+          ..write('name: $name, ')
           ..write('isActive: $isActive')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(idRoute, isActive);
+  int get hashCode => Object.hash(idRoute, name, isActive);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Route &&
           other.idRoute == this.idRoute &&
+          other.name == this.name &&
           other.isActive == this.isActive);
 }
 
 class RoutesCompanion extends UpdateCompanion<Route> {
   final Value<int> idRoute;
+  final Value<String> name;
   final Value<bool> isActive;
   const RoutesCompanion({
     this.idRoute = const Value.absent(),
+    this.name = const Value.absent(),
     this.isActive = const Value.absent(),
   });
   RoutesCompanion.insert({
     this.idRoute = const Value.absent(),
+    required String name,
     this.isActive = const Value.absent(),
-  });
+  }) : name = Value(name);
   static Insertable<Route> custom({
     Expression<int>? idRoute,
+    Expression<String>? name,
     Expression<bool>? isActive,
   }) {
     return RawValuesInsertable({
       if (idRoute != null) 'id_route': idRoute,
+      if (name != null) 'name': name,
       if (isActive != null) 'is_active': isActive,
     });
   }
 
-  RoutesCompanion copyWith({Value<int>? idRoute, Value<bool>? isActive}) {
+  RoutesCompanion copyWith({
+    Value<int>? idRoute,
+    Value<String>? name,
+    Value<bool>? isActive,
+  }) {
     return RoutesCompanion(
       idRoute: idRoute ?? this.idRoute,
+      name: name ?? this.name,
       isActive: isActive ?? this.isActive,
     );
   }
@@ -1993,6 +2044,9 @@ class RoutesCompanion extends UpdateCompanion<Route> {
     final map = <String, Expression>{};
     if (idRoute.present) {
       map['id_route'] = Variable<int>(idRoute.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
     }
     if (isActive.present) {
       map['is_active'] = Variable<bool>(isActive.value);
@@ -2004,6 +2058,7 @@ class RoutesCompanion extends UpdateCompanion<Route> {
   String toString() {
     return (StringBuffer('RoutesCompanion(')
           ..write('idRoute: $idRoute, ')
+          ..write('name: $name, ')
           ..write('isActive: $isActive')
           ..write(')'))
         .toString();
@@ -5293,9 +5348,17 @@ typedef $$VehiclesTableProcessedTableManager =
       })
     >;
 typedef $$RoutesTableCreateCompanionBuilder =
-    RoutesCompanion Function({Value<int> idRoute, Value<bool> isActive});
+    RoutesCompanion Function({
+      Value<int> idRoute,
+      required String name,
+      Value<bool> isActive,
+    });
 typedef $$RoutesTableUpdateCompanionBuilder =
-    RoutesCompanion Function({Value<int> idRoute, Value<bool> isActive});
+    RoutesCompanion Function({
+      Value<int> idRoute,
+      Value<String> name,
+      Value<bool> isActive,
+    });
 
 final class $$RoutesTableReferences
     extends BaseReferences<_$AppDatabase, $RoutesTable, Route> {
@@ -5354,6 +5417,11 @@ class $$RoutesTableFilterComposer
   });
   ColumnFilters<int> get idRoute => $composableBuilder(
     column: $table.idRoute,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5427,6 +5495,11 @@ class $$RoutesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<bool> get isActive => $composableBuilder(
     column: $table.isActive,
     builder: (column) => ColumnOrderings(column),
@@ -5444,6 +5517,9 @@ class $$RoutesTableAnnotationComposer
   });
   GeneratedColumn<int> get idRoute =>
       $composableBuilder(column: $table.idRoute, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
 
   GeneratedColumn<bool> get isActive =>
       $composableBuilder(column: $table.isActive, builder: (column) => column);
@@ -5528,14 +5604,23 @@ class $$RoutesTableTableManager
           updateCompanionCallback:
               ({
                 Value<int> idRoute = const Value.absent(),
+                Value<String> name = const Value.absent(),
                 Value<bool> isActive = const Value.absent(),
-              }) => RoutesCompanion(idRoute: idRoute, isActive: isActive),
+              }) => RoutesCompanion(
+                idRoute: idRoute,
+                name: name,
+                isActive: isActive,
+              ),
           createCompanionCallback:
               ({
                 Value<int> idRoute = const Value.absent(),
+                required String name,
                 Value<bool> isActive = const Value.absent(),
-              }) =>
-                  RoutesCompanion.insert(idRoute: idRoute, isActive: isActive),
+              }) => RoutesCompanion.insert(
+                idRoute: idRoute,
+                name: name,
+                isActive: isActive,
+              ),
           withReferenceMapper: (p0) => p0
               .map(
                 (e) =>

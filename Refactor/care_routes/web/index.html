@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <base href="$FLUTTER_BASE_HREF">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="CareRoutes - Sistema de gestión de rutas">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <!-- PWA -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,34 +16,55 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
-
+  
   <title>CareRoutes</title>
   <link rel="manifest" href="manifest.json">
 
   <style>
-    /* Loading styles */
     #loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #F2F2F2;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      font-family: 'Wix Madefor Text', sans-serif;
-      background-color: #F2F2F2;
+      font-family: 'Segoe UI', -apple-system, sans-serif;
+      z-index: 9999;
     }
     
     .spinner {
       border: 4px solid #f3f3f3;
       border-top: 4px solid #0973AD;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 2s linear infinite;
-      margin-right: 16px;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
     }
     
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
+    }
+    
+    .loading-text {
+      color: #0973AD;
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    
+    .loading-subtext {
+      color: #666;
+      font-size: 14px;
+    }
+    
+    body.loaded #loading {
+      display: none;
     }
   </style>
 </head>
@@ -51,39 +72,112 @@
   <!-- Loading screen -->
   <div id="loading">
     <div class="spinner"></div>
-    <div>Cargando CareRoutes...</div>
+    <div class="loading-text">Cargando CareRoutes</div>
+    <div class="loading-subtext">Inicializando...</div>
   </div>
 
-  <!-- SQLite3 WASM support -->
+  <!-- Configuración para sqlite3 WASM -->
   <script>
-    // Configuración para sqlite3 WASM
-    if (!window.sqlite3InitModule) {
-      window.sqlite3InitModule = sqlite3InitModule;
-    }
+    // Configuración global para SQLite3 WASM
+    window.sqlite3InitModule = window.sqlite3InitModule || function() {
+      console.warn('SQLite3 WASM module not available, using fallback');
+      return Promise.reject(new Error('SQLite3 WASM not available'));
+    };
+    
+    // Service worker version por defecto
+    window.serviceWorkerVersion = window.serviceWorkerVersion || null;
+    
+    // Configuración adicional
+    window.addEventListener('load', function() {
+      console.log('🌐 Web environment loaded');
+    });
+    
+    // Manejo de errores globales
+    window.addEventListener('error', function(e) {
+      console.error('❌ Global error:', e.error);
+      const loadingSubtext = document.querySelector('.loading-subtext');
+      if (loadingSubtext) {
+        loadingSubtext.textContent = 'Error de carga detectado...';
+        loadingSubtext.style.color = '#e53e3e';
+      }
+    });
+    
+    window.addEventListener('unhandledrejection', function(e) {
+      console.error('❌ Unhandled promise rejection:', e.reason);
+    });
   </script>
 
-  <!-- Flutter Web -->
-  <script src="flutter.js" defer></script>
+  <!-- Flutter Web Bootstrap -->
+  <script src="flutter_bootstrap.js" async></script>
+  
   <script>
-    window.addEventListener('load', function(ev) {
-      // Remove loading screen
-      const loadingEl = document.querySelector('#loading');
+    // Función para inicializar la app
+    function initializeApp() {
+      const loadingSubtext = document.querySelector('.loading-subtext');
       
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
-            // Hide loading screen before running the app
-            if (loadingEl) {
-              loadingEl.style.display = 'none';
-            }
-            appRunner.runApp();
-          });
-        }
-      });
+      if (loadingSubtext) {
+        loadingSubtext.textContent = 'Iniciando aplicación...';
+      }
+      
+      // Configuración del service worker
+      const serviceWorkerSettings = {
+        serviceWorkerVersion: window.serviceWorkerVersion,
+      };
+      
+      // Inicializar Flutter
+      if (window._flutter && window._flutter.loader) {
+        window._flutter.loader.load({
+          serviceWorkerSettings: serviceWorkerSettings,
+          onEntrypointLoaded: function(engineInitializer) {
+            engineInitializer.initializeEngine().then(function(appRunner) {
+              // Ocultar loading screen
+              document.body.classList.add('loaded');
+              
+              // Ejecutar la app
+              appRunner.runApp();
+              
+              console.log('✅ CareRoutes loaded successfully');
+            }).catch(function(error) {
+              console.error('❌ Error initializing engine:', error);
+              showError('Error al inicializar la aplicación');
+            });
+          }
+        });
+      } else {
+        console.error('❌ Flutter loader not available');
+        showError('Flutter no está disponible');
+      }
+    }
+    
+    // Función para mostrar errores
+    function showError(message) {
+      const loadingText = document.querySelector('.loading-text');
+      const loadingSubtext = document.querySelector('.loading-subtext');
+      const spinner = document.querySelector('.spinner');
+      
+      if (spinner) spinner.style.display = 'none';
+      if (loadingText) {
+        loadingText.textContent = 'Error';
+        loadingText.style.color = '#e53e3e';
+      }
+      if (loadingSubtext) {
+        loadingSubtext.textContent = message;
+        loadingSubtext.style.color = '#e53e3e';
+      }
+    }
+    
+    // Esperar a que se cargue todo
+    window.addEventListener('load', function(ev) {
+      // Timeout para cargar la app
+      setTimeout(initializeApp, 100);
     });
+    
+    // Fallback si no se carga en 10 segundos
+    setTimeout(function() {
+      if (!document.body.classList.contains('loaded')) {
+        showError('Tiempo de carga agotado. Recarga la página.');
+      }
+    }, 10000);
   </script>
 </body>
 </html>

@@ -4,7 +4,6 @@ import 'tables.dart';
 import 'daos/daos.dart';
 import '../../domain/enums.dart';
 
-// Import condicional del connection helper
 import 'database_connection_native.dart' if (dart.library.js) 'database_connection_web.dart';
 
 part 'database.g.dart';
