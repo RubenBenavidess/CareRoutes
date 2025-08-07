@@ -6,9 +6,11 @@ import 'package:care_routes/presentation/themes/main_theme.dart';
 import 'package:care_routes/presentation/viewmodels/navigation_viewmodel.dart';
 import 'package:care_routes/presentation/viewmodels/file_upload_viewmodel.dart';
 import 'package:care_routes/presentation/viewmodels/consult_vehicles_viewmodel.dart';
+import 'package:care_routes/presentation/viewmodels/maintenance_viewmodel.dart';
 import 'package:care_routes/domain/use_cases/import_csv_usecase.dart';
 import 'package:care_routes/domain/use_cases/consult_vehicles_usecase.dart';
-import 'package:care_routes/domain/use_cases/assign_driver_usecase.dart'; // <- NUEVO
+import 'package:care_routes/domain/use_cases/assign_driver_usecase.dart';
+import 'package:care_routes/domain/use_cases/maintenance_usecase.dart';
 import 'package:care_routes/data/local_repository/database.dart';
 import 'package:get_it/get_it.dart';
 import 'package:care_routes/domain/use_cases/vehicle_location_usecase.dart';
@@ -65,6 +67,21 @@ Future<void> _setupDependencies() async {
       vehiclesDao: getIt<VehiclesDao>(),
     ),
   );
+
+  // Agregar en _setupDependencies():
+
+  // DAOs (agregar estos después de los existentes)
+  getIt.registerSingleton(database.maintenancesDao);
+  getIt.registerSingleton(database.maintenanceDetailsDao);
+
+  // Use Cases (agregar después de los existentes)
+  getIt.registerSingleton<MaintenanceUseCase>(
+    MaintenanceUseCase(
+      maintenancesDao: getIt<MaintenancesDao>(),
+      maintenanceDetailsDao: getIt<MaintenanceDetailsDao>(),
+      vehiclesDao: getIt<VehiclesDao>(),
+    ),
+  );
 }
 
 class CareRoutesApp extends StatelessWidget {
@@ -85,6 +102,12 @@ class CareRoutesApp extends StatelessWidget {
         ChangeNotifierProvider<VehicleConsultViewModel>(
           create: (context) => VehicleConsultViewModel(
             consultVehiclesUseCase: GetIt.instance<ConsultVehiclesUseCase>(),
+          ),
+        ),
+        // Agregar en los providers de MultiProvider:
+        ChangeNotifierProvider<MaintenanceViewModel>(
+          create: (context) => MaintenanceViewModel(
+            maintenanceUseCase: GetIt.instance<MaintenanceUseCase>(),
           ),
         ),
       ],

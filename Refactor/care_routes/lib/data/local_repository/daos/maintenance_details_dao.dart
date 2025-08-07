@@ -32,4 +32,10 @@ class MaintenanceDetailsDao extends DatabaseAccessor<AppDatabase>
     ..where(
       (t) => t.idDetail.equals(id),
     )).write(const MaintenanceDetailsCompanion(isActive: Value(false)));
+
+  // En MaintenanceDetailsDao
+  Future<List<MaintenanceDetail>> getDetailsByMaintenanceId(int maintenanceId) =>
+    (select(maintenanceDetails)..where(
+      (t) => t.idMaintenance.equals(maintenanceId) & t.isActive.equals(true),
+    )).get();
 }

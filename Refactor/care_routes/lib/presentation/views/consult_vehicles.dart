@@ -1,4 +1,4 @@
-// ui/consult_vehicles.dart
+// views/consult_vehicles.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/consult_vehicles_viewmodel.dart';

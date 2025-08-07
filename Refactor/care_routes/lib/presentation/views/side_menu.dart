@@ -50,16 +50,10 @@ class SideMenu extends StatelessWidget {
                           onTap: () => navigationVM.setSelectedIndex(0),
                         ),
                         SideMenuItem(
-                          icon: Icons.person_add,
-                          label: 'Asignar Custodios',
+                          icon: Icons.search,
+                          label: 'Gestionar Vehículos y Custodios',
                           isSelected: navigationVM.selectedIndex == 1,
                           onTap: () => navigationVM.setSelectedIndex(1),
-                        ),
-                        SideMenuItem(
-                          icon: Icons.search,
-                          label: 'Consultar Vehículos',
-                          isSelected: navigationVM.selectedIndex == 2,
-                          onTap: () => navigationVM.setSelectedIndex(2),
                         ),
 
                         const Divider(color: Color(0xFF76777C)),
@@ -69,44 +63,27 @@ class SideMenu extends StatelessWidget {
                         SideMenuItem(
                           icon: Icons.map,
                           label: 'Asignar Rutas',
-                          isSelected: navigationVM.selectedIndex == 3,
-                          onTap: () => navigationVM.setSelectedIndex(3),
+                          isSelected: navigationVM.selectedIndex == 2,
+                          onTap: () => navigationVM.setSelectedIndex(2),
                         ),
                         SideMenuItem(
                           icon: Icons.visibility,
                           label: 'Ver Rutas',
-                          isSelected: navigationVM.selectedIndex == 4,
-                          onTap: () => navigationVM.setSelectedIndex(4),
+                          isSelected: navigationVM.selectedIndex == 3,
+                          onTap: () => navigationVM.setSelectedIndex(3),
                         ),
 
                         const Divider(color: Color(0xFF76777C)),
 
-                        // — Sección Conductores —
-                        const _SectionHeader('Conductores'),
-                        SideMenuItem(
-                          icon: Icons.delivery_dining,
-                          label: 'Consultar Conductores',
-                          isSelected: navigationVM.selectedIndex == 5,
-                          onTap: () => navigationVM.setSelectedIndex(5),
-                        ),
-
-                        const Divider(color: Color(0xFF76777C)),
 
                         // — Sección Mantenimientos —
                         const _SectionHeader('Mantenimientos'),
                         SideMenuItem(
                           icon: Icons.build,
-                          label: 'Registrar Mantenimientos',
-                          isSelected: navigationVM.selectedIndex == 6,
-                          onTap: () => navigationVM.setSelectedIndex(6),
+                          label: 'Gestionar Mantenimientos',
+                          isSelected: navigationVM.selectedIndex == 4,
+                          onTap: () => navigationVM.setSelectedIndex(4),
                         ),
-                        SideMenuItem(
-                          icon: Icons.history,
-                          label: 'Ver Mantenimientos',
-                          isSelected: navigationVM.selectedIndex == 7,
-                          onTap: () => navigationVM.setSelectedIndex(7),
-                        ),
-
                         const Divider(color: Color(0xFF76777C)),
 
                         // — Sección Reportes —
@@ -114,8 +91,8 @@ class SideMenu extends StatelessWidget {
                         SideMenuItem(
                           icon: Icons.pie_chart,
                           label: 'Generar Reportes',
-                          isSelected: navigationVM.selectedIndex == 8,
-                          onTap: () => navigationVM.setSelectedIndex(8),
+                          isSelected: navigationVM.selectedIndex == 5,
+                          onTap: () => navigationVM.setSelectedIndex(5),
                         ),
                       ],
                     );
@@ -123,18 +100,7 @@ class SideMenu extends StatelessWidget {
                 ),
               ),
 
-              // — Footer fijo —
-              const Divider(color: Color(0xFF76777C)),
-              Consumer<NavigationViewModel>(
-                builder: (context, navigationVM, child) {
-                  return SideMenuItem(
-                    icon: Icons.settings,
-                    label: 'Configuración',
-                    isSelected: navigationVM.selectedIndex == 9,
-                    onTap: () => navigationVM.setSelectedIndex(9),
-                  );
-                },
-              ),
+
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Image.asset(
@@ -144,7 +110,7 @@ class SideMenu extends StatelessWidget {
                     return Container(
                       height: 64,
                       color: Colors.grey[300],
-                      child: const Icon(Icons.image_not_supported),
+                      child: const Icon(Icons.car_rental),
                     );
                   },
                 ),

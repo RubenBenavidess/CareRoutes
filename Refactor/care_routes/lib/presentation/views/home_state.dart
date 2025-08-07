@@ -18,8 +18,10 @@ class HomeState extends StatelessWidget {
             // Map each index to the screen you want to show
             final List<Widget> pages = [
               const FileUploadView(), // Tu nueva vista con Provider
-              const AssignCustodians(),
               const ConsultVehicles(),
+              const ConsultVehicles(),
+              const ConsultVehicles(),
+              const MaintenanceCrudView()
               //const AssignRoutes(),
               //const ConsultRoutes(),
               //const ConsultDriversWidget(),
