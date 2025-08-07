@@ -21,8 +21,8 @@ class HomeState extends StatelessWidget {
               const ConsultVehicles(),
               const ConsultVehicles(),
               const ConsultVehicles(),
-              const MaintenanceCrudView()
-              //const AssignRoutes(),
+              const MaintenanceCrudView(),
+              const ReportsView(),
               //const ConsultRoutes(),
               //const ConsultDriversWidget(),
               //const RegisterMaintenance(),

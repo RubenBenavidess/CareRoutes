@@ -8,6 +8,7 @@ import 'package:care_routes/presentation/viewmodels/navigation_viewmodel.dart';
 import 'package:care_routes/presentation/viewmodels/file_upload_viewmodel.dart';
 import 'package:care_routes/presentation/viewmodels/consult_vehicles_viewmodel.dart';
 import 'package:care_routes/presentation/viewmodels/maintenance_viewmodel.dart';
+import 'package:care_routes/presentation/viewmodels/reports_viewmodel.dart';
 import 'package:care_routes/domain/use_cases/import_csv_usecase.dart';
 import 'package:care_routes/domain/use_cases/consult_vehicles_usecase.dart';
 import 'package:care_routes/domain/use_cases/assign_driver_usecase.dart';
@@ -16,7 +17,7 @@ import 'package:care_routes/data/local_repository/database.dart';
 import 'package:get_it/get_it.dart';
 import 'package:care_routes/domain/use_cases/vehicle_location_usecase.dart';
 import 'package:sqlite3/sqlite3.dart';
-
+import 'package:care_routes/domain/use_cases/reports_usecase.dart';
 import 'data/local_repository/daos/daos.dart';
 import 'presentation/views/error_app.dart';
 
@@ -114,6 +115,18 @@ Future<void> _setupDependencies() async {
       vehiclesDao: getIt<VehiclesDao>(),
     ),
   );
+
+  // En _setupDependencies() del main.dart:
+
+  // Use Cases (agregar después de los existentes)
+  getIt.registerSingleton<ReportsUseCase>(
+    ReportsUseCase(
+      maintenancesDao: getIt<MaintenancesDao>(),
+      maintenanceDetailsDao: getIt<MaintenanceDetailsDao>(),
+      vehiclesDao: getIt<VehiclesDao>(),
+    ),
+  );
+
 }
 
 class CareRoutesApp extends StatelessWidget {
@@ -140,6 +153,12 @@ class CareRoutesApp extends StatelessWidget {
         ChangeNotifierProvider<MaintenanceViewModel>(
           create: (context) => MaintenanceViewModel(
             maintenanceUseCase: GetIt.instance<MaintenanceUseCase>(),
+          ),
+        ),
+        // En los providers de MultiProvider:
+        ChangeNotifierProvider<ReportsViewModel>(
+          create: (context) => ReportsViewModel(
+            reportsUseCase: GetIt.instance<ReportsUseCase>(),
           ),
         ),
       ],

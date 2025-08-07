@@ -48,6 +48,9 @@ dependencies:
   latlong2: ^0.9.1
   geolocator: ^10.1.0  # Para obtener ubicación actual
   permission_handler: ^11.1.0  # Para permisos
+  pdf: ^3.11.3
+  excel: ^4.0.6
+  share_plus: ^11.0.0
 
 dev_dependencies:
   flutter_test:
