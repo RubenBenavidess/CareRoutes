@@ -29,4 +29,9 @@ class RoutesDao extends DatabaseAccessor<AppDatabase> with _$RoutesDaoMixin {
       id,
     ), // or (t) => t.routeID.equals(id), depending on your table definition
   )).write(const RoutesCompanion(isActive: Value(false)));
+
+  Future<List<Route>> searchRoutes(String trim) =>
+      (select(routes)..where(
+        (t) => t.name.contains(trim) & t.isActive.equals(true),
+      )).get();
 }

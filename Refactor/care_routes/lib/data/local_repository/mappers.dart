@@ -131,15 +131,18 @@ extension VehicleDomainX on d.Vehicle {
 extension RouteDataX on Route {
   d.Route toDomain() => d.Route(
     id: idRoute,
+    name: name,
     isActive: isActive,
   );
 }
 extension RouteDomainX on d.Route {
   RoutesCompanion toCompanionInsert() => RoutesCompanion.insert(
+    name: name,
     isActive: Value(isActive),
   );
   RoutesCompanion toCompanionUpdate() => RoutesCompanion(
     idRoute: Value(id),
+    name: Value(name),
     isActive: Value(isActive),
   );
 }
